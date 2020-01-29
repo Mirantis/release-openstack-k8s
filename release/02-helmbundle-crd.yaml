@@ -1,0 +1,86 @@
+---
+apiVersion: apiextensions.k8s.io/v1beta1
+kind: CustomResourceDefinition
+metadata:
+  name: helmbundles.lcm.mirantis.com
+spec:
+  group: lcm.mirantis.com
+  names:
+    kind: HelmBundle
+    plural: helmbundles
+  scope: Namespaced
+  validation:
+    openAPIV3Schema:
+      properties:
+        apiVersion:
+          description: 'APIVersion defines the versioned schema of this representation
+            of an object. Servers should convert recognized schemas to the latest
+            internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
+          type: string
+        kind:
+          description: 'Kind is a string value representing the REST resource this
+            object represents. Servers may infer this from the endpoint the client
+            submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
+          type: string
+        metadata:
+          type: object
+        spec:
+          properties:
+            releases:
+              description: The list of releases in this bundle.
+              items:
+                properties:
+                  chart:
+                    description: Chart name of the form "repo/name" or just "name".
+                    type: string
+                  labels:
+                    description: The labels to apply to the release.
+                    type: object
+                  name:
+                    description: The name of this release.
+                    type: string
+                  namespace:
+                    description: The namespace of this release.
+                    type: string
+                  values:
+                    description: Values used for parametrization of the chart.
+                    type: object
+                  version:
+                    description: Chart version.
+                    type: string
+                required:
+                - chart
+                - version
+                - name
+                - namespace
+                type: object
+              type: array
+            repositories:
+              description: The list of repositories used by this bundle.
+              items:
+                properties:
+                  certFile:
+                    description: Authentication secret file.
+                    type: string
+                  name:
+                    description: The name of the repository.
+                    type: string
+                  url:
+                    description: The URL of the repository.
+                    type: string
+                required:
+                - name
+                - url
+                type: object
+              type: array
+          required:
+          - releases
+          type: object
+        status:
+          properties:
+            releaseStatuses:
+              description: The mapping of the names of the releases to their statuses.
+              type: object
+          type: object
+  version: v1alpha1
+...

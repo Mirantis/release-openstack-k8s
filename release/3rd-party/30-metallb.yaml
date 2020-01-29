@@ -1,0 +1,39 @@
+apiVersion: lcm.mirantis.com/v1alpha1
+kind: HelmBundle
+metadata:
+  name: metallb
+  namespace: osh-system
+spec:
+  repositories:
+  - name: hub_stable
+    url: https://kubernetes-charts.storage.googleapis.com
+  releases:
+  - name: metallb
+    chart: hub_stable/metallb
+    version: 0.12.0
+    namespace: metallb
+    values:
+      controller:
+        image:
+          tag: v0.8.2
+      speaker:
+        image:
+          tag: v0.8.2
+      configInline:
+        address-pools:
+        - name: openstack-default
+          protocol: layer2
+          # A list of IP address ranges over which MetalLB has
+          # authority. You can list multiple ranges in a single pool, they
+          # will all share the same settings. Each range can be either a
+          # CIDR prefix, or an explicit start-end range of IPs.
+          #addresses:
+          #- 198.51.100.0/24
+          #- 192.168.0.150-192.168.0.200
+          addresses:
+          - 10.172.1.100-10.172.1.255
+          avoid-buggy-ips: true
+          # (optional, default true) If false, MetalLB will not automatically
+          # allocate any address in this pool. Addresses can still explicitly
+          # be requested via loadBalancerIP or the address-pool annotation.
+          auto-assign: true

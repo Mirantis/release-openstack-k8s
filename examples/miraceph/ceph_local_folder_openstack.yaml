@@ -1,0 +1,97 @@
+apiVersion: lcm.mirantis.com/v1alpha1
+kind: MiraCeph
+metadata:
+    name: cephcluster
+    namespace: ceph-lcm-mirantis
+spec:
+    clusterNet: 192.168.122.0/24
+    clientNet: 192.168.122.0/24
+    draft: false
+    version: nautilus
+    devCluster: true
+    dashboardEnabled: false
+    failureDomain: host
+    hostNetwork: false
+    pools:
+      - osdClass: hdd
+        poolGroup: kubernetes
+        relativeSize: 1
+      - osdClass: hdd
+        poolGroup: volumes
+        relativeSize: 0.7
+        replication:
+            replicas: 2
+            minReplicas: 1
+            type: replicated
+      - osdClass: hdd
+        poolGroup: ephemeral
+        relativeSize: 0.7
+        replication:
+            replicas: 2
+            minReplicas: 1
+            type: replicated
+      - osdClass: hdd
+        poolGroup: backup
+        relativeSize: 0.7
+        replication:
+            replicas: 2
+            minReplicas: 1
+            type: replicated
+      - osdClass: hdd
+        poolGroup: images
+        relativeSize: 0.7
+        replication:
+            replicas: 2
+            minReplicas: 1
+            type: replicated
+      - osdClass: hdd
+        poolGroup: rgw
+        relativeSize: 0.2
+        replication:
+            replicas: 2
+            minReplicas: 1
+            type: replicated
+      - osdClass: hdd
+        poolGroup: other
+        relativeSize: 0.0
+        replication:
+            replicas: 2
+            minReplicas: 1
+            type: replicated
+    nodes:
+        Values.CHANGE_ME_node1_name:
+            storageDevices:
+                - name: folder
+                  role: hdd
+                  sizeGb: 48
+            ramGb: 8
+            cores: 2
+            roles: [mon, mgr]
+            ips: ["192.168.122.164"]
+            crushPath:
+        Values.CHANGE_ME_node2_name:
+            storageDevices:
+                - name: folder
+                  role: hdd
+                  sizeGb: 48
+            ramGb: 8
+            cores: 2
+            roles: [mon, mgr]
+            ips: ["192.168.122.244"]
+            crushPath:
+        Values.CHANGE_ME_node3_name:
+            storageDevices:
+                - name: folder
+                  role: hdd
+                  sizeGb: 48
+            ramGb: 8
+            cores: 2
+            roles: [mon, mgr]
+            ips: ["192.168.122.245"]
+            crushPath:
+    classesSettings:
+        hdd:
+            osdPerDevice: 1
+            cacheSize: 1
+            encrypted: false
+

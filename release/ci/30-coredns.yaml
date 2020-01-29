@@ -1,0 +1,49 @@
+apiVersion: lcm.mirantis.com/v1alpha1
+kind: HelmBundle
+metadata:
+  name: coredns
+  namespace: osh-system
+spec:
+  repositories:
+  - name: hub_stable
+    url: https://kubernetes-charts.storage.googleapis.com
+  releases:
+  - name: coredns
+    chart: hub_stable/coredns
+    version: 1.8.1
+    namespace: coredns
+    values:
+      isClusterService: false
+      servers:
+      - zones:
+        - zone: .
+        port: 53
+        plugins:
+        - name: cache
+          parameters: 30
+        - name: errors
+        # Serves a /health endpoint on :8080, required for livenessProbe
+        - name: health
+        # Serves a /ready endpoint on :8181, required for readinessProbe
+        - name: ready
+        # Required to query kubernetes API for data
+        - name: kubernetes
+          parameters: cluster.local
+        - name: loadbalance
+          parameters: round_robin
+        # Serves a /metrics endpoint on :9153, required for serviceMonitor
+        - name: prometheus
+          parameters: 0.0.0.0:9153
+        - name: forward
+          parameters: . /etc/resolv.conf
+        - name: file
+          parameters: /etc/coredns/it.just.works.db it.just.works
+      zoneFiles:
+      - filename: it.just.works.db
+        domain: it.just.works
+        contents: |
+          it.just.works.            IN      SOA     sns.dns.icann.org. noc.dns.icann.org. 2015082541 7200 3600 1209600 3600
+          it.just.works.            IN      NS      b.iana-servers.net.
+          it.just.works.            IN      NS      a.iana-servers.net.
+          it.just.works.            IN      A       127.0.0.1
+          *.it.just.works.    IN      A       1.2.3.4

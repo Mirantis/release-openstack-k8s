@@ -1,0 +1,39 @@
+apiVersion: lcm.mirantis.com/v1alpha1
+kind: HelmBundle
+metadata:
+  name: local-volume-provisioner
+  namespace: osh-system
+spec:
+  repositories:
+  - name: lvp
+    url: https://artifactory.mirantis.com/binary-kaas-local/bm/helm
+  releases:
+  - name: local-volume-provisioner
+    chart: lvp/local-volume-provisioner
+    version: 0.1.0-mcp-353
+    namespace: osh-system
+    values:
+      global:
+        dockerBaseUrl: docker-kaas-local.artifactory.mirantis.com
+        helmBaseUrl: https://artifactory.mirantis.com/binary-kaas-local
+      common:
+        namespace: osh-system
+      classes:
+      - name: lvp-fake-root # Defines name of storage class.
+        hostDir: /mnt/local-volume-provisioner
+        mountDir: /mnt/local-volume-provisioner
+        volumeMode: Filesystem
+        storageClass: true
+        fakeMounts:
+            mountPoints:
+              - srcRoot: /var/lib/local-volume-provisioner
+                mounts:
+                 - vol1
+                 - vol2
+                 - vol3
+      daemonset:
+        nodeSelector:
+          openstack-control-plane: enabled
+        initFakeMounts: true
+        init:
+          image: docker-kaas-local.artifactory.mirantis.com/openstack/openstack-controller:0.1.1
