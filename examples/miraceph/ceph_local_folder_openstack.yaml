@@ -16,6 +16,7 @@ spec:
       - osdClass: hdd
         poolGroup: kubernetes
         relativeSize: 1
+        default: true
       - osdClass: hdd
         poolGroup: volumes
         relativeSize: 0.7
