@@ -1,0 +1,33 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: stacklight
+---
+apiVersion: lcm.mirantis.com/v1alpha1
+kind: HelmBundle
+metadata:
+  name: stacklight
+  namespace: stacklight
+spec:
+  repositories:
+  - name: stacklight
+    url: https://artifactory.mirantis.com/binary-kaas-local/stacklight/helm
+  releases:
+  - name: stacklight
+    chart: stacklight/stacklight
+    version: 0.1.2-mcp-66
+    namespace: stacklight
+    values:
+      global:
+        dockerBaseUrl: docker-kaas-local.artifactory.mirantis.com
+        helmBaseUrl: https://artifactory.mirantis.com/binary-kaas-local
+      createHelmBundleCRD: false
+      deployController: false
+      highAvailabilityEnabled: false
+      nginxExporter:
+        enabled: false
+      openstack:
+        enabled: true
+      ceph:
+        enabled: true
