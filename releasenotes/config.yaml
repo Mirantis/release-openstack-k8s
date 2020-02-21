@@ -1,0 +1,104 @@
+---
+sections:
+  # The prelude section is implicitly included.
+  - [features, New features]
+  - [issues, Known issues]
+  - [upgrade, Upgrade notes]
+  - [security, Security issues]
+  - [fixes, Bug fixes]
+  - [deprecations, Deprecation notes]
+template: |
+          ---
+          prelude: >
+              Replace this text with content to appear at the
+              top of the section for this release.
+          features:
+              - |
+                Ceph:
+
+                * Ceph feature
+
+              - |
+                OpenStack:
+
+                * OpenStack feature
+
+              - |
+                Stacklight:
+
+                * Stacklight feature
+          upgrade:
+              - |
+                Ceph:
+
+                * Ceph upgrade note
+
+              - |
+                Openstack:
+
+                * OpenStack upgrade note
+
+              - |
+                Stacklight:
+
+                * Stacklight upgrade note
+          issues:
+              - |
+                Ceph:
+
+                * <issue number>: Ceph issue description + workaround
+
+              - |
+                Openstack:
+
+                * <issue number>: OpenStack issue description + workaround
+
+              - |
+                Stacklight:
+
+                * <issue number>: Stacklight issue description + workaround
+          security:
+              - |
+                Ceph:
+
+                * <issue number>: ceph security
+
+              - |
+                Openstack:
+
+                * <issue number>: openstack security
+
+              - |
+                Stacklight:
+
+                * <issue number>: stacklight security
+          fixes:
+              - |
+                Ceph:
+
+                * <issue number>: ceph fixes
+
+              - |
+                Openstack:
+
+                * <issue number>: openstack fixes
+
+              - |
+                Stacklight:
+
+                * <issue number>: stacklight fixes
+          deprecations:
+              - |
+                Ceph:
+
+                * Ceph deprecation notice
+
+              - |
+                Openstack:
+
+                * OpenStack deprecations notice
+
+              - |
+                Stacklight:
+
+                * Stacklight deprecations notice

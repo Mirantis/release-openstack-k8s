@@ -1,0 +1,52 @@
+---
+prelude: |
+    This is the first release of the OpenStack on Kubernetes
+    product. The product includes the following major components:
+
+    * Ceph (TODO add description)
+    * The OpenStack controller - implements the Kubernetes Operator
+      model by providing the Custom Resource Definiton for
+      ``openstackdeployments.lcm.mirantis.com`` and code that handles
+      objects defined by this custom resource definition.
+
+      The OpenStack controller is written in Python and is based on
+      the Kopf <https://kopf.readthedocs.io/>`_ framework.
+      Under the hood, it transforms the specification of the custom resource
+      to multiple custom resources, aka HelmBundles. These HelmBundles are
+      handled by the Mirantis HelmBundle controller
+      and manages deployment of OpenStack and its auxiliary services
+      through the ``openstack-helm`` and ``openstack-helm-infra`` Helm charts.
+
+    * Stacklight (TODO add description)
+features:
+    - |
+      Openstack:
+        * Added support for the Stein release for the following OpenStack
+          components:
+
+          - Identity (Keystone)
+          - Compute (Nova)
+          - Image (Glance)
+          - Volume (Cinder)
+          - Orchestration (Heat)
+          - Network (Neutron)
+          - Load Balancer (Octavia)
+          - DNS (Designate)
+          - Dashboard (Horizon)
+          - Key Manager (Barbican)
+          - Tempest
+
+        * Implemented the following architectural concepts:
+
+          - Deployment of MariaDB with WSREP/Galera cluster on the local
+            storage for database
+          - Deployment of a separate non-clusterized instance of the
+            RabbitMQ server for each OpenStack service
+          - Deployment of a shared instance of a non-clusterized RabbitMQ
+            server to use for the OpenStack notifications
+          - Using Ubuntu 18.04 (Bionic) as a base image for containers
+
+        * Integrated with Ceph:
+            - As a back end for Glance (required)
+            - As a back end for Cinder volumes and backups (required)
+            - As an ephemeral storage for Nova (optional)
