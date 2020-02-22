@@ -10,7 +10,7 @@ spec:
   releases:
   - name: openstack-operator
     chart: openstack-controller/openstack-operator
-    version: 0.1.3
+    version: 0.1.4
     namespace: osh-system
     values:
       global:
@@ -19,3 +19,6 @@ spec:
       # The kopf peering object will be created by ceph controller.
       kopf:
         enabled: false
+      # TODO: remove with next release
+      image:
+        tag: 0.1.4
