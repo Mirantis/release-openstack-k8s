@@ -16,7 +16,7 @@ spec:
   releases:
   - name: stacklight
     chart: stacklight/stacklight
-    version: 0.1.2-mcp-66
+    version: 0.1.2-mcp-90
     namespace: stacklight
     values:
       global:
@@ -31,3 +31,9 @@ spec:
         enabled: true
       ceph:
         enabled: true
+      calico:
+        enabled: false
+      nodeSelector:
+        default:
+          role: stacklight
+          stacklight: enabled
