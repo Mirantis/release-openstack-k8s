@@ -1,0 +1,17 @@
+apiVersion: lcm.mirantis.com/v1alpha1
+kind: HelmBundle
+metadata:
+  name: tungstenfabric-operator
+  namespace: tf
+spec:
+  repositories:
+  - name: tf
+    url: https://artifactory.mirantis.com/binary-kaas-local/tungsten/helm
+  releases:
+  - chart: tf/tungstenfabric-operator
+    name: tungstenfabric-operator
+    version: 0.0.2
+    namespace: tf
+    values:
+      global:
+        dockerBaseUrl: docker-kaas-local.artifactory.mirantis.com
