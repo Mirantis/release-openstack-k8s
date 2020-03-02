@@ -26,11 +26,6 @@ spec:
           # Update server private key content
         ca_cert: |-
           # Update CA certificate content
-    barbican:
-      backend:
-        simple_crypto:
-          enabled: True
-          kek: 'YWJjZGVmZ2hpamtsbW5vcHFyc3R1dnd4eXoxMjM0NTY='
     neutron:
       tunnel_interface: ens3
       external_networks:
