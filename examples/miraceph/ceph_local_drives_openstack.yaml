@@ -11,7 +11,7 @@ spec:
     devCluster: true
     dashboardEnabled: false
     failureDomain: host
-    hostNetwork: false
+    hostNetwork: true
     pools:
       - osdClass: hdd
         poolGroup: kubernetes
