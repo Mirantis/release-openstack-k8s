@@ -62,20 +62,6 @@ spec:
             server:
               node_selector_key: kubernetes.io/os
               node_selector_value: linux
-    load-balancer:
-      octavia:
-        values:
-          labels:
-            worker:
-              # TODO(vsaienko): remove with bump to 0.1.7 version
-              node_selector_key: openstack-gateway
-              node_selector_value: enabled
-            health_manager:
-              node_selector_key: openstack-gateway
-              node_selector_value: enabled
-            housekeeping:
-              node_selector_key: openstack-gateway
-              node_selector_value: enabled
     networking:
       neutron:
         values:
