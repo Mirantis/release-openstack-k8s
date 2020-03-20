@@ -1,0 +1,16 @@
+apiVersion: lcm.mirantis.com/v1alpha1
+kind: HelmBundle
+metadata:
+  name: etcd-vault
+  namespace: osh-system
+spec:
+  repositories:
+  - name: incubator
+    url: http://storage.googleapis.com/kubernetes-charts-incubator
+  releases:
+  - name: etcd-vault
+    chart: incubator/etcd
+    version: 0.7.3
+    namespace: openstack
+    values:
+      replicas: 3

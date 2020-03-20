@@ -1,0 +1,81 @@
+apiVersion: lcm.mirantis.com/v1alpha1
+kind: HelmBundle
+metadata:
+  name: vault
+  namespace: osh-system
+spec:
+  repositories:
+  - name: banzaicloud
+    url: http://kubernetes-charts.banzaicloud.com/branch/master
+  releases:
+  - name: vault
+    chart: banzaicloud/vault
+    version: 1.0.0
+    namespace: openstack
+    values:
+      image:
+        repository: vault
+        tag: latest
+        pullPolicy: IfNotPresent
+      replicaCount: 3
+      labels:
+        application: vault
+      vault:
+        config:
+          listener:
+            tcp:
+              address: '[::]:8200'
+              tls_disable: "true"
+              tls_cert_file: /vault/tls/server.crt
+              tls_key_file: /vault/tls/server.key
+          api_addr: "http://vault:8200"
+          ui: "false"
+          storage:
+            etcd:
+              address: "http://etcd-vault:2379"
+              ha_enabled: "true"
+          log_level: "Debug"
+      unsealer:
+        image:
+          repository: banzaicloud/bank-vaults
+          tag: latest
+          pullPolicy: IfNotPresent
+        args: [
+            "--mode",
+            "k8s",
+            "--k8s-secret-namespace",
+            "openstack",
+            "--k8s-secret-name",
+            "vault-keys"
+        ]
+        metrics:
+          enabled: False
+          debug: True
+          name: metrics
+          type: ClusterIP
+          port: 9091
+          serviceMonitor:
+            enabled: False
+            additionalLabels: {}
+          annotations:
+            prometheus.io/scrape: "true"
+            prometheus.io/path: "/metrics"
+            prometheus.io/port: "9091"
+      statsd:
+        image:
+          repository: prom/statsd-exporter
+          tag: latest
+          pullPolicy: IfNotPresent
+        metrics:
+          enabled: False
+          port: 9102
+          serviceMonitor:
+            enabled: False
+            additionalLabels: {}
+        config:
+          mappings:
+          - match: vault.route.*.*
+            name: "vault_route"
+            labels:
+              method: "$1"
+              path: "$2"
