@@ -27,7 +27,6 @@ spec:
         ca_cert: |-
           # Update CA certificate content
     neutron:
-      backend: tungstenfabric
       tunnel_interface: ens3
       floating_network:
         enabled: True
