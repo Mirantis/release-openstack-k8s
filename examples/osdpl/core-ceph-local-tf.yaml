@@ -27,6 +27,8 @@ spec:
         ca_cert: |-
           # Update CA certificate content
     neutron:
+      # TODO(vsaienko): remove once PRODX-3463 fixed
+      backend: tungstenfabric
       tunnel_interface: ens3
       floating_network:
         enabled: True
