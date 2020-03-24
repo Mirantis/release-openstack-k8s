@@ -31,9 +31,21 @@ spec:
                  - vol1
                  - vol2
                  - vol3
+                 - vol4
+                 - vol5
+                 - vol6
+                 - vol7
+                 - vol8
+                 - vol9
+                 - vol10
+                 - vol11
+                 - vol12
+                 - vol13
+                 - vol14
+                 - vol15
       daemonset:
         nodeSelector:
-          openstack-control-plane: enabled
+          local-volume-provisioner: enabled
         initFakeMounts: true
         init:
           image: docker-kaas-local.artifactory.mirantis.com/openstack/openstack-controller:0.1.1
