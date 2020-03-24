@@ -16,7 +16,7 @@ spec:
   releases:
   - name: stacklight
     chart: stacklight/stacklight
-    version: 0.1.2-mcp-96
+    version: 0.1.2-mcp-124
     namespace: stacklight
     values:
       global:
@@ -24,7 +24,7 @@ spec:
         helmBaseUrl: https://artifactory.mirantis.com/binary-kaas-local
       createHelmBundleCRD: false
       deployController: false
-      highAvailabilityEnabled: false
+      highAvailabilityEnabled: true
       nginxExporter:
         enabled: false
       openstack:
@@ -37,3 +37,8 @@ spec:
         default:
           role: stacklight
           stacklight: enabled
+      platform: ucp
+      storage:
+        componentStorageClasses:
+          elasticsearch: "lvp-fake-root"
+          prometheusServer: "lvp-fake-root"
