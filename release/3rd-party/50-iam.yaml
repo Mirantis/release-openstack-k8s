@@ -1,0 +1,796 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: iam
+---
+apiVersion: v1
+data:
+# Keycloak password is ChangeMe123 and have to be changed in production deployment
+  keycloak_password: Q2hhbmdlTWUxMjM=
+  keycloakCA.pem: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUN5RENDQWJDZ0F3SUJBZ0lCQURBTkJna3Foa2lHOXcwQkFRc0ZBREFWTVJNd0VRWURWUVFERXdwcmRXSmwKY201bGRHVnpNQjRYRFRFNU1EY3hOVEV5TVRjek1Gb1hEVEk1TURjeE1qRXlNVGN6TUZvd0ZURVRNQkVHQTFVRQpBeE1LYTNWaVpYSnVaWFJsY3pDQ0FTSXdEUVlKS29aSWh2Y05BUUVCQlFBRGdnRVBBRENDQVFvQ2dnRUJBTUtzCjNjeFVOcjd1SXZJcG5ZQXU5aE0wM3pJZ3ljZHphcjFkZVNJVTJFWmtFdjIwUU9hNit3L3lVeFJoUUsxcEZob2sKY2VxVnVPbkduU1VXM1VmK212QWQwSWdDa0NVSVduRE9rWkU4M01oS1RhN0ZYWnBFWVNCcGpOd3ppTHlBZmZRQgpJWGRYczBaZjRSSG9TbW0ybXNKeTJpTDZ0S3pQV3JVSThpSklOS1k2ODdSdWJYN1dUeHZGVWQvQnk2Vk1nMUgvCkYzVUVpL1dHQkNyWWJXZVpoamsyMjJOLzVUMVBOa2haakxNNGw3dWtlZFVhSzJiOWJLc1JVN04vcDJmOWhoREoKK3gyYXJLbUdxR2tLa1JRblMvMTlObHdvbTJjU1U4ejM2bk9naEpIdjZoV0lNYlkvZFVUOHNHTGxML25TYTJkMAozOHJoRmhPcEIvdHUzV3U1ME5FQ0F3RUFBYU1qTUNFd0RnWURWUjBQQVFIL0JBUURBZ0trTUE4R0ExVWRFd0VCCi93UUZNQU1CQWY4d0RRWUpLb1pJaHZjTkFRRUxCUUFEZ2dFQkFDcFRGM0NURGFSVU9VbklLbzJwN3gvSHpKR00KRHdyUXF6S09KMUk0V3pldUdWTEo0T1VuOXdVN2pjZTJvTVlabU93KzJvcEc3Q3ZxTTJ4eDZBUWEyT3hxSnQ4RQpLb3F2aWlkcFRnWHFXaEFhUmJSR3NGMUl4RXdFZ2JpSTlzSDBmMHBRUlpCVlBLditMbk5sUW9pcDlaTWdvSEo4CmYyNVlTUEtCSGhNTEV2Q2RzV3k2WlJxU3g3bGswTksrTmlGZUwzWkRsa2lWdmVObWVqTTJPU3pzb3Yyd2tVdTMKSHZvL3VndzV0Tmh0WDdRMWlFeUUyYUZ2c21xRTFQVE9FM3pseTd4UkFMQVg4V1lENWxOYzBxR0Z2b2gzeCs3OQp1S1ZpNU1VUDQ4Vm9jNzJySjBuN2lhSzhkci9ieUw2UzVRejJQdUc5c2xiRFFyRG9hY0JleWpPNmhpUT0KLS0tLS1FTkQgQ0VSVElGSUNBVEUtLS0tLQo=
+# registration_api_token have to be chnaged in production chase deployment
+  registration_api_token: ZjlmMDM4MDI4ZjgyNTZhMjk4NjEyYjBkNTk3ZmQxNWFjNGVjZjMwZGU3ODEwZGFiMmMxZDQ0YjcxMDdmNzVjNA==
+  server.crt: IA==
+  server.pem: IA==
+kind: Secret
+metadata:
+  name: iam-api-secret
+  namespace: iam
+type: Opaque
+---
+apiVersion: lcm.mirantis.com/v1alpha1
+kind: HelmBundle
+metadata:
+  name: openstack-iam
+  namespace: osh-system
+spec:
+  repositories:
+  - name: mirantis-iam
+    url:  "https://artifactory.mirantis.com/artifactory/binary-kaas-local/iam/helm"
+  releases:
+  - name: openstack-iam
+    chart: mirantis-iam/iam
+    version: 1.0.8
+    namespace: iam
+    values:
+      keycloak:
+        auxiliary:
+          image:
+            tag: 0.3.12
+        userFederation:
+          providers:
+            - displayName: "mirantis-ldap"
+              providerName: "ldap"
+              priority: 1
+              fullSyncPeriod: -1
+              changedSyncPeriod: -1
+              config:
+                pagination: "true"
+                debug: "false"
+                searchScope: "1"
+                connectionPooling: "true"
+                usersDn: "ou=people,o=mirantis,dc=mirantis,dc=net"
+                userObjectClasses: "person, organizationalPerson"
+                usernameLDAPAttribute: "uid"
+                rdnLDAPAttribute: "uid"
+                vendor: "ad"
+                editMode: "READ_ONLY"
+                uuidLDAPAttribute: "entryDN"
+                connectionUrl: "ldap://172.18.176.6:389"
+                syncRegistrations: "false"
+                authType: "none"
+          mappers:
+            - name: "username"
+              federationMapperType: "user-attribute-ldap-mapper"
+              federationProviderDisplayName: "mirantis-ldap"
+              config:
+                ldap.attribute: "uid"
+                user.model.attribute: "username"
+                is.mandatory.in.ldap: "true"
+                read.only: "true"
+                always.read.value.from.ldap: "false"
+            - name: "full name"
+              federationMapperType: "full-name-ldap-mapper"
+              federationProviderDisplayName: "mirantis-ldap"
+              config:
+                ldap.full.name.attribute: "cn"
+                read.only: "true"
+                write.only: "false"
+            - name: "last name"
+              federationMapperType: "user-attribute-ldap-mapper"
+              federationProviderDisplayName: "mirantis-ldap"
+              config:
+                ldap.attribute: "sn"
+                user.model.attribute: "lastName"
+                is.mandatory.in.ldap: "true"
+                read.only: "true"
+                always.read.value.from.ldap: "true"
+            - name: "email"
+              federationMapperType: "user-attribute-ldap-mapper"
+              federationProviderDisplayName: "mirantis-ldap"
+              config:
+                ldap.attribute: "mail"
+                user.model.attribute: "email"
+                is.mandatory.in.ldap: "false"
+                read.only: "true"
+                always.read.value.from.ldap: "true"
+            - name: "ldap-groups-mapper"
+              federationMapperType: "group-ldap-mapper"
+              federationProviderDisplayName: "mirantis-ldap"
+              config:
+                membership.attribute.type: "DN"
+                group.name.ldap.attribute: "cn"
+                preserve.group.inheritance: true
+                membership.user.ldap.attribute: "uid"
+                groups.dn: "ou=groups,o=mirantis,dc=mirantis,dc=net"
+                mode: "READ_ONLY"
+                user.roles.retrieve.strategy: "LOAD_GROUPS_BY_MEMBER_ATTRIBUTE"
+                groups.ldap.filter: "(cn=oscore-eng)"
+                ignore.missing.groups: false
+                membership.ldap.attribute: "member"
+                group.object.classes: "groupOfNames"
+                memberof.ldap.attribute: "memberOf"
+                drop.non.existing.groups.during.sync: "false"
+        realm:
+          name: "iam"
+          realmRoles:
+            k8s_managed_cluster_admin:
+              name: "m:k8s:managed@cluster-admin"
+              description: "K8S test role"
+          realmGroups:
+            oscore-eng:
+              name: "oscore-eng"
+              path: "/oscore-eng"
+              attributes: {}
+              realmRoles:
+                - "m:os@admin"
+              clientRoles: {}
+              subGroups: []
+          clients:
+            - clientId: "k8s"
+              name: "m:k8s"
+              publicClient: "true"
+              directAccessGrantsEnabled: "true"
+              redirectUris:
+                - "http://localhost:8000/"
+                - "http://localhost:8000"
+              protocolMappers:
+                - name: "username"
+                  protocolMapper: "oidc-usermodel-property-mapper"
+                  protocol: "openid-connect"
+                  config:
+                    "userinfo.token.claim": "true"
+                    "user.attribute": "username"
+                    "id.token.claim": "true"
+                    "access.token.claim": "true"
+                    "claim.name": "preferred_username"
+                    "jsonType.label": "String"
+
+                - name: "iam_roles"
+                  protocolMapper: "oidc-script-based-protocol-mapper"
+                  protocol: "openid-connect"
+                  config:
+                    "userinfo.token.claim": "true"
+                    "multivalued": "true"
+                    "id.token.claim": "true"
+                    "access.token.claim": "true"
+                    "claim.name": "iam_roles"
+                    "script": |
+                      /**
+                       * Available variables:
+                       * user - the current user
+                       * realm - the current realm
+                       * token - the current token
+                       * userSession - the current userSession
+                       * keycloakSession - the current userSession
+                       */
+
+                      var forEach = Array.prototype.forEach;
+                      var ArrayList = Java.type("java.util.ArrayList");
+                      var JavaString = Java.type("java.lang.String");
+
+                      var res = new ArrayList();
+
+                      function processRole(roleModel) {
+                          var name = roleModel.getName();
+                          if (!res.contains(name)) {
+                              res.add(name);
+                          }
+                      }
+
+                      function processRoles(roles) {
+                          forEach.call(roles, function(roleModel) {
+                              if (user.hasRole(roleModel)) {
+                                  processRole(roleModel);
+                              }
+                          })
+                      }
+
+                      function filter(prefix) {
+                          res.removeIf(function(n){
+                              return (!n.startsWith(prefix));
+                          });
+                      }
+
+                      function openstack() {
+                          filter('m:os');
+                          return JavaString.join(';', res);
+                      }
+
+                      function k8s(prefix) {
+                          filter(prefix);
+                          return res;
+                      }
+
+                      // Process roles that are set to the user
+                      processRoles(realm.getRoles().toArray());
+
+                      // Prepare result
+                      k8s('m:k8s');
+
+                - name: "email verified"
+                  protocol: "openid-connect"
+                  protocolMapper: "oidc-usermodel-property-mapper"
+                  config:
+                    "userinfo.token.claim": "true"
+                    "user.attribute": "emailVerified"
+                    "id.token.claim": "true"
+                    "access.token.claim": "true"
+                    "claim.name": "email_verified"
+                    "jsonType.label": "boolean"
+
+                - name: "email"
+                  protocol: "openid-connect"
+                  protocolMapper: "oidc-usermodel-property-mapper"
+                  config:
+                    "userinfo.token.claim": "true"
+                    "user.attribute": "email"
+                    "id.token.claim": "true"
+                    "access.token.claim": "true"
+                    "claim.name": "email"
+                    "jsonType.label": "String"
+
+            - clientId: "os"
+              name: "m:os"
+              publicClient: "true"
+              implicitFlowEnabled: "true"
+              directAccessGrantsEnabled: "true"
+              adminUrl: 'https://keycloak.it.just.works'
+              baseUrl: 'https://keycloak.it.just.works'
+              webOrigins:
+                - 'https://horizon.it.just.works'
+                - 'https://keystone.it.just.works'
+              redirectUris:
+                - 'https://keystone.it.just.works/v3/OS-FEDERATION/identity_providers/keycloak/protocols/mapped/auth'
+                - 'https://keystone.it.just.works/v3/auth/OS-FEDERATION/identity_providers/keycloak/protocols/mapped/websso/'
+                - 'https://keystone.it.just.works/v3/auth/OS-FEDERATION/websso/'
+                - 'https://horizon.it.just.works/auth/websso/'
+              protocolMappers:
+                - name: "iam_roles"
+                  protocolMapper: "oidc-script-based-protocol-mapper"
+                  protocol: "openid-connect"
+                  config:
+                    "userinfo.token.claim": "true"
+                    "multivalued": "true"
+                    "id.token.claim": "true"
+                    "access.token.claim": "true"
+                    "claim.name": "iam_roles"
+                    "script": |
+                      /**
+                       * Available variables:
+                       * user - the current user
+                       * realm - the current realm
+                       * token - the current token
+                       * userSession - the current userSession
+                       * keycloakSession - the current userSession
+                       */
+
+                      var forEach = Array.prototype.forEach;
+                      var ArrayList = Java.type("java.util.ArrayList");
+                      var JavaString = Java.type("java.lang.String");
+
+                      var res = new ArrayList();
+
+                      function processRole(roleModel) {
+                          var name = roleModel.getName();
+                          if (!res.contains(name)) {
+                              res.add(name);
+                          }
+                      }
+
+                      function processRoles(roles) {
+                          forEach.call(roles, function(roleModel) {
+                              if (user.hasRole(roleModel)) {
+                                  processRole(roleModel);
+                              }
+                          })
+                      }
+
+                      function filter(prefix) {
+                          res.removeIf(function(n){
+                              return (!n.startsWith(prefix));
+                          });
+                      }
+
+                      function openstack() {
+                          filter('m:os');
+                          return JavaString.join(';', res);
+                      }
+
+                      function k8s(prefix) {
+                          filter(prefix);
+                          return res;
+                      }
+
+                      // Process roles that are set to the user
+                      processRoles(realm.getRoles().toArray());
+
+                      // Prepare result
+                      openstack();
+
+                - name: "Client ID"
+                  protocolMapper: "oidc-usersessionmodel-note-mapper"
+                  protocol: "openid-connect"
+                  config:
+                    "user.session.note": "clientId"
+                    "id.token.claim": "true"
+                    "access.token.claim": "true"
+                    "claim.name": "clientId"
+                    "jsonType.label": "String"
+
+                - name: "Client IP Address"
+                  protocolMapper: "oidc-usersessionmodel-note-mapper"
+                  protocol: "openid-connect"
+                  config:
+                    "user.session.note": "clientAddress"
+                    "id.token.claim": "true"
+                    "access.token.claim": "true"
+                    "claim.name": "clientAddress"
+                    "jsonType.label": "String"
+
+                - name: "iam_email"
+                  protocolMapper: "oidc-usermodel-property-mapper"
+                  protocol: "openid-connect"
+                  config:
+                    "user.attribute": "email"
+                    "id.token.claim": "true"
+                    "access.token.claim": "true"
+                    "claim.name": "iam_email"
+                    "userinfo.token.claim": "true"
+
+                - name: "iam_username"
+                  protocolMapper: "oidc-usermodel-property-mapper"
+                  protocol: "openid-connect"
+                  config:
+                    "user.attribute": "username"
+                    "id.token.claim": "true"
+                    "access.token.claim": "true"
+                    "claim.name": "iam_username"
+                    "userinfo.token.claim": "true"
+
+            - clientId: "kaas"
+              name: "m:kaas"
+              publicClient: "true"
+              directAccessGrantsEnabled: "true"
+              redirectUris:
+                - "http://localhost:8000/"
+                - "http://localhost:8000"
+              protocolMappers:
+                - name: "username"
+                  protocolMapper: "oidc-usermodel-property-mapper"
+                  protocol: "openid-connect"
+                  config:
+                    "userinfo.token.claim": "true"
+                    "user.attribute": "username"
+                    "id.token.claim": "true"
+                    "access.token.claim": "true"
+                    "claim.name": "preferred_username"
+                    "jsonType.label": "String"
+
+                - name: "iam_roles"
+                  protocolMapper: "oidc-script-based-protocol-mapper"
+                  protocol: "openid-connect"
+                  config:
+                    "userinfo.token.claim": "true"
+                    "multivalued": "true"
+                    "id.token.claim": "true"
+                    "access.token.claim": "true"
+                    "claim.name": "iam_roles"
+                    "script": |
+                      /**
+                       * Available variables:
+                       * user - the current user
+                       * realm - the current realm
+                       * token - the current token
+                       * userSession - the current userSession
+                       * keycloakSession - the current userSession
+                       */
+
+                      var forEach = Array.prototype.forEach;
+                      var ArrayList = Java.type("java.util.ArrayList");
+                      var JavaString = Java.type("java.lang.String");
+
+                      var res = new ArrayList();
+
+                      function processRole(roleModel) {
+                          var name = roleModel.getName();
+                          if (!res.contains(name)) {
+                              res.add(name);
+                          }
+                      }
+
+                      function processRoles(roles) {
+                          forEach.call(roles, function(roleModel) {
+                              if (user.hasRole(roleModel)) {
+                                  processRole(roleModel);
+                              }
+                          })
+                      }
+
+                      function filter(prefix) {
+                          res.removeIf(function(n){
+                              return (!n.startsWith(prefix));
+                          });
+                      }
+
+                      function openstack() {
+                          filter('m:os');
+                          return JavaString.join(';', res);
+                      }
+
+                      function k8s(prefix) {
+                          filter(prefix);
+                          return res;
+                      }
+
+                      // Process roles that are set to the user
+                      processRoles(realm.getRoles().toArray());
+
+                      // Prepare result
+                      k8s('m:kaas');
+
+                - name: "email verified"
+                  protocol: "openid-connect"
+                  protocolMapper: "oidc-usermodel-property-mapper"
+                  config:
+                    "userinfo.token.claim": "true"
+                    "user.attribute": "emailVerified"
+                    "id.token.claim": "true"
+                    "access.token.claim": "true"
+                    "claim.name": "email_verified"
+                    "jsonType.label": "boolean"
+
+                - name: "email"
+                  protocol: "openid-connect"
+                  protocolMapper: "oidc-usermodel-property-mapper"
+                  config:
+                    "userinfo.token.claim": "true"
+                    "user.attribute": "email"
+                    "id.token.claim": "true"
+                    "access.token.claim": "true"
+                    "claim.name": "email"
+                    "jsonType.label": "String"
+
+            - clientId: "iam"
+              name: "m:iam"
+              publicClient: "true"
+              directAccessGrantsEnabled: "true"
+              implicitFlowEnabled: "true"
+              redirectUris:
+                - "http://localhost:8000/"
+                - "http://localhost:8000"
+              protocolMappers:
+                - name: "username"
+                  protocolMapper: "oidc-usermodel-property-mapper"
+                  protocol: "openid-connect"
+                  config:
+                    "userinfo.token.claim": "true"
+                    "user.attribute": "username"
+                    "id.token.claim": "true"
+                    "access.token.claim": "true"
+                    "claim.name": "preferred_username"
+                    "jsonType.label": "String"
+
+                - name: "iam_roles"
+                  protocolMapper: "oidc-script-based-protocol-mapper"
+                  protocol: "openid-connect"
+                  config:
+                    "userinfo.token.claim": "true"
+                    "multivalued": "true"
+                    "id.token.claim": "true"
+                    "access.token.claim": "true"
+                    "claim.name": "iam_roles"
+                    "script": |
+                      /**
+                       * Available variables:
+                       * user - the current user
+                       * realm - the current realm
+                       * token - the current token
+                       * userSession - the current userSession
+                       * keycloakSession - the current userSession
+                       */
+
+                      var forEach = Array.prototype.forEach;
+                      var ArrayList = Java.type("java.util.ArrayList");
+                      var JavaString = Java.type("java.lang.String");
+
+                      var res = new ArrayList();
+
+                      function processRole(roleModel) {
+                          var name = roleModel.getName();
+                          if (!res.contains(name)) {
+                              res.add(name);
+                          }
+                      }
+
+                      function processRoles(roles) {
+                          forEach.call(roles, function(roleModel) {
+                              if (user.hasRole(roleModel)) {
+                                  processRole(roleModel);
+                              }
+                          })
+                      }
+
+                      function filter(prefix) {
+                          res.removeIf(function(n){
+                              return (!n.startsWith(prefix));
+                          });
+                      }
+
+                      function openstack() {
+                          filter('m:os');
+                          return JavaString.join(';', res);
+                      }
+
+                      function k8s(prefix) {
+                          filter(prefix);
+                          return res;
+                      }
+
+                      // Process roles that are set to the user
+                      processRoles(realm.getRoles().toArray());
+
+                      // Prepare result
+                      k8s('m:iam');
+
+                - name: "email verified"
+                  protocol: "openid-connect"
+                  protocolMapper: "oidc-usermodel-property-mapper"
+                  config:
+                    "userinfo.token.claim": "true"
+                    "user.attribute": "emailVerified"
+                    "id.token.claim": "true"
+                    "access.token.claim": "true"
+                    "claim.name": "email_verified"
+                    "jsonType.label": "boolean"
+
+                - name: "email"
+                  protocol: "openid-connect"
+                  protocolMapper: "oidc-usermodel-property-mapper"
+                  config:
+                    "userinfo.token.claim": "true"
+                    "user.attribute": "email"
+                    "id.token.claim": "true"
+                    "access.token.claim": "true"
+                    "claim.name": "email"
+                    "jsonType.label": "String"
+
+            - clientId: "sl"
+              name: "m:sl"
+              publicClient: "true"
+              directAccessGrantsEnabled: "true"
+              implicitFlowEnabled: "true"
+              redirectUris:
+                - "http://localhost:5001/"
+                - "http://localhost:5001"
+                - "http://localhost:5002/"
+                - "http://localhost:5002"
+                - "http://localhost:5003/"
+                - "http://localhost:5003"
+                - "http://localhost:5004/"
+                - "http://localhost:5004"
+                - "http://localhost:5005/"
+                - "http://localhost:5005"
+
+              protocolMappers:
+                - name: "stacklight"
+                  protocolMapper: "oidc-audience-mapper"
+                  protocol: "openid-connect"
+                  config:
+                    "included.client.audience": "sl"
+                    "id.token.claim": "false"
+                    "access.token.claim": "true"
+
+                - name: "username"
+                  protocolMapper: "oidc-usermodel-property-mapper"
+                  protocol: "openid-connect"
+                  config:
+                    "userinfo.token.claim": "true"
+                    "user.attribute": "username"
+                    "id.token.claim": "true"
+                    "access.token.claim": "true"
+                    "claim.name": "preferred_username"
+                    "jsonType.label": "String"
+
+                - name: "iam_roles"
+                  protocolMapper: "oidc-script-based-protocol-mapper"
+                  protocol: "openid-connect"
+                  config:
+                    "userinfo.token.claim": "true"
+                    "multivalued": "true"
+                    "id.token.claim": "true"
+                    "access.token.claim": "true"
+                    "claim.name": "iam_roles"
+                    "script": |
+                      /**
+                       * Available variables:
+                       * user - the current user
+                       * realm - the current realm
+                       * token - the current token
+                       * userSession - the current userSession
+                       * keycloakSession - the current userSession
+                       */
+
+                      var forEach = Array.prototype.forEach;
+                      var ArrayList = Java.type("java.util.ArrayList");
+                      var JavaString = Java.type("java.lang.String");
+
+                      var res = new ArrayList();
+
+                      function processRole(roleModel) {
+                          var name = roleModel.getName();
+                          if (!res.contains(name)) {
+                              res.add(name);
+                          }
+                      }
+
+                      function processRoles(roles) {
+                          forEach.call(roles, function(roleModel) {
+                              if (user.hasRole(roleModel)) {
+                                  processRole(roleModel);
+                              }
+                          })
+                      }
+
+                      function filter(prefix) {
+                          res.removeIf(function(n){
+                              return (!n.startsWith(prefix));
+                          });
+                      }
+
+                      function openstack() {
+                          filter('m:os');
+                          return JavaString.join(';', res);
+                      }
+
+                      function k8s(prefix) {
+                          filter(prefix);
+                          return res;
+                      }
+
+                      function stacklight(prefix) {
+                          filter(prefix);
+                          return res;
+                      }
+
+                      // Process roles that are set to the user
+                      processRoles(realm.getRoles().toArray());
+
+                      // Prepare result
+                      stacklight('m:sl');
+
+                - name: "email verified"
+                  protocol: "openid-connect"
+                  protocolMapper: "oidc-usermodel-property-mapper"
+                  config:
+                    "userinfo.token.claim": "true"
+                    "user.attribute": "emailVerified"
+                    "id.token.claim": "true"
+                    "access.token.claim": "true"
+                    "claim.name": "email_verified"
+                    "jsonType.label": "boolean"
+
+                - name: "email"
+                  protocol: "openid-connect"
+                  protocolMapper: "oidc-usermodel-property-mapper"
+                  config:
+                    "userinfo.token.claim": "true"
+                    "user.attribute": "email"
+                    "id.token.claim": "true"
+                    "access.token.claim": "true"
+                    "claim.name": "email"
+                    "jsonType.label": "String"
+
+        initUsers:
+          testuser:
+            username: testuser
+            cleartextPassword: ChangeMe123
+            realmRoles:
+              - "m:k8s:managed@cluster-admin"
+
+        mariadb:
+          volume:
+            enabled: true
+            class_name: lvp-fake-root
+          manifests:
+            secret_dbadmin_password: true
+            secret_sst_password: true
+        keycloak:
+          persistence:
+            deployMariadb: true
+            dbVendor: mariadb
+          service:
+            type: LoadBalancer
+          pvc:
+            enabled: false
+          ingress:
+            enabled: false
+            annotations:
+#              kubernetes.io/tls-acme: "true"
+#              nginx.ingress.kubernetes.io/backend-protocol: HTTP
+#              nginx.ingress.kubernetes.io/ssl-redirect: "true"
+              ingress.kubernetes.io/ssl-redirect: "true"
+              kubernetes.io/ingress.class: iam-ingress
+            hosts:
+              - "keycloak.it.just.works"
+            tls:
+              - hosts:
+                  - "keycloak.it.just.works"
+                secretName: tls-keycloak
+
+      api:
+        service:
+          type: LoadBalancer
+        keycloak:
+          url: "http://openstack-iam-keyclo-http.iam.svc"
+          ca: |-
+            -----BEGIN CERTIFICATE-----
+            MIICyDCCAbCgAwIBAgIBADANBgkqhkiG9w0BAQsFADAVMRMwEQYDVQQDEwprdWJl
+            cm5ldGVzMB4XDTE5MDcxNTEyMTczMFoXDTI5MDcxMjEyMTczMFowFTETMBEGA1UE
+            AxMKa3ViZXJuZXRlczCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMKs
+            3cxUNr7uIvIpnYAu9hM03zIgycdzar1deSIU2EZkEv20QOa6+w/yUxRhQK1pFhok
+            ceqVuOnGnSUW3Uf+mvAd0IgCkCUIWnDOkZE83MhKTa7FXZpEYSBpjNwziLyAffQB
+            IXdXs0Zf4RHoSmm2msJy2iL6tKzPWrUI8iJINKY687RubX7WTxvFUd/By6VMg1H/
+            F3UEi/WGBCrYbWeZhjk222N/5T1PNkhZjLM4l7ukedUaK2b9bKsRU7N/p2f9hhDJ
+            +x2arKmGqGkKkRQnS/19Nlwom2cSU8z36nOghJHv6hWIMbY/dUT8sGLlL/nSa2d0
+            38rhFhOpB/tu3Wu50NECAwEAAaMjMCEwDgYDVR0PAQH/BAQDAgKkMA8GA1UdEwEB
+            /wQFMAMBAf8wDQYJKoZIhvcNAQELBQADggEBACpTF3CTDaRUOUnIKo2p7x/HzJGM
+            DwrQqzKOJ1I4WzeuGVLJ4OUn9wU7jce2oMYZmOw+2opG7CvqM2xx6AQa2OxqJt8E
+            KoqviidpTgXqWhAaRbRGsF1IxEwEgbiI9sH0f0pQRZBVPKv+LnNlQoip9ZMgoHJ8
+            f25YSPKBHhMLEvCdsWy6ZRqSx7lk0NK+NiFeL3ZDlkiVveNmejM2OSzsov2wkUu3
+            Hvo/ugw5tNhtX7Q1iEyE2aFvsmqE1PTOE3zly7xRALAX8WYD5lNc0qGFvoh3x+79
+            uKVi5MUP48Voc72rJ0n7iaK8dr/byL6S5Qz2PuG9slbDQrDoacBeyjO6hiQ=
+            -----END CERTIFICATE-----
+
+        # DNS DEV ONLY workaround
+        extraVolumes: |
+          - name: etc-hosts
+            hostPath:
+              type: File
+              path: /etc/hosts
+
+        extraVolumeMounts: |
+          - name: etc-hosts
+            mountPath: /etc/hosts
+        ingress:
+          api:
+            annotations:
+              kubernetes.io/ingress.class: "nginx"
+              nginx.ingress.kubernetes.io/ssl-redirect: "true"
+              nginx.ingress.kubernetes.io/backend-protocol: "GRPC"
+            enabled: true
+            hosts:
+              - host: "api.ingress"
+                srvPortName: api
+            tls:
+              - hosts:
+                  - "api.ingress"
+                secretName: tls-api
+          registration:
+            annotations:
+              kubernetes.io/ingress.class: "nginx"
+              nginx.ingress.kubernetes.io/ssl-redirect: "true"
+              nginx.ingress.kubernetes.io/backend-protocol: "GRPC"
+            enabled: true
+            hosts:
+              - host: "registration.ingress"
+                srvPortName: registration
+            tls:
+              - hosts:
+                  - "registration.ingress"
+                secretName: tls-registration
+          web:
+            annotations:
+              kubernetes.io/ingress.class: "nginx"
+              nginx.ingress.kubernetes.io/ssl-redirect: "true"
+              nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+            enabled: true
+            hosts:
+              - host: "web.ingress"
+                srvPortName: web
+            tls:
+              - hosts:
+                  - "web.ingress"
+                secretName: tls-web
+
