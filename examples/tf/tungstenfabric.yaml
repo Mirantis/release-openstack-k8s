@@ -11,7 +11,7 @@ spec:
     tfImage:
       tfImageRegistry: docker-kaas-local.artifactory.mirantis.com
       tfImagePath: tungsten
-      tfImageTag: 5.1.20200316113453
+      tfImageTag: 5.1.20200319112708
 
   controllers:
     tf-config:
@@ -120,51 +120,41 @@ spec:
     tf-test:
       tungsten-pytest:
         enabled: false
-        dataStorageClass: tf-lvp-fake-root
+        dataStorageClass: lvp-fake-root
         containers:
         - name: tungsten-pytest
-
-    tf-lvp:
-      provisioner:
-        enabled: true
-        volNumber: 14
-        storageClassName: tf-lvp-fake-root
-        initContainerImage: docker-kaas-local.artifactory.mirantis.com/openstack/openstack-controller:0.1.1
-        containers:
-          - name: provisioner
-            image: docker-kaas-local.artifactory.mirantis.com/bm/external/local-volume-provisioner:v2.3.3
 
     cassandra:
       deployments:
         - name: tf-cassandra-config
           replicas: 1
           dataCapacity: 2Gi
-          dataStorageClass: tf-lvp-fake-root
+          dataStorageClass: lvp-fake-root
         - name: tf-cassandra-analytics
           replicas: 1
           dataCapacity: 20Gi
-          dataStorageClass: tf-lvp-fake-root
+          dataStorageClass: lvp-fake-root
 
     redis:
       deployments:
         - name: tf-redis
           replicas: 3
-          dataStorageClass: tf-lvp-fake-root
+          dataStorageClass: lvp-fake-root
 
     zookeeper:
       deployments:
         - name: tf-zookeeper
-          dataStorageClass: tf-lvp-fake-root
+          dataStorageClass: lvp-fake-root
         - name: tf-zookeeper-nal
-          dataStorageClass: tf-lvp-fake-root
+          dataStorageClass: lvp-fake-root
 
     rabbitmq:
       deployments:
         - name: tf-rabbitmq
           replicas: 1
-          dataStorageClass: tf-lvp-fake-root
+          dataStorageClass: lvp-fake-root
 
     kafka:
       deployments:
         - name: tf-kafka
-          dataStorageClass: tf-lvp-fake-root
+          dataStorageClass: lvp-fake-root
