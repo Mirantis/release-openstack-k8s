@@ -21,7 +21,7 @@ prelude: |
 features:
     - |
       Openstack:
-        * Added support for the Stein release for the following OpenStack
+        * Added support for the Train release for the following OpenStack
           components:
 
           - Identity (Keystone)
