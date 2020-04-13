@@ -10,7 +10,7 @@ spec:
   releases:
   - name: local-volume-provisioner
     chart: lvp/local-volume-provisioner
-    version: 0.1.0-mcp-353
+    version: 0.1.0-mcp-358
     namespace: osh-system
     values:
       global:
@@ -19,30 +19,30 @@ spec:
       common:
         namespace: osh-system
       classes:
-      - name: lvp-fake-root # Defines name of storage class.
+      - name: lvp-fake-root
         hostDir: /mnt/local-volume-provisioner
         mountDir: /mnt/local-volume-provisioner
         volumeMode: Filesystem
         storageClass: true
         fakeMounts:
-            mountPoints:
-              - srcRoot: /var/lib/local-volume-provisioner
-                mounts:
-                 - vol1
-                 - vol2
-                 - vol3
-                 - vol4
-                 - vol5
-                 - vol6
-                 - vol7
-                 - vol8
-                 - vol9
-                 - vol10
-                 - vol11
-                 - vol12
-                 - vol13
-                 - vol14
-                 - vol15
+          mountPoints:
+          - srcRoot: /var/lib/local-volume-provisioner
+            mounts:
+            - vol1
+            - vol2
+            - vol3
+            - vol4
+            - vol5
+            - vol6
+            - vol7
+            - vol8
+            - vol9
+            - vol10
+            - vol11
+            - vol12
+            - vol13
+            - vol14
+            - vol15
       daemonset:
         nodeSelector:
           local-volume-provisioner: enabled
