@@ -16,7 +16,7 @@ spec:
   releases:
   - name: stacklight
     chart: stacklight/stacklight
-    version: 0.1.2-mcp-136
+    version: 0.1.2-mcp-159
     namespace: stacklight
     values:
       global:
