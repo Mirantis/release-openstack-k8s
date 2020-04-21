@@ -19,6 +19,7 @@ spec:
     version: 0.1.2-mcp-159
     namespace: stacklight
     values:
+      clusterSize: medium
       global:
         dockerBaseUrl: docker-kaas-local.artifactory.mirantis.com
         helmBaseUrl: https://artifactory.mirantis.com/binary-kaas-local
