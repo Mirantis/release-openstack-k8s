@@ -62,15 +62,6 @@ spec:
             server:
               node_selector_key: kubernetes.io/os
               node_selector_value: linux
-    # TODO(vsaienko): move to features level when 0.1.9 available
-    load-balancer:
-      octavia:
-        values:
-          octavia:
-            settings:
-              lbmgmt_cidr: "10.255.0.0/16"
-              lbmgmt_subnet_start: "10.255.1.0"
-              lbmgmt_subnet_end: "10.255.255.254"
     networking:
       neutron:
         values:
