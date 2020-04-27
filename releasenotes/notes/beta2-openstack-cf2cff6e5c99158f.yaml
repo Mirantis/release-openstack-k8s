@@ -1,0 +1,36 @@
+---
+features:
+    - |
+      OpenStack:
+
+      * 2692: Added a separate node controller to openstack operator.
+        Its current purpose is to force recovery of non-HA stateful sets when
+        the Kubernetes node the single pod of such stateful set is running on
+        goes offline.
+      * 3369: added liveness and readiness probes to Designate pods
+
+security:
+    - |
+      Openstack:
+
+      * 3696: session encryption secret for Horizon is now auto-generated
+
+fixes:
+    - |
+      Other:
+
+      * 3062: helm-controller did not update HelmBundle status after successful
+        retry
+
+    - |
+      Openstack:
+
+      * 3547,3544(partial): pods of a stateful sets were not re-created
+        elsewhere when node goes offline
+      * 2783: fixed a startup race between several containers
+        in the nova-compute pod
+      * 2968: fixed Neutron metadata caching issue
+      * 3201: fixed race in mariadb cluster join script
+      * 3824: (queens|rocky) allow node hostname to have "--" as the third and
+        the fourth character
+      * 3851: fixed Python2 compatibility of generic health probe code
