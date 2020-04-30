@@ -17,6 +17,8 @@ spec:
       servers:
       - zones:
         - zone: .
+          scheme: dns://
+          use_tcp: false
         port: 53
         plugins:
         - name: cache
@@ -38,6 +40,7 @@ spec:
           parameters: . /etc/resolv.conf
         - name: file
           parameters: /etc/coredns/it.just.works.db it.just.works
+      serviceType: LoadBalancer
       zoneFiles:
       - filename: it.just.works.db
         domain: it.just.works
