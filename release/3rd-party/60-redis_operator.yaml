@@ -1,0 +1,20 @@
+apiVersion: lcm.mirantis.com/v1alpha1
+kind: HelmBundle
+metadata:
+  name: redis-operator
+  namespace: osh-system
+spec:
+  repositories:
+  - name: hub_stable
+    url: https://artifactory.mirantis.com/binary-kaas-local/openstack/helm/redis-operator
+  releases:
+  - name: os-redis-operator
+    chart: hub_stable/redisoperator
+    version: 3.1.0
+    namespace: osh-redis
+    values:
+      image: docker-kaas-local.artifactory.mirantis.com/openstack/extra/redis-operator
+      rbac:
+        apiVersion: v1
+        install: true
+      tag: v1.0.0
