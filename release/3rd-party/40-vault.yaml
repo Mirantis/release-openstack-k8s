@@ -11,7 +11,7 @@ spec:
   - name: vault
     chart: banzaicloud/vault
     version: 1.0.0
-    namespace: openstack
+    namespace: openstack-vault
     values:
       image:
         repository: vault
@@ -32,7 +32,7 @@ spec:
           ui: "false"
           storage:
             etcd:
-              address: "http://etcd-vault:2379"
+              address: "http://etcd:2379"
               ha_enabled: "true"
           log_level: "Debug"
       unsealer:
@@ -44,7 +44,7 @@ spec:
             "--mode",
             "k8s",
             "--k8s-secret-namespace",
-            "openstack",
+            "openstack-vault",
             "--k8s-secret-name",
             "vault-keys"
         ]
