@@ -11,7 +11,7 @@ spec:
   - name: os-redis-operator
     chart: hub_stable/redisoperator
     version: 3.1.0
-    namespace: osh-redis
+    namespace: openstack-redis
     values:
       image: docker-kaas-local.artifactory.mirantis.com/openstack/extra/redis-operator
       rbac:
