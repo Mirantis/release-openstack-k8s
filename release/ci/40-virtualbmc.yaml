@@ -21,7 +21,7 @@ spec:
         ovs:
           node_selector_key: virtualbmc
           node_selector_value: enabled
-    version: 0.1.0-mcp-2243
+    version: 0.1.0-mcp-2244
   - chart: osh-infra/libvirt
     name: vbmc-libvirt
     namespace: openstack-vbmc
@@ -46,7 +46,7 @@ spec:
       manifests:
         network_policy: false
       dependencies: {}
-    version: 0.1.0-mcp-2243
+    version: 0.1.0-mcp-2244
   - chart: osh-infra/vbmc
     name: vbmc-virtualbmc
     namespace: openstack-vbmc
@@ -97,7 +97,7 @@ spec:
         cluster_domain_suffix: cluster.local
       manifests:
         network_policy: false
-    version: 0.1.0-mcp-2243
+    version: 0.1.0-mcp-2244
   repositories:
   - name: osh-infra
     url: https://artifactory.mirantis.com/binary-kaas-local/openstack/helm/openstack-helm-infra
