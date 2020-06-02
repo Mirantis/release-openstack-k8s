@@ -53,8 +53,7 @@ spec:
     values:
       images:
         tags:
-          # TODO(vsaienko): switch for public when image with python-ironicclient is published
-          vbmc_enroll_nodes: docker-dev-kaas-local.docker.mirantis.net/openstack/heat:train-bionic-20200515071844
+          vbmc_enroll_nodes: docker-kaas-local.artifactory.mirantis.com/openstack/heat:train-bionic-20200601180013
       endpoints:
         identity:
           namespace: openstack
