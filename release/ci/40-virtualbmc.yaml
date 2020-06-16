@@ -21,7 +21,7 @@ spec:
         ovs:
           node_selector_key: virtualbmc
           node_selector_value: enabled
-    version: 0.1.0-mcp-2249
+    version: 0.1.0-mcp-2251
   - chart: osh-infra/libvirt
     name: vbmc-libvirt
     namespace: openstack-vbmc
@@ -46,14 +46,16 @@ spec:
       manifests:
         network_policy: false
       dependencies: {}
-    version: 0.1.0-mcp-2249
+    version: 0.1.0-mcp-2251
   - chart: osh-infra/vbmc
     name: vbmc-virtualbmc
     namespace: openstack-vbmc
     values:
       images:
         tags:
+          bootstrap: docker-kaas-local.artifactory.mirantis.com/openstack/heat:train-bionic-20200601180013
           vbmc_enroll_nodes: docker-kaas-local.artifactory.mirantis.com/openstack/heat:train-bionic-20200601180013
+          activate_nodes: docker-kaas-local.artifactory.mirantis.com/openstack/heat:train-bionic-20200601180013
       endpoints:
         identity:
           namespace: openstack
@@ -96,7 +98,8 @@ spec:
         cluster_domain_suffix: cluster.local
       manifests:
         network_policy: false
-    version: 0.1.0-mcp-2249
+        job_activate_nodes: false
+    version: 0.1.0-mcp-2251
   repositories:
   - name: osh-infra
     url: https://artifactory.mirantis.com/binary-kaas-local/openstack/helm/openstack-helm-infra
