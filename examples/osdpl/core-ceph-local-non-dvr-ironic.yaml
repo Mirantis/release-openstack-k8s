@@ -68,6 +68,10 @@ spec:
               pool_start: 10.13.0.100
               pool_end: 10.13.0.254
               gateway: 10.13.0.11
+      agent_images:
+        base_url: https://binary.mirantis.com/openstack/bin/ironic/tinyipa
+        initramfs: tinyipa-stable-train-20200617110335.gz
+        kernel: tinyipa-stable-train-20200617110335.vmlinuz
     nova:
       live_migration_interface: ens3
       images:
