@@ -10,10 +10,8 @@ spec:
   releases:
   - chart: tf/tungstenfabric-operator
     name: tungstenfabric-operator
-    version: 0.0.5-1-29ecb45
+    version: 0.0.6
     namespace: tf
     values:
       global:
         dockerBaseUrl: docker-kaas-local.artifactory.mirantis.com
-      image:
-        tag: 0.0.5-1-29ecb45

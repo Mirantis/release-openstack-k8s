@@ -11,7 +11,7 @@ spec:
     tfImage:
       tfImageRegistry: docker-kaas-local.artifactory.mirantis.com
       tfImagePath: tungsten
-      tfImageTag: 5.1.20200416123710
+      tfImageTag: 5.1.20200702101546
 
   controllers:
     tf-config:
