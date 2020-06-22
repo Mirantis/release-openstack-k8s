@@ -1,97 +1,66 @@
 apiVersion: lcm.mirantis.com/v1alpha1
 kind: MiraCeph
 metadata:
-    name: cephcluster
-    namespace: ceph-lcm-mirantis
+  name: cephcluster
+  namespace: ceph-lcm-mirantis
 spec:
-    clusterNet: 10.11.0.0/24
-    clientNet: 10.12.0.0/24
-    draft: false
-    version: nautilus
-    devCluster: true
-    dashboardEnabled: false
-    failureDomain: host
+  network:
     hostNetwork: true
-    pools:
-      - osdClass: hdd
-        poolGroup: kubernetes
-        relativeSize: 1
-        default: true
-      - osdClass: hdd
-        poolGroup: volumes
-        relativeSize: 0.7
-        replication:
-            replicas: 2
-            minReplicas: 1
-            type: replicated
-      - osdClass: hdd
-        poolGroup: ephemeral
-        relativeSize: 0.7
-        replication:
-            replicas: 2
-            minReplicas: 1
-            type: replicated
-      - osdClass: hdd
-        poolGroup: backup
-        relativeSize: 0.7
-        replication:
-            replicas: 2
-            minReplicas: 1
-            type: replicated
-      - osdClass: hdd
-        poolGroup: images
-        relativeSize: 0.7
-        replication:
-            replicas: 2
-            minReplicas: 1
-            type: replicated
-      - osdClass: hdd
-        poolGroup: rgw
-        relativeSize: 0.2
-        replication:
-            replicas: 2
-            minReplicas: 1
-            type: replicated
-      - osdClass: hdd
-        poolGroup: other
-        relativeSize: 0.0
-        replication:
-            replicas: 2
-            minReplicas: 1
-            type: replicated
-    nodes:
-        CHANGE_ME_K8S_NODE_NAME1:
-            storageDevices:
-                - name: sdb
-                  role: hdd
-                  sizeGb: 20
-            ramGb: 8
-            cores: 2
-            roles: [mon, mgr]
-            ips: ["192.168.122.164"]
-            crushPath:
-        CHANGE_ME_K8S_NODE_NAME2:
-            storageDevices:
-                - name: sdb
-                  role: hdd
-                  sizeGb: 20
-            ramGb: 8
-            cores: 2
-            roles: [mon, mgr]
-            ips: ["192.168.122.244"]
-            crushPath:
-        CHANGE_ME_K8S_NODE_NAME3:
-            storageDevices:
-                - name: sdb
-                  role: hdd
-                  sizeGb: 20
-            ramGb: 8
-            cores: 2
-            roles: [mon, mgr]
-            ips: ["192.168.122.245"]
-            crushPath:
-    classesSettings:
-        hdd:
-            osdPerDevice: 1
-            cacheSize: 1
-            encrypted: false
+    clusterNet: 10.11.0.0/24
+    publicNet: 10.12.0.0/24
+  version: 14.2.9
+  dashboardEnabled: false
+  failureDomain: host
+  pools:
+    - deviceClass: hdd
+      role: kubernetes
+      name: mirablock-k8s-block
+      default: true
+      replicated:
+        size: 2
+    - deviceClass: hdd
+      role: volumes
+      name: volumes
+      replicated:
+        size: 2
+    - deviceClass: hdd
+      role: vms
+      name: vms
+      replicated:
+        size: 2
+    - deviceClass: hdd
+      role: backup
+      name: backup
+      replicated:
+        size: 2
+    - deviceClass: hdd
+      role: images
+      name: images
+      replicated:
+        size: 2
+    - deviceClass: hdd
+      role: other
+      name: other
+      replicated:
+        size: 2
+  nodes:
+    - name: Values.CHANGE_ME_node1_name
+      devices:
+        - name: sdb
+          config:
+            deviceClass: hdd
+      roles: [mon, mgr]
+      crushPath:
+    - name: Values.CHANGE_ME_node2_name
+      devices:
+        - name: sdb
+          config:
+            deviceClass: hdd
+      roles: [mon, mgr]
+      crushPath:
+    - name: Values.CHANGE_ME_node3_name
+      devices:
+        - name: sdb
+          config:
+            deviceClass: hdd
+      roles: [mon, mgr]

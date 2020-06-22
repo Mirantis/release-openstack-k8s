@@ -1,25 +1,21 @@
 apiVersion: lcm.mirantis.com/v1alpha1
 kind: HelmBundle
 metadata:
-  name: ceph-controller
+  name: ceph-operator
   namespace: osh-system
 spec:
   repositories:
   - name: ceph
     url: https://artifactory.mirantis.com/binary-kaas-local/ceph/helm/
   releases:
-  - chart: ceph/ceph-controller
-    name: ceph-controller
-    version: 0.1.0-mcp-60
+  - chart: ceph/ceph-operator
+    name: ceph-operator
+    version: 1.0.0-mcp-18
     namespace: osh-system
     values:
       global:
         dockerBaseUrl: docker-kaas-local.artifactory.mirantis.com
       images:
         cephController:
-          repository: ceph/mcp/ceph-operator
-          tag: v1.0.2-20200414100935
-      # NOTE(vsaienko): crds will be pre installed outside of
-      # helm charts, to avoid races during resource creation as helm doesn't
-      # wait for resource.
-      installKopf: false
+          repository: ceph/mcp/ceph-controller
+          tag: v1.0.0-20200826102223
