@@ -84,11 +84,11 @@ spec:
           timeoutSeconds: 1
         resources: {}
       - name: controller
-        command: ["/helm-controller", "-host", "localhost:44134", "-home", "/helm", "-debug"]
+        command: ["/helm-controller", "-host", "localhost:44134", "-home", "/helm"]
         env:
         - name: TMPDIR
           value: /helm
-        image:  docker-kaas-local.artifactory.mirantis.com/lcm/lcm-controller:v0.2.0-86-g9f641bf
+        image:  docker-kaas-local.artifactory.mirantis.com/lcm/lcm-controller:v0.2.0-101-g14294ae8
         securityContext:
           readOnlyRootFilesystem: true
         volumeMounts:
