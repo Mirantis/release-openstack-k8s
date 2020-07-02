@@ -60,7 +60,7 @@ spec:
             minReplicas: 1
             type: replicated
     nodes:
-        Values.CHANGE_ME_node1_name:
+        CHANGE_ME_K8S_NODE_NAME1:
             storageDevices:
                 - name: sdb
                   role: hdd
@@ -70,7 +70,7 @@ spec:
             roles: [mon, mgr]
             ips: ["192.168.122.164"]
             crushPath:
-        Values.CHANGE_ME_node2_name:
+        CHANGE_ME_K8S_NODE_NAME2:
             storageDevices:
                 - name: sdb
                   role: hdd
@@ -80,7 +80,7 @@ spec:
             roles: [mon, mgr]
             ips: ["192.168.122.244"]
             crushPath:
-        Values.CHANGE_ME_node3_name:
+        CHANGE_ME_K8S_NODE_NAME3:
             storageDevices:
                 - name: sdb
                   role: hdd
