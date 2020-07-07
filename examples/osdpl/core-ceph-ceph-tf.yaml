@@ -38,7 +38,7 @@ spec:
           pool_end: 10.11.12.200
           gateway: 10.11.12.11
     nova:
-      live_migration_interface: ens3
+      live_migration_interface: vhost0
       images:
         backend: ceph
     stacklight:
