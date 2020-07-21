@@ -7,7 +7,7 @@ metadata:
   annotations: {}
 spec:
   draft: false
-  openstack_version: train
+  openstack_version: ussuri
   profile: compute
   size: tiny
   internal_domain_name: cluster.local
@@ -70,8 +70,8 @@ spec:
               gateway: 10.13.0.11
       agent_images:
         base_url: https://binary.mirantis.com/openstack/bin/ironic/tinyipa
-        initramfs: tinyipa-stable-train-20200617110335.gz
-        kernel: tinyipa-stable-train-20200617110335.vmlinuz
+        initramfs: tinyipa-stable-ussuri-20200617101427.gz
+        kernel: tinyipa-stable-ussuri-20200617101427.vmlinuz
     nova:
       live_migration_interface: ens3
       images:
