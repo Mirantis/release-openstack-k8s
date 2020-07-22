@@ -48,5 +48,5 @@ spec:
           it.just.works.            IN      SOA     sns.dns.icann.org. noc.dns.icann.org. 2015082541 7200 3600 1209600 3600
           it.just.works.            IN      NS      b.iana-servers.net.
           it.just.works.            IN      NS      a.iana-servers.net.
-          it.just.works.            IN      A       127.0.0.1
-          *.it.just.works.    IN      A       1.2.3.4
+          it.just.works.            IN      A       1.2.3.4
+          *.it.just.works.           IN      A      1.2.3.4
