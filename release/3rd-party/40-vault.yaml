@@ -10,12 +10,12 @@ spec:
   releases:
   - name: vault
     chart: banzaicloud/vault
-    version: 1.0.0
+    version: 1.4.0
     namespace: openstack-vault
     values:
       image:
         repository: vault
-        tag: latest
+        tag: 1.4.0
         pullPolicy: IfNotPresent
       replicaCount: 3
       labels:
@@ -38,7 +38,7 @@ spec:
       unsealer:
         image:
           repository: banzaicloud/bank-vaults
-          tag: latest
+          tag: 1.4.0
           pullPolicy: IfNotPresent
         args: [
             "--mode",
@@ -64,7 +64,7 @@ spec:
       statsd:
         image:
           repository: prom/statsd-exporter
-          tag: latest
+          tag: v0.17.0
           pullPolicy: IfNotPresent
         metrics:
           enabled: False
