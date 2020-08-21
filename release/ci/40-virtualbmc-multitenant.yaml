@@ -114,7 +114,7 @@ spec:
                 ipmi_username: admin
                 ipmi_password: password
                 ipmi_port: 6200
-              network_interface: 'flat'
+              network_interface: 'neutron'
               ports:
                 - pxe_enabled: true
             - driver: ipmi
@@ -128,7 +128,7 @@ spec:
                 ipmi_username: admin
                 ipmi_password: password
                 ipmi_port: 6201
-              network_interface: 'flat'
+              network_interface: 'neutron'
               ports:
                 - pxe_enabled: true
             - driver: ipmi
@@ -142,12 +142,16 @@ spec:
                 ipmi_username: admin
                 ipmi_password: password
                 ipmi_port: 6202
-              network_interface: 'flat'
+              network_interface: 'neutron'
               ports:
                 - pxe_enabled: true
       manifests:
         network_policy: false
         job_activate_nodes: false
+        configmap_ssh: true
+      network:
+        sshd:
+          enabled: true
     version: 0.1.0-mcp-2630
   repositories:
   - name: osh-infra
