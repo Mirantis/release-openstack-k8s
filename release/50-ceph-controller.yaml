@@ -18,4 +18,4 @@ spec:
       images:
         cephController:
           repository: ceph/mcp/ceph-controller
-          tag: v1.0.0-20200826102223
+          tag: v1.0.0-20200903151423
