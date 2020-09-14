@@ -29,6 +29,8 @@ spec:
           # Update CA certificate content
     neutron:
       tunnel_interface: ens3
+      tenant_network_types:
+        - vlan
       external_networks:
         - physnet: physnet1
           interface: veth-phy
