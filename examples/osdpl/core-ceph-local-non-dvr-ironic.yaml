@@ -61,7 +61,6 @@ spec:
           physnet: ironic
           name: ironic-provisioning
           network_type: flat
-          mtu: 1400
           external: true
           shared: true
           subnets:

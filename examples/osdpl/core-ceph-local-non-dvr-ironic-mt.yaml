@@ -64,9 +64,8 @@ spec:
           name: ironic-provisioning
           network_type: vlan
           segmentation_id: 1000
-          mtu: 1400
           external: true
-          shared: true
+          shared: false
           subnets:
             baremetal_subnet:
               range: 10.13.0.0/24
