@@ -10,7 +10,7 @@ spec:
   openstack_version: ussuri
   preset: compute-tf
   # TODO(vsaienko): drop with openstack controller bump
-  profile: compute
+  profile: compute-tf
   size: tiny
   internal_domain_name: cluster.local
   public_domain_name: it.just.works
