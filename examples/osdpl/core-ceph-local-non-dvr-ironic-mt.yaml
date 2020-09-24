@@ -8,6 +8,8 @@ metadata:
 spec:
   draft: false
   openstack_version: ussuri
+  preset: compute
+  # drop profile when controller is bumped
   profile: compute
   size: tiny
   internal_domain_name: cluster.local
