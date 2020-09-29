@@ -6,7 +6,7 @@ metadata:
 spec:
   repositories:
   - name: tf
-    url: https://artifactory.mirantis.com/binary-kaas-local/tungsten/helm
+    url: https://binary.mirantis.com/tungsten/helm
   releases:
   - chart: tf/tungstenfabric-operator
     name: tungstenfabric-operator
@@ -14,4 +14,4 @@ spec:
     namespace: tf
     values:
       global:
-        dockerBaseUrl: docker-kaas-local.artifactory.mirantis.com
+        dockerBaseUrl: mirantis.azurecr.io

@@ -6,14 +6,14 @@ metadata:
 spec:
   repositories:
   - name: hub_stable
-    url: https://artifactory.mirantis.com/binary-kaas-local/openstack/helm/redis-operator
+    url: https://binary.mirantis.com/openstack/helm/redis-operator
   releases:
   - name: os-redis-operator
     chart: hub_stable/redisoperator
     version: 3.1.0
     namespace: openstack-redis
     values:
-      image: docker-kaas-local.artifactory.mirantis.com/openstack/extra/redis-operator
+      image: mirantis.azurecr.io/openstack/extra/redis-operator
       rbac:
         apiVersion: v1
         install: true

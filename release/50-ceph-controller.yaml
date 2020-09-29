@@ -6,7 +6,7 @@ metadata:
 spec:
   repositories:
   - name: ceph
-    url: https://artifactory.mirantis.com/binary-kaas-local/ceph/helm/
+    url: https://binary.mirantis.com/ceph/helm/
   releases:
   - chart: ceph/ceph-operator
     name: ceph-operator
@@ -14,7 +14,7 @@ spec:
     namespace: osh-system
     values:
       global:
-        dockerBaseUrl: docker-kaas-local.artifactory.mirantis.com
+        dockerBaseUrl: mirantis.azurecr.io
       images:
         cephController:
           repository: ceph/mcp/ceph-controller

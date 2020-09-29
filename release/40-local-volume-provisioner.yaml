@@ -6,7 +6,7 @@ metadata:
 spec:
   repositories:
   - name: lvp
-    url: https://artifactory.mirantis.com/binary-kaas-local/bm/helm
+    url: https://binary.mirantis.com/bm/helm
   releases:
   - name: local-volume-provisioner
     chart: lvp/local-volume-provisioner
@@ -14,8 +14,8 @@ spec:
     namespace: osh-system
     values:
       global:
-        dockerBaseUrl: docker-kaas-local.artifactory.mirantis.com
-        helmBaseUrl: https://artifactory.mirantis.com/binary-kaas-local
+        dockerBaseUrl: mirantis.azurecr.io
+        helmBaseUrl: https://binary.mirantis.com
       common:
         namespace: osh-system
       classes:
@@ -48,4 +48,4 @@ spec:
           local-volume-provisioner: enabled
         initFakeMounts: true
         init:
-          image: docker-kaas-local.artifactory.mirantis.com/openstack/openstack-controller:0.1.1
+          image: mirantis.azurecr.io/openstack/openstack-controller:0.1.1

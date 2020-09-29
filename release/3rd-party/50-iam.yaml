@@ -27,7 +27,7 @@ metadata:
 spec:
   repositories:
   - name: mirantis-iam
-    url:  "https://artifactory.mirantis.com/artifactory/binary-kaas-local/iam/helm"
+    url:  "https://binary.mirantis.com/iam/helm"
   releases:
   - name: openstack-iam
     chart: mirantis-iam/iam

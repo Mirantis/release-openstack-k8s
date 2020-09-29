@@ -12,7 +12,7 @@ metadata:
 spec:
   repositories:
   - name: stacklight
-    url: https://artifactory.mirantis.com/binary-kaas-local/stacklight/helm
+    url: https://binary.mirantis.com/stacklight/helm
   releases:
   - name: stacklight
     chart: stacklight/stacklight
@@ -21,8 +21,8 @@ spec:
     values:
       clusterSize: medium
       global:
-        dockerBaseUrl: docker-kaas-local.artifactory.mirantis.com
-        helmBaseUrl: https://artifactory.mirantis.com/binary-kaas-local
+        dockerBaseUrl: mirantis.azurecr.io
+        helmBaseUrl: https://binary.mirantis.com
       createHelmBundleCRD: false
       deployController: false
       highAvailabilityEnabled: true
