@@ -64,7 +64,7 @@ spec:
           external: true
           shared: true
           subnets:
-            baremetal_subnet:
+            - name: baremetal-subnet
               range: 10.13.0.0/24
               pool_start: 10.13.0.100
               pool_end: 10.13.0.254
