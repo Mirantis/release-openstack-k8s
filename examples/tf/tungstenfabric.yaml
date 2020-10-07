@@ -6,5 +6,8 @@ metadata:
 spec:
   settings:
     orchestrator: openstack
-    osSharedNamespace: openstack-tf-shared
-    osSecret: tf-data
+  controllers:
+    cassandra:
+      deployments:
+        - name: tf-cassandra-analytics
+          dataCapacity: 20Gi
