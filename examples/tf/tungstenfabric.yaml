@@ -6,19 +6,3 @@ metadata:
 spec:
   settings:
     orchestrator: openstack
-  controllers:
-    cassandra:
-      deployments:
-        - name: tf-cassandra-analytics
-          dataCapacity: 20Gi
-          resources:
-            limits:
-              memory: 8Gi
-            requests:
-              memory: 4Gi
-        - name: tf-cassandra-config
-          resources:
-            limits:
-              memory: 8Gi
-            requests:
-              memory: 4Gi
