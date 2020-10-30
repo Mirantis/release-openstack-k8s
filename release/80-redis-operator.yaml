@@ -10,11 +10,15 @@ spec:
   releases:
   - name: os-redis-operator
     chart: hub_stable/redisoperator
-    version: 3.1.0
+    version: 3.1.0-mcp-1
     namespace: openstack-redis
     values:
-      image: mirantis.azurecr.io/openstack/extra/redis-operator
+      global:
+        dockerBaseUrl: mirantis.azurecr.io
+      image:
+        name: redis-operator
+        repository: openstack/extra
+        tag: v1.0.0
       rbac:
         apiVersion: v1
         install: true
-      tag: v1.0.0
