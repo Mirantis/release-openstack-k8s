@@ -10,7 +10,7 @@ spec:
   releases:
   - name: os-redis-operator
     chart: hub_stable/redisoperator
-    version: 3.1.0-mcp-1
+    version: 3.1.0-mcp-2
     namespace: openstack-redis
     values:
       global:
@@ -22,3 +22,11 @@ spec:
       rbac:
         apiVersion: v1
         install: true
+      node_affinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+          - matchExpressions:
+            - key: openstack-control-plane
+              operator: In
+              values:
+              - enabled
