@@ -8,9 +8,8 @@ spec:
     hostNetwork: true
     clusterNet: 10.11.0.0/24
     publicNet: 10.12.0.0/24
-  version: 14.2.9
-  dashboardEnabled: false
-  failureDomain: host
+  version: 14.2.11
+  dashboard: false
   pools:
     - deviceClass: hdd
       role: kubernetes
@@ -21,26 +20,31 @@ spec:
     - deviceClass: hdd
       role: volumes
       name: volumes
+      default: false
       replicated:
         size: 2
     - deviceClass: hdd
       role: vms
       name: vms
+      default: false
       replicated:
         size: 2
     - deviceClass: hdd
       role: backup
       name: backup
+      default: false
       replicated:
         size: 2
     - deviceClass: hdd
       role: images
       name: images
+      default: false
       replicated:
         size: 2
     - deviceClass: hdd
       role: other
       name: other
+      default: false
       replicated:
         size: 2
   nodes:

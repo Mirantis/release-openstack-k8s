@@ -10,7 +10,7 @@ spec:
   releases:
   - chart: ceph/ceph-operator
     name: ceph-operator
-    version: 1.0.0-mcp-44
+    version: 1.0.0-mcp-77
     namespace: osh-system
     values:
       global:
@@ -18,4 +18,4 @@ spec:
       images:
         cephController:
           repository: ceph/mcp/ceph-controller
-          tag: v1.0.0-20201110171443
+          tag: v1.0.0-20201120145126
