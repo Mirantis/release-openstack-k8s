@@ -14,7 +14,7 @@ spec:
     namespace: openstack-vault
     values:
       image:
-        repository: vault
+        repository: mirantis.azurecr.io/openstack/extra/vault
         tag: 1.4.0
         pullPolicy: IfNotPresent
       replicaCount: 3
@@ -37,7 +37,7 @@ spec:
           log_level: "Debug"
       unsealer:
         image:
-          repository: banzaicloud/bank-vaults
+          repository: mirantis.azurecr.io/openstack/extra/bank-vaults
           tag: 1.4.0
           pullPolicy: IfNotPresent
         args: [
