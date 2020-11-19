@@ -13,6 +13,9 @@ spec:
     version: 1.8.1
     namespace: coredns
     values:
+      image:
+        repository: mirantis.azurecr.io/openstack/extra/coredns
+        tag: "1.6.9"
       isClusterService: false
       servers:
       - zones:
