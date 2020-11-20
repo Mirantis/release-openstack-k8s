@@ -5,12 +5,12 @@ metadata:
   namespace: osh-system
 spec:
   repositories:
-  - name: hub_stable
-    url: https://kubernetes-charts.storage.googleapis.com
+  - name: mirahub
+    url: https://binary.mirantis.com/kubernetes/helm/stable
   releases:
   - name: coredns
-    chart: hub_stable/coredns
-    version: 1.8.1
+    chart: mirahub/coredns
+    version: 1.10.1
     namespace: coredns
     values:
       image:
