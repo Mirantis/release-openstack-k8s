@@ -10,7 +10,7 @@ spec:
   releases:
   - name: openstack-operator
     chart: openstack-controller/openstack-operator
-    version: 0.3.12
+    version: 0.3.13
     namespace: osh-system
     values:
       global:
