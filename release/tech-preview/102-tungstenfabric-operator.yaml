@@ -10,7 +10,7 @@ spec:
   releases:
   - chart: tf/tungstenfabric-operator
     name: tungstenfabric-operator
-    version: 0.2.0
+    version: 0.2.1
     namespace: tf
     values:
       global:
