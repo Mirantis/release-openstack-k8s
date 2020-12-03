@@ -21,7 +21,7 @@ spec:
         ovs:
           node_selector_key: virtualbmc
           node_selector_value: enabled
-    version: 0.1.0-mcp-2646
+    version: 0.1.0-mcp-2668
   - chart: osh-infra/libvirt
     name: vbmc-libvirt
     namespace: openstack-vbmc
@@ -46,7 +46,7 @@ spec:
       manifests:
         network_policy: false
       dependencies: {}
-    version: 0.1.0-mcp-2646
+    version: 0.1.0-mcp-2668
   - chart: osh-infra/vbmc
     name: vbmc-virtualbmc
     namespace: openstack-vbmc
@@ -115,6 +115,7 @@ spec:
                 ipmi_password: password
                 ipmi_port: 6200
               network_interface: 'flat'
+              physnet: 'ironic'
               ports:
                 - pxe_enabled: true
             - driver: ipmi
@@ -129,6 +130,7 @@ spec:
                 ipmi_password: password
                 ipmi_port: 6201
               network_interface: 'flat'
+              physnet: 'ironic'
               ports:
                 - pxe_enabled: true
             - driver: ipmi
@@ -143,12 +145,13 @@ spec:
                 ipmi_password: password
                 ipmi_port: 6202
               network_interface: 'flat'
+              physnet: 'ironic'
               ports:
                 - pxe_enabled: true
       manifests:
         network_policy: false
         job_activate_nodes: false
-    version: 0.1.0-mcp-2646
+    version: 0.1.0-mcp-2668
   repositories:
   - name: osh-infra
     url: https://binary.mirantis.com/openstack/helm/openstack-helm-infra
