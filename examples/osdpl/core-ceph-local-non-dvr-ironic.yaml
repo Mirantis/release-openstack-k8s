@@ -30,6 +30,9 @@ spec:
         ca_cert: |-
           # Update CA certificate content
     neutron:
+      tenant_network_types:
+        - vxlan
+        - flat
       tunnel_interface: ens3
       external_networks:
         - physnet: physnet1
