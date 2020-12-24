@@ -718,31 +718,20 @@ spec:
               - hosts:
                   - "keycloak.it.just.works"
                 secretName: tls-keycloak
-
+          extraVolumeMounts: |
+            - name: secrets
+              mountPath: /etc/x509/https/tls.crt
+              readOnly: true
+              subPath: server.crt
+            - name: secrets
+              mountPath: /etc/x509/https/tls.key
+              readOnly: true
+              subPath: server.pem
       api:
         service:
           type: LoadBalancer
         keycloak:
           url: "http://openstack-iam-keyclo-http.iam.svc"
-          ca: |-
-            -----BEGIN CERTIFICATE-----
-            MIICyDCCAbCgAwIBAgIBADANBgkqhkiG9w0BAQsFADAVMRMwEQYDVQQDEwprdWJl
-            cm5ldGVzMB4XDTE5MDcxNTEyMTczMFoXDTI5MDcxMjEyMTczMFowFTETMBEGA1UE
-            AxMKa3ViZXJuZXRlczCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMKs
-            3cxUNr7uIvIpnYAu9hM03zIgycdzar1deSIU2EZkEv20QOa6+w/yUxRhQK1pFhok
-            ceqVuOnGnSUW3Uf+mvAd0IgCkCUIWnDOkZE83MhKTa7FXZpEYSBpjNwziLyAffQB
-            IXdXs0Zf4RHoSmm2msJy2iL6tKzPWrUI8iJINKY687RubX7WTxvFUd/By6VMg1H/
-            F3UEi/WGBCrYbWeZhjk222N/5T1PNkhZjLM4l7ukedUaK2b9bKsRU7N/p2f9hhDJ
-            +x2arKmGqGkKkRQnS/19Nlwom2cSU8z36nOghJHv6hWIMbY/dUT8sGLlL/nSa2d0
-            38rhFhOpB/tu3Wu50NECAwEAAaMjMCEwDgYDVR0PAQH/BAQDAgKkMA8GA1UdEwEB
-            /wQFMAMBAf8wDQYJKoZIhvcNAQELBQADggEBACpTF3CTDaRUOUnIKo2p7x/HzJGM
-            DwrQqzKOJ1I4WzeuGVLJ4OUn9wU7jce2oMYZmOw+2opG7CvqM2xx6AQa2OxqJt8E
-            KoqviidpTgXqWhAaRbRGsF1IxEwEgbiI9sH0f0pQRZBVPKv+LnNlQoip9ZMgoHJ8
-            f25YSPKBHhMLEvCdsWy6ZRqSx7lk0NK+NiFeL3ZDlkiVveNmejM2OSzsov2wkUu3
-            Hvo/ugw5tNhtX7Q1iEyE2aFvsmqE1PTOE3zly7xRALAX8WYD5lNc0qGFvoh3x+79
-            uKVi5MUP48Voc72rJ0n7iaK8dr/byL6S5Qz2PuG9slbDQrDoacBeyjO6hiQ=
-            -----END CERTIFICATE-----
-
         # DNS DEV ONLY workaround
         extraVolumes: |
           - name: etc-hosts
