@@ -85,15 +85,6 @@ spec:
         password: stacklight
   # enabled services and their specific configuration
   services:
-    # NOTE(vsaienko): run on all nodes to have access to public API from routers/VMs
-    # For more details please see https://mirantis.jira.com/browse/PRODX-1321
-    ingress:
-      ingress:
-        values:
-          labels:
-            server:
-              node_selector_key: kubernetes.io/os
-              node_selector_value: linux
     networking:
       neutron:
         values:
