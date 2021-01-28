@@ -59,7 +59,7 @@ spec:
         dataChunks: 2
         codingChunks: 1
     gateway:
-      instances: 1
+      instances: 2
       allNodes: false
       port: 80
       securePort: 8443
