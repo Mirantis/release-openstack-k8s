@@ -57,7 +57,7 @@ spec:
         size: 1
     gateway:
       allNodes: false
-      instances: 2
+      instances: 1
       port: 80
       securePort: 8443
     healthCheck:
