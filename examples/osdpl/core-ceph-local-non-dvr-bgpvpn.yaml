@@ -18,7 +18,7 @@ spec:
     images_base_url: mirantis.azurecr.io
     binary_base_url: https://binary.mirantis.com
   nodes:
-    openstack-compute::enabled:
+    openstack-compute-node::enabled:
       features:
         neutron:
           bgpvpn:
