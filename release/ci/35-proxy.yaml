@@ -1,0 +1,15 @@
+---
+apiVersion: lcm.mirantis.com/v1alpha1
+kind: HelmBundle
+metadata:
+  name: squid
+  namespace: osh-system
+spec:
+  releases:
+  - chart: lifen/squid
+    name: squid
+    namespace: openstack
+    version: 0.3.0
+  repositories:
+  - name: lifen
+    url: https://honestica.github.io/lifen-charts/
