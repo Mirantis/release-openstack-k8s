@@ -393,6 +393,9 @@ spec:
                   chart:
                     description: Chart name of the form "repo/name" or just "name".
                     type: string
+                  chartURL:
+                    description: Direct URL to the chart's tarball
+                    type: string
                   labels:
                     additionalProperties:
                       type: string
@@ -411,8 +414,6 @@ spec:
                     description: Chart version.
                     type: string
                 required:
-                - chart
-                - version
                 - name
                 - namespace
                 type: object

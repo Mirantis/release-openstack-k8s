@@ -67,7 +67,7 @@ spec:
           value: osh-system
         - name: TILLER_HISTORY_MAX
           value: "0"
-        image: mirantis.azurecr.io/lcm/helm/tiller:v2.16.9-39
+        image: mirantis.azurecr.io/lcm/helm/tiller:v2.16.11-40
         imagePullPolicy: IfNotPresent
         livenessProbe:
           httpGet:
@@ -88,7 +88,7 @@ spec:
         env:
         - name: TMPDIR
           value: /helm
-        image:  mirantis.azurecr.io/lcm/lcm-controller:v0.2.0-124-gf118a4dc
+        image:  mirantis.azurecr.io/lcm/lcm-controller:v0.2.0-258-ga2d72294
         securityContext:
           readOnlyRootFilesystem: true
         volumeMounts:
