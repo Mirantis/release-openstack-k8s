@@ -31,13 +31,10 @@ spec:
   releases:
   - name: openstack-iam
     chart: mirantis-iam/iam
-    version: 1.0.8
+    version: 1.3.0
     namespace: iam
     values:
       keycloak:
-        auxiliary:
-          image:
-            tag: 0.3.12
         userFederation:
           providers:
             - displayName: "mirantis-ldap"
@@ -245,7 +242,7 @@ spec:
                 - 'https://keystone.it.just.works/v3/OS-FEDERATION/identity_providers/keycloak/protocols/mapped/auth'
                 - 'https://keystone.it.just.works/v3/auth/OS-FEDERATION/identity_providers/keycloak/protocols/mapped/websso/'
                 - 'https://keystone.it.just.works/v3/auth/OS-FEDERATION/websso/'
-                - 'https://horizon.it.just.works/auth/websso/'
+                - 'https://horizon.it.just.works/*'
               protocolMappers:
                 - name: "iam_roles"
                   protocolMapper: "oidc-script-based-protocol-mapper"
@@ -683,12 +680,14 @@ spec:
                     "jsonType.label": "String"
 
         initUsers:
-          testuser:
-            username: testuser
-            cleartextPassword: ChangeMe123
+          writer:
+            username: writer
+            passwordSalt: "eRV7Mqct4IGGorsunKwjZA=="
+            passwordHash: "5jXw+YMUHOgDeJsINHQ1btwaz1ZiGixfLAaTfxFo3piu6A82+Jh/KuafShO56D87xvn4F2cqFRTRNlqpf33Vsw=="
+            email: "writer@kaas.local"
             realmRoles:
-              - "m:k8s:managed@cluster-admin"
-
+              - "m:kaas@writer"
+              - "m:os@admin"
         mariadb:
           volume:
             enabled: true
