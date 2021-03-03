@@ -81,3 +81,11 @@ spec:
             heat:
               clients_heat:
                 insecure: true
+    tempest:
+      tempest:
+        values:
+          conf:
+            tempest:
+              bgpvpn:
+                l2vpn_endpoint: 192.168.20.254/24
+                route_target: "64512:20"
