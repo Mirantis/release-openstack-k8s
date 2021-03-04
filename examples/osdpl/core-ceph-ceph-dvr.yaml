@@ -14,9 +14,6 @@ spec:
   public_domain_name: it.just.works
   local_volume_storage_class: lvp-fake-root
   persistent_volume_storage_class: mirablock-k8s-block-hdd
-  artifacts:
-    images_base_url: mirantis.azurecr.io
-    binary_base_url: https://binary.mirantis.com
   features:
     services:
      - key-manager
