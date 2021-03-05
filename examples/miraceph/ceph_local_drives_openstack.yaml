@@ -47,23 +47,24 @@ spec:
       default: false
       replicated:
         size: 2
-  rgw:
-    name: openstack-store
-    metadataPool:
-      failureDomain: host
-      replicated:
-        size: 3
-    dataPool:
-      failureDomain: host
-      erasureCoded:
-        dataChunks: 2
-        codingChunks: 1
-    gateway:
-      instances: 2
-      allNodes: false
-      port: 80
-      securePort: 8443
-    preservePoolsOnDelete: false
+  objectStorage:
+    rgw:
+      name: openstack-store
+      metadataPool:
+        failureDomain: host
+        replicated:
+          size: 3
+      dataPool:
+        failureDomain: host
+        erasureCoded:
+          dataChunks: 2
+          codingChunks: 1
+      gateway:
+        instances: 2
+        allNodes: false
+        port: 80
+        securePort: 8443
+      preservePoolsOnDelete: false
   nodes:
     - name: Values.CHANGE_ME_node1_name
       devices:

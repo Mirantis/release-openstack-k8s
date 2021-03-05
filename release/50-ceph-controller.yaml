@@ -10,12 +10,8 @@ spec:
   releases:
   - chart: ceph/ceph-operator
     name: ceph-operator
-    version: 1.0.0-mcp-127
+    version: 1.0.0-mcp-165
     namespace: osh-system
     values:
       global:
         dockerBaseUrl: mirantis.azurecr.io
-      images:
-        cephController:
-          repository: ceph/mcp/ceph-controller
-          tag: v1.0.0-20210201202754
