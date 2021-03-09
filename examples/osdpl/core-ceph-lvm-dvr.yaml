@@ -1,0 +1,76 @@
+apiVersion: lcm.mirantis.com/v1alpha1
+kind: OpenStackDeployment
+metadata:
+  name: osh-dev
+  namespace: openstack
+  labels: {}
+  annotations: {}
+spec:
+  draft: false
+  openstack_version: ussuri
+  preset: compute
+  size: tiny
+  internal_domain_name: cluster.local
+  public_domain_name: it.just.works
+  local_volume_storage_class: lvp-fake-root
+  persistent_volume_storage_class: mirablock-k8s-block-hdd
+  artifacts:
+    images_base_url: mirantis.azurecr.io
+    binary_base_url: https://binary.mirantis.com
+  features:
+    services:
+     - key-manager
+    ssl:
+      public_endpoints:
+        api_cert: |-
+          # Update server certificate content
+        api_key: |-
+          # Update server private key content
+        ca_cert: |-
+          # Update CA certificate content
+    neutron:
+      tunnel_interface: ens3
+      dvr:
+        enabled:  True
+      external_networks:
+        - physnet: physnet1
+          interface: veth-phy
+          bridge: br-ex
+          network_types:
+           - flat
+          vlan_ranges: null
+          mtu: null
+      floating_network:
+        enabled: True
+        physnet: physnet1
+        subnet:
+          range: 10.11.12.0/24
+          pool_start: 10.11.12.100
+          pool_end: 10.11.12.200
+          gateway: 10.11.12.11
+    nova:
+      live_migration_interface: ens3
+      images:
+        backend: lvm
+        lvm:
+          volume_group: "nova-vg"
+    stacklight:
+      user:
+        password: stacklight
+  # enabled services and their specific configuration
+  services:
+    networking:
+      neutron:
+        values:
+          conf:
+            neutron:
+              DEFAULT:
+                # to match Calico tunnel value within container operations
+                global_physnet_mtu: 1480
+    orchestration:
+      heat:
+        values:
+          conf:
+            heat:
+              clients_heat:
+                insecure: true
