@@ -15,7 +15,7 @@ data:
   server.pem: IA==
 kind: Secret
 metadata:
-  name: iam-api-secret
+  name: iam-api-secrets
   namespace: iam
 type: Opaque
 ---
@@ -31,7 +31,7 @@ spec:
   releases:
   - name: openstack-iam
     chart: mirantis-iam/iam
-    version: 1.3.0
+    version: 2.0.0
     namespace: iam
     values:
       keycloak:
