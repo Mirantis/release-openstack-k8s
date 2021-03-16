@@ -51,6 +51,10 @@ spec:
         backend: lvm
         lvm:
           volume_group: "nova-vg"
+        encryption:
+          enabled: true
+          cipher: "aes-xts-plain64"
+          key_size: 256
     stacklight:
       user:
         password: stacklight
