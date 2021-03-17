@@ -50,7 +50,7 @@ spec:
       images:
         backend: lvm
         lvm:
-          volume_group: "nova-vg"
+          volume_group: "nova-vol"
         encryption:
           enabled: true
           cipher: "aes-xts-plain64"
