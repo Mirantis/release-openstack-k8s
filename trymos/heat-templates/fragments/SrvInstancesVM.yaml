@@ -23,7 +23,7 @@ parameters:
   boot_timeout:
     type: number
     description: Boot timeout for instance
-    default: 3600
+    default: 7200
   public_net_id:
     type: string
   docker_ee_release:
