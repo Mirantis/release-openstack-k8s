@@ -1,0 +1,120 @@
+heat_template_version: queens
+
+parameters:
+
+  metadata:
+    type: json
+    default: {}
+  key_name:
+    type: string
+    description: Name of keypair to assign to servers
+  image:
+    type: string
+    description: Name of image to use for servers
+  flavor:
+    type: string
+    description: Flavor to use for servers
+  accessible_network:
+    type: string
+  accessible_subnet_id:
+    type: string
+  control_network_cidr:
+    type: string
+  boot_timeout:
+    type: number
+    description: Boot timeout for instance
+    default: 3600
+  public_net_id:
+    type: string
+  docker_ee_release:
+    type: string
+  docker_ee_url:
+    type: string
+  docker_ucp_image:
+    type: string
+  docker_ucp_swarm_data_port:
+    type: string
+    default: 4789
+  docker_default_address_pool:
+    type: string
+  user_data_config:
+    description: This is part of clout-config which denies to mount drive with label ephemeral0 to /mnt
+    type: string
+    default: |
+      #cloud-config
+      #
+      # Don't mount ephemeral0 to /mnt as it's by default
+      mounts:
+        - [ ephemeral0, null ]
+
+resources:
+
+  software_config:
+    type: OS::Heat::SoftwareConfig
+    properties:
+      group: ungrouped
+      config:
+        str_replace:
+          template: { get_file: ../scripts/instance_boot.sh }
+          params:
+            $wait_condition_notify: { get_attr: [ wait_handle, curl_cli ] }
+            $docker_ee_url: { get_param: docker_ee_url }
+            $docker_ee_release: { get_param: docker_ee_release }
+            $node_metadata: { get_param: metadata }
+            $control_network_cidr: { get_param: control_network_cidr }
+            $docker_ucp_image: { get_param: docker_ucp_image }
+            $docker_ucp_swarm_data_port: { get_param: docker_ucp_swarm_data_port }
+            $docker_default_address_pool: { get_param: docker_default_address_pool }
+
+  install_config_agent:
+    type: "OS::Heat::MultipartMime"
+    properties:
+      parts:
+      - config: {get_resource: software_config}
+      - config: {get_param: user_data_config}
+
+  server:
+    type: OS::Nova::Server
+    properties:
+      image: { get_param: image }
+      flavor: { get_param: flavor }
+      key_name: { get_param: key_name }
+      availability_zone: nova
+      networks:
+        - port: { get_resource: accessible_server_port }
+      user_data_format: SOFTWARE_CONFIG
+      user_data: { get_resource:  install_config_agent}
+      metadata: { get_param: metadata }
+
+  accessible_server_port:
+    type: OS::Neutron::Port
+    properties:
+      network_id: { get_param: accessible_network }
+      port_security_enabled: false
+      fixed_ips:
+        - subnet: { get_param: accessible_subnet_id }
+
+  server_floating_ip:
+    type: OS::Neutron::FloatingIP
+    properties:
+      floating_network_id: { get_param: public_net_id }
+      port_id: { get_resource: accessible_server_port }
+
+  wait_handle:
+    type: OS::Heat::WaitConditionHandle
+  wait_condition:
+    type: OS::Heat::WaitCondition
+    properties:
+      handle: { get_resource: wait_handle }
+      timeout: { get_param: boot_timeout }
+
+outputs:
+  server_private_ip:
+    description: IP address of server in private network
+    value: { get_attr: [server, networks, { get_param: accessible_network}, 0]}
+  server_public_ip:
+    description: Floating IP address of server in public network
+    value: { get_attr: [ server_floating_ip, floating_ip_address ] }
+  wc_data:
+    description: Metadata from instance
+    value: { get_attr: [wait_condition, data]}
