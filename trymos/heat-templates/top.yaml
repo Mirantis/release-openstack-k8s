@@ -1,0 +1,88 @@
+heat_template_version: queens
+
+parameters:
+  image:
+    type: string
+    description: Name of image to use for servers
+  cluster_public_key:
+    type: string
+  ucp_flavor:
+    type: string
+  public_net_id:
+    type: string
+    description: >
+      ID of public network for which floating IP addresses will be allocated/
+      for baremetal case flat provision network for nodes
+  control_network_cidr:
+    type: string
+    description: The CIDR of control network, used to detect control interface.
+    default: '10.10.0.0/24'
+  docker_default_address_pool:
+    type: string
+    description: Default address pool for Docker ucp specific local networks
+    default: '10.10.1.0/16'
+  docker_ee_url:
+    type: string
+    default: 'https://storebits.docker.com/ubuntu'
+  docker_ee_release:
+    type: string
+    default: 'stable-19.03'
+  docker_ucp_image:
+    type: string
+    default: 'mirantis.azurecr.io/lcm/docker/ucp:3.3.6'
+  docker_ucp_swarm_data_port:
+    type: string
+    default: 4789
+  private_floating_interface:
+    description: Interface which carries floating network for child OpenStack.
+    type: string
+  private_floating_network_cidr:
+    type: string
+    default: '10.11.12.0/24'
+  dns_nameservers:
+    type: json
+    default: []
+
+resources:
+  keypair_name:
+    type: OS::Heat::RandomString
+    properties:
+      character_classes: [{"class": "hexdigits", "min": 1}]
+      length: 128
+      salt: constant
+  key_pair:
+    type: OS::Nova::KeyPair
+    properties:
+      name: { get_attr: [keypair_name, value] }
+      public_key: { get_param: cluster_public_key }
+      save_private_key: false
+
+  accessible_network:
+    type: MCP2::NetworkAcc
+    properties:
+      public_net_id: { get_param: public_net_id }
+      control_network_cidr: { get_param: control_network_cidr }
+      dns_nameservers: { get_param: dns_nameservers }
+
+  ucp:
+    depends_on:
+     - accessible_network
+    type: MCP2::SrvInstances
+    properties:
+      docker_ee_url: { get_param: docker_ee_url }
+      docker_ee_release: { get_param: docker_ee_release }
+      docker_ucp_image: { get_param: docker_ucp_image}
+      docker_ucp_swarm_data_port: { get_param: docker_ucp_swarm_data_port }
+      docker_default_address_pool: { get_param: docker_default_address_pool }
+      key_name: { get_attr: [keypair_name, value] }
+      image: { get_param: image }
+      flavor: { get_param: ucp_flavor }
+      accessible_network: { get_attr: [accessible_network, public_network] }
+      accessible_subnet_id: { get_attr: [accessible_network, accessible_subnet_id]}
+      public_net_id: { get_param: public_net_id }
+      control_network_cidr: { get_param: control_network_cidr }
+
+outputs:
+  ucp_ips:
+    description: Private IP addresses of the deployed ucp instances
+    value: { get_attr: [ucp, server_public_ip] }
