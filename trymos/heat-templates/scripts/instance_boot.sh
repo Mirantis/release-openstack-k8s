@@ -32,7 +32,7 @@ function wait_condition_send {
     fi
 }
 
-#bash /usr/share/trymos/launch.sh
+bash /usr/share/trymos/launch.sh
 
 if [[ "$?" == "0" ]]; then
     wait_condition_send "SUCCESS" "Deploying TryMOS successfuly ."
