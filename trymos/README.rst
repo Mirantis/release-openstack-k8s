@@ -27,7 +27,7 @@ What is the case for TryMOS
 Obtain the TryMOS image
 =======================
 
-#. Navigate to https://binary.mirantis.com/trymos/bin/<TryMOS-version>.
+#. Navigate to https://binary.mirantis.com/?prefix=trymos/bin/.
 #. Download the latest release artifact. For example, ``6.12.0``
 
 
@@ -38,7 +38,7 @@ Run TryMOS on AWS
 
    .. code-block:: console
 
-      TRYMOS_IMAGE_FILE="trymos-bionic-amd64-master-20210316183204.qcow2"
+      TRYMOS_IMAGE_FILE="trymos-bionic-amd64-6.12.0-20210323130215.qcow2"
 
 #. Convert the QCOW2 image to the RAW format
 
@@ -57,7 +57,7 @@ Run TryMOS on AWS
 
    .. code-block:: console
 
-      cat << EOF > containers.josn
+      cat << EOF > containers.json
       {
         "Description": "TryMOS RAW",
         "Format": "RAW",
