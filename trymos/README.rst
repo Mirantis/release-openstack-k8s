@@ -34,7 +34,7 @@ Obtain the TryMOS image
 Run TryMOS on AWS
 =================
 
-#. Dowload the image as describe in the "Obtain the TryMOS image" step:
+#. Download the image as describe in the "Obtain the TryMOS image" step:
 
    .. code-block:: console
 
