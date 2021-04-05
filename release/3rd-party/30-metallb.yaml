@@ -10,7 +10,7 @@ spec:
   releases:
   - name: metallb
     chart: kaas/metallb
-    version: 1.12.2
+    version: 1.19.1
     namespace: metallb
     values:
       configInline:
