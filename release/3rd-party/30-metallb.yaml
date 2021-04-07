@@ -13,6 +13,9 @@ spec:
     version: 1.19.1
     namespace: metallb
     values:
+      global:
+        dockerBaseUrl: mirantis.azurecr.io
+        helmBaseUrl: https://binary.mirantis.com
       configInline:
         address-pools:
         - name: openstack-default
