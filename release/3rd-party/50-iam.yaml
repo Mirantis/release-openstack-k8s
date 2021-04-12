@@ -34,6 +34,9 @@ spec:
     version: 2.0.0
     namespace: iam
     values:
+      global:
+        dockerBaseUrl: mirantis.azurecr.io
+        helmBaseUrl: https://binary.mirantis.com
       keycloak:
         userFederation:
           providers:
