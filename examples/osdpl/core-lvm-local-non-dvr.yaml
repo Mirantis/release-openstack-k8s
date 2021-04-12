@@ -82,9 +82,10 @@ spec:
         values:
           conf:
             cinder:
-              # NOTE(vsaienko): change default volume type to let tempest
-              # always use lvm
-              default_volume_type: lvm
+              DEFAULT:
+                # NOTE(vsaienko): change default volume type to let tempest
+                # always use lvm
+                default_volume_type: lvm
           bootstrap:
             volume_types:
               lvm:
