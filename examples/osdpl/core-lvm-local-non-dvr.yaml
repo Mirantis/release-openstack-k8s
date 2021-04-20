@@ -23,7 +23,6 @@ spec:
               lvm:
                 lvm:
                   volume_group: nova-vol
-                type: lvm
   features:
     services:
      - key-manager
