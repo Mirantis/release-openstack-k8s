@@ -71,8 +71,8 @@ spec:
               gateway: 10.13.0.11
       agent_images:
         base_url: https://binary.mirantis.com/openstack/bin/ironic/tinyipa
-        initramfs: tinyipa-stable-ussuri-20210414144541.gz
-        kernel: tinyipa-stable-ussuri-20210414144541.vmlinuz
+        initramfs: tinyipa-stable-ussuri-20210416150401.gz
+        kernel: tinyipa-stable-ussuri-20210416150401.vmlinuz
     nova:
       live_migration_interface: ens3
       images:
