@@ -85,7 +85,3 @@ spec:
                 # NOTE(vsaienko): change default volume type to let tempest
                 # always use lvm
                 default_volume_type: lvm
-          bootstrap:
-            volume_types:
-              lvm:
-                volume_backend_name: lvm
