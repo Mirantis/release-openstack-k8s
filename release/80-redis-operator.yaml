@@ -18,7 +18,7 @@ spec:
       image:
         name: redis-operator
         repository: openstack/extra
-        tag: v1.0.0
+        tag: v1.0.0-20210421085347
       rbac:
         apiVersion: v1
         install: true
