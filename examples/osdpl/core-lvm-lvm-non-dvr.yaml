@@ -22,7 +22,7 @@ spec:
             backends:
               lvm:
                 lvm:
-                  volume_group: nova-vol
+                  volume_group: cinder-vol
   features:
     services:
      - key-manager
