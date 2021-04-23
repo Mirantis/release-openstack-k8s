@@ -79,22 +79,22 @@ spec:
               DEFAULT:
                 default_volume_type: netapp
             standalone_backends:
-              netapp:
-                conf:
-                  DEFAULT:
-                    cluster: ""
-                    enabled_backends: netapp
-                  netapp:
-                    netapp_login: changeme
-                    netapp_password: changeme
-                    netapp_server_hostname: changeme
-                    netapp_server_port: 80
-                    netapp_storage_family: ontap_cluster
-                    netapp_storage_protocol: iscsi
-                    netapp_vserver: cinder
-                    volume_backend_name: netapp
-                    volume_driver: cinder.volume.drivers.netapp.common.NetAppDriver
-                kind: statefulset
+              statefulsets:
+                netapp:
+                  conf:
+                    DEFAULT:
+                      cluster: ""
+                      enabled_backends: netapp
+                    netapp:
+                      netapp_login: changeme
+                      netapp_password: changeme
+                      netapp_server_hostname: changeme
+                      netapp_server_port: 80
+                      netapp_storage_family: ontap_cluster
+                      netapp_storage_protocol: iscsi
+                      netapp_vserver: cinder
+                      volume_backend_name: netapp
+                      volume_driver: cinder.volume.drivers.netapp.common.NetAppDriver
           pod:
             security_context:
               cinder_volume:
