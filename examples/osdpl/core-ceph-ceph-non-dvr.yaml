@@ -14,8 +14,6 @@ spec:
   local_volume_storage_class: lvp-fake-root
   persistent_volume_storage_class: mirablock-k8s-block-hdd
   features:
-    services:
-     - key-manager
     ssl:
       public_endpoints:
         api_cert: |-

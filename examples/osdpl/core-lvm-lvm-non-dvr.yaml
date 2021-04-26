@@ -23,8 +23,6 @@ spec:
                 lvm:
                   volume_group: cinder-vol
   features:
-    services:
-     - key-manager
     ssl:
       public_endpoints:
         api_cert: |-

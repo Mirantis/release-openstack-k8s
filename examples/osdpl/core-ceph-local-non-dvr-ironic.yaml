@@ -15,7 +15,6 @@ spec:
   persistent_volume_storage_class: mirablock-k8s-block-hdd
   features:
     services:
-      - key-manager
       - baremetal
     ssl:
       public_endpoints:

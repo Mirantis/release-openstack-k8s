@@ -20,8 +20,6 @@ spec:
           bgpvpn:
             enabled: true
   features:
-    services:
-     - key-manager
     ssl:
       public_endpoints:
         api_cert: |-
