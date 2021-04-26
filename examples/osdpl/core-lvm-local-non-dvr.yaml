@@ -6,7 +6,6 @@ metadata:
   labels: {}
   annotations: {}
 spec:
-  draft: false
   openstack_version: ussuri
   preset: compute
   size: tiny
