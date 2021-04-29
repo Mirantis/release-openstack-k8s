@@ -11,8 +11,6 @@ spec:
   size: tiny
   internal_domain_name: cluster.local
   public_domain_name: it.just.works
-  local_volume_storage_class: lvp-fake-root
-  persistent_volume_storage_class: mirablock-k8s-block-hdd
   nodes:
     openstack-compute-node::enabled:
       features:
