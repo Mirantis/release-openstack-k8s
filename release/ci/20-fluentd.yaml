@@ -1,0 +1,30 @@
+apiVersion: lcm.mirantis.com/v1alpha1
+kind: HelmBundle
+metadata:
+  name: fluentd-infra
+  namespace: osh-system
+spec:
+  repositories:
+  - name: mirahub
+    url: https://binary.mirantis.com/stacklight/helm
+  releases:
+  - name: fluentd-infra
+    chart: mirahub/fluentd-elasticsearch
+    version: "3.0.0-mcp-86"
+    namespace: osh-system
+    values:
+      elasticsearch:
+        auth:
+          enabled: true
+          user: "change_user"
+          password: "change_pass"
+        host: 'logcollector.mcp.mirantis.net'
+        logstash_prefix: "change_prefix"
+      initContainers:
+        # it is required to override init container, in order not to execute checks for elasticsearch
+        # as infra elastic search is always up
+        fluentd-elasticsearch-check:
+          command:
+            - echo
+            - "Skipping ELK check"
+
