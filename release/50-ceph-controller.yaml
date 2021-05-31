@@ -15,3 +15,10 @@ spec:
     values:
       global:
         dockerBaseUrl: mirantis.azurecr.io
+      # TODO(vsaienko): remove when fixed PRODX-15052
+      hyperconverge:
+        tolerations:
+          osd: |
+            - effect: NoSchedule
+              key: com.docker.ucp.manager
+              operator: Exists
