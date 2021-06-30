@@ -21,6 +21,11 @@ spec:
                 lvm:
                   volume_group: cinder-vol
   features:
+    glance:
+      backends:
+        cinder:
+          blockstore:
+            default: true
     ssl:
       public_endpoints:
         api_cert: |-
