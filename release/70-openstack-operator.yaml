@@ -21,3 +21,8 @@ spec:
       # The kopf peering object will be created by ceph controller.
       kopf:
         enabled: false
+      osdpl:
+        settings:
+          helm2to3:
+            raw:
+              TILLER_NAMESPACE: osh-system
