@@ -64,7 +64,6 @@ spec:
           conf:
             neutron:
               DEFAULT:
-                # to match Calico tunnel value within container operations
                 global_physnet_mtu: 1480
     orchestration:
       heat:
