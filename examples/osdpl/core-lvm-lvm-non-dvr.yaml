@@ -26,6 +26,7 @@ spec:
         cinder:
           blockstore:
             default: true
+            backend_name: lvm:lvm
     ssl:
       public_endpoints:
         api_cert: |-
