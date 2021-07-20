@@ -21,7 +21,7 @@ spec:
         ovs:
           node_selector_key: virtualbmc
           node_selector_value: enabled
-    version: 0.1.0-mcp-2668
+    version: 0.1.0-mcp-2739
   - chart: osh-infra/libvirt
     name: vbmc-libvirt
     namespace: openstack-vbmc
@@ -46,7 +46,7 @@ spec:
       manifests:
         network_policy: false
       dependencies: {}
-    version: 0.1.0-mcp-2668
+    version: 0.1.0-mcp-2739
   - chart: osh-infra/vbmc
     name: vbmc-virtualbmc
     namespace: openstack-vbmc
@@ -157,7 +157,7 @@ spec:
       network:
         sshd:
           enabled: true
-    version: 0.1.0-mcp-2668
+    version: 0.1.0-mcp-2739
   repositories:
   - name: osh-infra
     url: https://binary.mirantis.com/openstack/helm/openstack-helm-infra
