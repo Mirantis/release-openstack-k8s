@@ -41,9 +41,6 @@ spec:
       live_migration_interface: ens3
       images:
         backend: ceph
-    stacklight:
-      user:
-        password: stacklight
   # enabled services and their specific configuration
   services:
     networking:

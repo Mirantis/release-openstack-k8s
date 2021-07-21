@@ -49,9 +49,6 @@ spec:
           enabled: true
           cipher: "aes-xts-plain64"
           key_size: 256
-    stacklight:
-      user:
-        password: stacklight
   # enabled services and their specific configuration
   services:
     networking:
