@@ -30,6 +30,8 @@ spec:
         enabled: false
       openstack:
         enabled: true
+      tungstenFabricMonitoring:
+        enabled: false
       ceph:
         enabled: true
       calico:
@@ -45,80 +47,3 @@ spec:
           postgresql: "lvp-fake-root"
           prometheusAlertManager: "lvp-fake-root"
           prometheusServer: "lvp-fake-root"
----
-# Temporary expose Alerta UI
-apiVersion: v1
-kind: Service
-metadata:
-  name: alerta-lb
-  namespace: stacklight
-spec:
-  selector:
-    app: alerta
-    release: alerta
-  ports:
-    - port: 80
-      targetPort: http
-  type: LoadBalancer
----
-# Temporary expose Alertmanager UI
-apiVersion: v1
-kind: Service
-metadata:
-  name: prometheus-alertmanager-lb
-  namespace: stacklight
-spec:
-  selector:
-    app: prometheus
-    component: alertmanager
-    release: prometheus
-  ports:
-    - port: 80
-      targetPort: 9093
-  type: LoadBalancer
----
-# Temporary expose Grafana UI
-apiVersion: v1
-kind: Service
-metadata:
-  name: grafana-lb
-  namespace: stacklight
-spec:
-  selector:
-    app: grafana
-    release: grafana
-  ports:
-    - port: 80
-      targetPort: grafana
-  type: LoadBalancer
----
-# Temporary expose Kibana UI
-apiVersion: v1
-kind: Service
-metadata:
-  name: kibana-lb
-  namespace: stacklight
-spec:
-  selector:
-    app: kibana
-    release: kibana
-  ports:
-    - port: 80
-      targetPort: kibana
-  type: LoadBalancer
----
-# Temporary expose Prometheus UI
-apiVersion: v1
-kind: Service
-metadata:
-  name: prometheus-server-lb
-  namespace: stacklight
-spec:
-  selector:
-    app: prometheus
-    component: server
-    release: prometheus
-  ports:
-    - port: 80
-      targetPort: 9090
-  type: LoadBalancer
