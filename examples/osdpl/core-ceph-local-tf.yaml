@@ -35,6 +35,10 @@ spec:
       images:
         backend: local
     # TODO(vsaienko): drop when enabled by default in TF preset
+    stacklight:
+      enabled: true
+      user:
+        password: stacklight
   # enabled services and their specific configuration
   services:
     networking:

@@ -52,6 +52,9 @@ spec:
       live_migration_interface: ens3
       images:
         backend: local
+    stacklight:
+      user:
+        password: stacklight
   # enabled services and their specific configuration
   services:
     networking:
