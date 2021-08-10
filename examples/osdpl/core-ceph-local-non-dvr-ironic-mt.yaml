@@ -9,6 +9,7 @@ spec:
   openstack_version: ussuri
   preset: compute
   size: tiny
+  internal_domain_name: cluster.local
   public_domain_name: it.just.works
   features:
     services:
