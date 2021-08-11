@@ -93,10 +93,3 @@ spec:
             heat:
               clients_heat:
                 insecure: true
-    load-balancer:
-      octavia:
-        values:
-          conf:
-            octavia:
-              api_settings:
-                default_provider_driver: amphora

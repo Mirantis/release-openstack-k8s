@@ -79,13 +79,6 @@ spec:
                 # NOTE(vsaienko): change default volume type to let tempest
                 # always use lvm
                 default_volume_type: lvm
-    load-balancer:
-      octavia:
-        values:
-          conf:
-            octavia:
-              api_settings:
-                default_provider_driver: amphora
     tempest:
       tempest:
         values:
