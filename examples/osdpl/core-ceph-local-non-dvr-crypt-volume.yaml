@@ -60,7 +60,7 @@ spec:
           bootstrap:
             volume_types:
               volumes-hdd-luks:
-                raw_properties:
+                arguments:
                   encryption-cipher: aes-xts-plain64
                   encryption-control-location: front-end
                   encryption-key-size: 256
