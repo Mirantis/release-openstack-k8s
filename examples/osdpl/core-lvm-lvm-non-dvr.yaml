@@ -91,3 +91,10 @@ spec:
                 # NOTE(vsaienko): change default volume type to let tempest
                 # always use lvm
                 default_volume_type: lvm
+    tempest:
+      tempest:
+        values:
+          conf:
+            tempest:
+              volume_feature_enabled:
+                instance_locality_enabled: true

@@ -86,3 +86,10 @@ spec:
             octavia:
               api_settings:
                 default_provider_driver: amphora
+    tempest:
+      tempest:
+        values:
+          conf:
+            tempest:
+              volume_feature_enabled:
+                instance_locality_enabled: true
