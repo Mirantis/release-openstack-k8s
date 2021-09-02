@@ -16,7 +16,7 @@ spec:
   releases:
   - name: stacklight
     chart: stacklight/stacklight
-    version: 0.1.2-mcp-492
+    version: 0.1.2-mcp-574
     namespace: stacklight
     values:
       clusterSize: small
@@ -24,7 +24,8 @@ spec:
         dockerBaseUrl: mirantis.azurecr.io
         helmBaseUrl: https://binary.mirantis.com
       createHelmBundleCRD: false
-      deployController: false
+      helmController:
+        enabled: false
       highAvailabilityEnabled: true
       nginxExporter:
         enabled: false
