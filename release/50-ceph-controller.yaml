@@ -10,7 +10,7 @@ spec:
   releases:
   - chart: ceph/ceph-operator
     name: ceph-operator
-    version: 1.0.0-mcp-396
+    version: 1.0.0-mcp-398
     namespace: osh-system
     values:
       global:
