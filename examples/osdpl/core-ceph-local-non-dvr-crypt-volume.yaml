@@ -86,6 +86,5 @@ spec:
           conf:
             blacklist:
               # NOTE(ohryhorov): volume transfer is not supported for encrypted volumes
-              - (?:tempest.api.volume.admin.test_volumes_actions.VolumesActionsTest)
               - (?:tempest.api.volume.test_volume_transfers.VolumesTransfersTest)
               - (?:tempest.api.volume.admin.test_volume_quotas.VolumeQuotasAdminTestJSON.test_quota_usage_after_volume_transfer)
