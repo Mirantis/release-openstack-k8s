@@ -16,7 +16,7 @@ spec:
   releases:
   - name: stacklight
     chart: stacklight/stacklight
-    version: 0.1.2-mcp-574
+    version: 0.1.2-mcp-595
     namespace: stacklight
     values:
       clusterSize: small
