@@ -4,6 +4,8 @@ metadata:
   name: cephcluster
   namespace: ceph-lcm-mirantis
 spec:
+  rookConfig:
+    osd_pool_default_size: "1"
   network:
     hostNetwork: true
     clusterNet: 10.11.0.0/24
