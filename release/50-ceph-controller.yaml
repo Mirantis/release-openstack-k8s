@@ -17,4 +17,4 @@ spec:
         dockerBaseUrl: mirantis.azurecr.io
       images:
         cephController:
-          tag: v1.0.0-20211007114552
+          tag: v1.0.0-20211013104642
