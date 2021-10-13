@@ -2,3 +2,4 @@ export DOCKER_UCP_VERSION=3.3.12
 export TRYMOS_VERSION=master
 export DOCKER_UCP_IMAGE=mirantis.azurecr.io/lcm/docker/ucp:${DOCKER_UCP_VERSION}
 export DOCKER_EE_URL=https://storebits.docker.com/ubuntu
+export MIRANTIS_ARTIFACTORY_URL=https://binary.mirantis.com
