@@ -1,0 +1,95 @@
+apiVersion: lcm.mirantis.com/v1alpha1
+kind: OpenStackDeployment
+metadata:
+  name: osh-dev
+  namespace: openstack
+  labels: {}
+  annotations: {}
+spec:
+  openstack_version: victoria
+  preset: compute
+  size: tiny
+  internal_domain_name: cluster.local
+  public_domain_name: it.just.works
+  features:
+    ssl:
+      public_endpoints:
+        api_cert: |-
+          # Update server certificate content
+        api_key: |-
+          # Update server private key content
+        ca_cert: |-
+          # Update CA certificate content
+    glance:
+      signature:
+        enabled: true
+        certificate_validation: false
+    neutron:
+      tunnel_interface: ens3
+      external_networks:
+        - physnet: physnet1
+          interface: veth-phy
+          bridge: br-ex
+          network_types:
+           - flat
+          vlan_ranges: null
+          mtu: null
+      floating_network:
+        enabled: True
+        physnet: physnet1
+        subnet:
+          range: 10.11.12.0/24
+          pool_start: 10.11.12.100
+          pool_end: 10.11.12.200
+          gateway: 10.11.12.11
+    nova:
+      live_migration_interface: ens3
+      images:
+        backend: local
+    stacklight:
+      user:
+        password: stacklight
+  # enabled services and their specific configuration
+  services:
+    networking:
+      neutron:
+        values:
+          conf:
+            neutron:
+              DEFAULT:
+                global_physnet_mtu: 1480
+    block-storage:
+      cinder:
+        values:
+          bootstrap:
+            volume_types:
+              volumes-hdd-luks:
+                arguments:
+                  encryption-cipher: aes-xts-plain64
+                  encryption-control-location: front-end
+                  encryption-key-size: 256
+                  encryption-provider: luks
+                volume_backend_name: volumes-hdd
+          conf:
+            cinder:
+              DEFAULT:
+                # NOTE(ohryhorov): change default volume type to let tempest
+                # always use encrypted volume
+                default_volume_type: volumes-hdd-luks
+
+    orchestration:
+      heat:
+        values:
+          conf:
+            heat:
+              clients_heat:
+                insecure: true
+    tempest:
+      tempest:
+        values:
+          conf:
+            blacklist:
+                # NOTE(ohryhorov): classes below are skipped because of encrypted
+                # volume type is used.
+              - (?:tempest.api.volume.admin.test_volumes_actions.VolumesActionsTest)
+              - (?:tempest.api.volume.test_volume_transfers.VolumesTransfersTest)
