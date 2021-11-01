@@ -52,9 +52,6 @@ spec:
   objectStorage:
     rgw:
       dataPool:
-        erasureCoded:
-          codingChunks: 0
-          dataChunks: 0
         failureDomain: host
         replicated:
           size: 1
