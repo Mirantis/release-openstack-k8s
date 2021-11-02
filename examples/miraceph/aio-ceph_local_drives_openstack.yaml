@@ -8,7 +8,7 @@ spec:
     osd_pool_default_size: "1"
   hyperconverge:
     tolerations:
-      all:
+      osd:
         rules:
         - key: "com.docker.ucp.manager"
           operator: "Exists"
