@@ -10,8 +10,9 @@ spec:
   releases:
   - chart: tf/tungstenfabric-operator
     name: tungstenfabric-operator
-    version: 0.5.2
+    version: 0.5.3
     namespace: tf
+    helmV3: true
     values:
       global:
         dockerBaseUrl: mirantis.azurecr.io
