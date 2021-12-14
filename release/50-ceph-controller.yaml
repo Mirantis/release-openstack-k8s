@@ -10,8 +10,9 @@ spec:
   releases:
   - chart: ceph/ceph-operator
     name: ceph-operator
-    version: 1.0.0-mcp-526
+    version: 1.0.0-mcp-606
     namespace: osh-system
     values:
       global:
         dockerBaseUrl: mirantis.azurecr.io
+      waitForOpenstackLock: "true"
