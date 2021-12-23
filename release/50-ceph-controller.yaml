@@ -16,3 +16,6 @@ spec:
       global:
         dockerBaseUrl: mirantis.azurecr.io
       waitForOpenstackLock: "true"
+      images:
+        cephController:
+          tag: v1.0.0-20211223111137
