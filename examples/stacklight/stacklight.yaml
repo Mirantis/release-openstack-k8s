@@ -10,13 +10,11 @@ metadata:
   name: stacklight
   namespace: stacklight
 spec:
-  repositories:
-  - name: stacklight
-    url: https://binary.mirantis.com/stacklight/helm
   releases:
   - name: stacklight
-    chart: stacklight/stacklight
-    version: 0.1.2-mcp-595
+    helmV3: true
+    chartURL: https://binary.mirantis.com/stacklight/helm/stacklight-0.3.1.tgz
+    version: 0.3.1
     namespace: stacklight
     values:
       clusterSize: small
