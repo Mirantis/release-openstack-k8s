@@ -18,4 +18,4 @@ spec:
       waitForOpenstackLock: "true"
       images:
         cephController:
-          tag: v1.0.0-20211229182231
+          tag: v1.0.0-20220131120116
