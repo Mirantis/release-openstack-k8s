@@ -96,3 +96,6 @@ spec:
                 # NOTE(akovpak): multiattach tests are not supported for encrypted volumes
               - (?:tempest.api.compute.volumes.test_attach_volume.AttachVolumeMultiAttachTest)
               - (?:tempest.api.compute.admin.test_volumes_negative.UpdateMultiattachVolumeNegativeTest)
+                # NOTE(ohryhorov): the tests below are skiped until PRODX-20816 is fixed.
+              - (?:tempest.api.compute.admin.test_auto_allocate_network.AutoAllocateNetworkTest.test_server_multi_create_auto_allocate)
+              - (?:tempest.api.compute.admin.test_auto_allocate_network.AutoAllocateNetworkTest.test_server_create_no_allocate)
