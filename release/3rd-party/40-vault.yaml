@@ -20,6 +20,8 @@ spec:
       replicaCount: 3
       labels:
         application: vault
+      nodeSelector:
+        openstack-control-plane: enabled
       vault:
         config:
           listener:

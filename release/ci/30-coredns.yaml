@@ -14,6 +14,8 @@ spec:
         repository: mirantis.azurecr.io/openstack/extra/coredns
         tag: "1.6.9"
       isClusterService: false
+      nodeSelector:
+        openstack-control-plane: enabled
       servers:
       - zones:
         - zone: .
