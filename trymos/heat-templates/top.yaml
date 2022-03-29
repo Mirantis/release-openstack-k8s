@@ -29,7 +29,7 @@ parameters:
     default: 'stable-19.03'
   docker_ucp_image:
     type: string
-    default: 'mirantis.azurecr.io/lcm/docker/ucp:3.3.6'
+    default: 'mirantis.azurecr.io/lcm/docker/ucp:3.4.6'
   docker_ucp_swarm_data_port:
     type: string
     default: 4789
