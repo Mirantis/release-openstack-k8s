@@ -9,9 +9,9 @@ spec:
     url: https://binary.mirantis.com/openstack/helm/redis-operator
   releases:
   - name: os-redis-operator
-    chart: hub_stable/redisoperator
+    chart: hub_stable/redis-operator
     helmV3: true
-    version: 3.1.0-mcp-2
+    version: 3.1.6-mcp-2
     namespace: openstack-redis
     values:
       global:
@@ -19,7 +19,7 @@ spec:
       image:
         name: redis-operator
         repository: openstack/extra
-        tag: v1.0.0-20210421085347
+        tag: v1.1.1-20220415080339
       rbac:
         apiVersion: v1
         install: true
