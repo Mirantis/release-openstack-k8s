@@ -10,14 +10,15 @@ spec:
   releases:
   - name: openstack-operator
     chart: openstack-controller/openstack-operator
-    version: 0.8.3
+    helmV3: true
+    version: 0.9.0
     namespace: osh-system
     values:
       global:
         dockerBaseUrl: mirantis.azurecr.io
         helmBaseUrl: https://binary.mirantis.com
       image:
-        tag: 0.8.3
+        tag: 0.9.0
       # The kopf peering object will be created by ceph controller.
       kopf:
         enabled: false
