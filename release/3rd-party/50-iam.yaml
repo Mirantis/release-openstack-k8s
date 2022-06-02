@@ -683,7 +683,9 @@ spec:
                     "jsonType.label": "String"
 
         initUsers:
+          # these ones are for testing, remove them in production
           writer:
+            # writer password is password
             username: writer
             passwordSalt: "eRV7Mqct4IGGorsunKwjZA=="
             passwordHash: "5jXw+YMUHOgDeJsINHQ1btwaz1ZiGixfLAaTfxFo3piu6A82+Jh/KuafShO56D87xvn4F2cqFRTRNlqpf33Vsw=="
