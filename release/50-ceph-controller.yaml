@@ -16,3 +16,6 @@ spec:
       global:
         dockerBaseUrl: mirantis.azurecr.io
       waitForOpenstackLock: "true"
+      rookOperatorPlacement:
+        nodeSelector:
+          openstack-control-plane: enabled
