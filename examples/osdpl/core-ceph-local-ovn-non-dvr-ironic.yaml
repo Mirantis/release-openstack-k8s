@@ -1,0 +1,95 @@
+apiVersion: lcm.mirantis.com/v1alpha1
+kind: OpenStackDeployment
+metadata:
+  name: osh-dev
+  namespace: openstack
+  labels: {}
+  annotations: {}
+spec:
+  openstack_version: victoria
+  preset: compute
+  size: tiny
+  internal_domain_name: cluster.local
+  public_domain_name: it.just.works
+  features:
+    services:
+      - baremetal
+    ssl:
+      public_endpoints:
+        api_cert: |-
+          # Update server certificate content
+        api_key: |-
+          # Update server private key content
+        ca_cert: |-
+          # Update CA certificate content
+    neutron:
+      backend: ml2/ovn
+      tenant_network_types:
+        - vxlan
+        - flat
+      tunnel_interface: ens3
+      external_networks:
+        - physnet: physnet1
+          interface: veth-phy
+          bridge: br-ex
+          network_types:
+            - flat
+          vlan_ranges: null
+          mtu: null
+        - physnet: ironic
+          interface: ens7
+          bridge: ironic-pxe
+          network_types:
+            - flat
+          vlan_ranges: null
+      floating_network:
+        enabled: True
+        physnet: physnet1
+        subnet:
+          range: 10.11.12.0/24
+          pool_start: 10.11.12.100
+          pool_end: 10.11.12.200
+          gateway: 10.11.12.11
+    ironic:
+      provisioning_interface: ens7
+      baremetal_network_name: ironic-provisioning
+      networks:
+        baremetal:
+          physnet: ironic
+          name: ironic-provisioning
+          network_type: flat
+          external: true
+          shared: true
+          subnets:
+            - name: baremetal-subnet
+              range: 10.13.0.0/24
+              pool_start: 10.13.0.100
+              pool_end: 10.13.0.254
+              gateway: 10.13.0.11
+      agent_images:
+        base_url: https://binary.mirantis.com/openstack/bin/ironic/tinyipa
+        initramfs: tinyipa-stable-victoria-20210811124750.gz
+        kernel: tinyipa-stable-victoria-20210811124750.vmlinuz
+    nova:
+      live_migration_interface: ens3
+      images:
+        backend: local
+    stacklight:
+      user:
+        password: stacklight
+  # enabled services and their specific configuration
+  services:
+    networking:
+      neutron:
+        values:
+          conf:
+            neutron:
+              DEFAULT:
+                global_physnet_mtu: 1480
+    orchestration:
+      heat:
+        values:
+          conf:
+            heat:
+              clients_heat:
+                insecure: true
