@@ -6,7 +6,7 @@ metadata:
   labels: {}
   annotations: {}
 spec:
-  openstack_version: victoria
+  openstack_version: yoga
   preset: compute
   size: tiny
   internal_domain_name: cluster.local
