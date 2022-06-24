@@ -25,6 +25,7 @@ spec:
     neutron:
       backend: ml2/ovn
       tenant_network_types:
+        - geneve
         - vxlan
         - flat
       tunnel_interface: ens3
