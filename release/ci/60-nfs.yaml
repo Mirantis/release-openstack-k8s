@@ -1,0 +1,53 @@
+---
+kind: DaemonSet
+apiVersion: apps/v1
+metadata:
+  name: nfs-server
+spec:
+  selector:
+    matchLabels:
+      app: nfs-server
+  template:
+    metadata:
+      name: nfs-server
+      labels:
+        app: nfs-server
+    spec:
+      hostNetwork: true
+      nodeSelector:
+        openstack-compute-node: enabled
+      initContainers:
+        - name: init-share-permissions
+          image: mirantis.azurecr.io/openstack/extra/nfs-server:2.2.1
+          command:
+            - chown
+            - -R
+            - "1234:1234"
+            - /share
+          volumeMounts:
+            - mountPath: /share
+              name: nfs-vol
+      containers:
+        - name: nfs-server
+          image: mirantis.azurecr.io/openstack/extra/nfs-server:2.2.1
+          env:
+            - name: NFS_EXPORT_0
+              value: '/share  *(rw,sync,all_squash,no_subtree_check,anonuid=1234,anongid=1234,fsid=0)'
+            - name: NFS_LOG_LEVEL
+              value: DEBUG
+          volumeMounts:
+            - mountPath: /share
+              name: nfs-vol
+            - mountPath: /lib/modules
+              name: libmodules
+          securityContext:
+            privileged: true
+      volumes:
+        - name: nfs-vol
+          hostPath:
+            path: /var/lib/nfs-share
+            type: DirectoryOrCreate
+        - name: libmodules
+          hostPath:
+            path: /lib/modules
+            type: ""
