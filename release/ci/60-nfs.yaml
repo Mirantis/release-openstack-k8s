@@ -3,6 +3,7 @@ kind: DaemonSet
 apiVersion: apps/v1
 metadata:
   name: nfs-server
+  namespace: osh-system
 spec:
   selector:
     matchLabels:
