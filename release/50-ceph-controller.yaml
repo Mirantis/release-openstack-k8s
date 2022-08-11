@@ -11,6 +11,7 @@ spec:
   - chart: ceph/ceph-operator
     name: ceph-operator
     version: 1.0.0-mcp-894
+    helmV3: true
     namespace: osh-system
     values:
       global:
