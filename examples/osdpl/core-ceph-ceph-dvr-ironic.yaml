@@ -26,9 +26,9 @@ spec:
       tunnel_interface: stor-backend
       dvr:
         enabled:  True
-        # adding vxlan to tenant_network_types to allow creation of l3 ha networks
-        # as they are vxlan by default
-        tenant_network_types:
+      # adding vxlan to tenant_network_types to allow creation of l3 ha networks
+      # as they are vxlan by default
+      tenant_network_types:
         - vlan
         - vxlan
       external_networks:
