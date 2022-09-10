@@ -31,7 +31,8 @@ spec:
   releases:
   - name: openstack-iam
     chart: mirantis-iam/iam
-    version: 2.0.0
+    version: 2.4.32
+    helmV3: true
     namespace: iam
     values:
       global:
@@ -735,7 +736,8 @@ spec:
         service:
           type: LoadBalancer
         keycloak:
-          url: "http://openstack-iam-keyclo-http.iam.svc"
+          caEnabled: true
+          url: "https://openstack-iam-keyclo-http.iam.svc"
         # DNS DEV ONLY workaround
         extraVolumes: |
           - name: etc-hosts
