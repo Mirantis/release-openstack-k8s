@@ -8,6 +8,7 @@ spec:
   - name: coredns
     chartURL: https://binary.mirantis.com/kubernetes/helm/stable/coredns-1.10.1.tgz
     version: 1.10.1
+    helmV3: true
     namespace: coredns
     values:
       image:

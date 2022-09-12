@@ -10,7 +10,8 @@ spec:
   releases:
   - name: local-volume-provisioner
     chart: lvp/local-volume-provisioner
-    version: 1.0.4-mcp
+    version: 2.5.0-mcp
+    helmV3: true
     namespace: osh-system
     values:
       global:
