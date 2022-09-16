@@ -7,12 +7,12 @@ spec:
   features:
     database:
       backup:
-        sync:
-          conf:
-            user_uid: user_s3_backup
-            display_name: "User S3 backup"
-            access_key: NY23MEG99GR68XDO4IT3
-            secret_key: Pc5VMqfAnKIUD7AAXDVEZIW2Hp9sCkFAQkSNnqRh
+        sync_remote:
+          remotes:
+            openstack_rgw:
+              conf:
+                access_key_id: NY23MEG99GR68XDO4IT3
+                secret_access_key: Pc5VMqfAnKIUD7AAXDVEZIW2Hp9sCkFAQkSNnqRh
     ssl:
       public_endpoints:
         api_cert: |-

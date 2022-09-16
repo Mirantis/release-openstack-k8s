@@ -14,10 +14,20 @@ spec:
   features:
     database:
       backup:
+        # deploy with suspended cronjob
+        enabled: false
         # Add configuration for S3
-        sync:
-          conf:
-            bucket_name: s3backup
+        sync_remote:
+          enabled: true
+          remotes:
+            openstack_rgw:
+              path: s3backup
+              conf:
+                type: s3
+                provider: Ceph
+                endpoint: https://openstack-store.it.just.works/
+                access_key_id: "change_access_key"
+                secret_access_key: "change_secret_key"
     ssl:
       public_endpoints:
         api_cert: |-
