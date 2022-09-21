@@ -6,4 +6,3 @@ metadata:
 spec:
   settings:
     orchestrator: openstack
-    dataStorageClass: lvp-fake-root
