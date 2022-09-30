@@ -37,6 +37,9 @@ parameters:
     default: 4789
   docker_default_address_pool:
     type: string
+  kubectl_version:
+    type: string
+    default: 1.21.12
   user_data_config:
     description: This is part of clout-config which denies to mount drive with label ephemeral0 to /mnt
     type: string
@@ -65,6 +68,7 @@ resources:
             $docker_ucp_image: { get_param: docker_ucp_image }
             $docker_ucp_swarm_data_port: { get_param: docker_ucp_swarm_data_port }
             $docker_default_address_pool: { get_param: docker_default_address_pool }
+            $kubectl_version: { get_param: kubectl_version }
 
   install_config_agent:
     type: "OS::Heat::MultipartMime"

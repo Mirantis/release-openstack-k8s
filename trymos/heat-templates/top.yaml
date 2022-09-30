@@ -26,7 +26,7 @@ parameters:
     default: 'https://storebits.docker.com/ubuntu'
   docker_ee_release:
     type: string
-    default: 'stable-19.03'
+    default: 'stable-20.10'
   docker_ucp_image:
     type: string
     default: 'mirantis.azurecr.io/lcm/docker/ucp:3.4.6'
@@ -42,6 +42,9 @@ parameters:
   dns_nameservers:
     type: json
     default: []
+  kubectl_version:
+    type: string
+    default: 1.21.12
 
 resources:
   keypair_name:
@@ -81,6 +84,7 @@ resources:
       accessible_subnet_id: { get_attr: [accessible_network, accessible_subnet_id]}
       public_net_id: { get_param: public_net_id }
       control_network_cidr: { get_param: control_network_cidr }
+      kubectl_version: { get_param: kubectl_version }
 
 outputs:
   ucp_ips:
