@@ -137,6 +137,14 @@ spec:
                 - "http://localhost:8000/"
                 - "http://localhost:8000"
               protocolMappers:
+                - name: "k8s"
+                  protocolMapper: "oidc-audience-mapper"
+                  protocol: "openid-connect"
+                  config:
+                    "id.token.claim": "false"
+                    "access.token.claim": "true"
+                    "included.client.audience": "k8s"
+
                 - name: "username"
                   protocolMapper: "oidc-usermodel-property-mapper"
                   protocol: "openid-connect"
@@ -149,7 +157,7 @@ spec:
                     "jsonType.label": "String"
 
                 - name: "iam_roles"
-                  protocolMapper: "oidc-script-based-protocol-mapper"
+                  protocolMapper: "script-iam-mapper.js"
                   protocol: "openid-connect"
                   config:
                     "userinfo.token.claim": "true"
@@ -157,58 +165,6 @@ spec:
                     "id.token.claim": "true"
                     "access.token.claim": "true"
                     "claim.name": "iam_roles"
-                    "script": |
-                      /**
-                       * Available variables:
-                       * user - the current user
-                       * realm - the current realm
-                       * token - the current token
-                       * userSession - the current userSession
-                       * keycloakSession - the current userSession
-                       */
-
-                      var forEach = Array.prototype.forEach;
-                      var ArrayList = Java.type("java.util.ArrayList");
-                      var JavaString = Java.type("java.lang.String");
-
-                      var res = new ArrayList();
-
-                      function processRole(roleModel) {
-                          var name = roleModel.getName();
-                          if (!res.contains(name)) {
-                              res.add(name);
-                          }
-                      }
-
-                      function processRoles(roles) {
-                          forEach.call(roles, function(roleModel) {
-                              if (user.hasRole(roleModel)) {
-                                  processRole(roleModel);
-                              }
-                          })
-                      }
-
-                      function filter(prefix) {
-                          res.removeIf(function(n){
-                              return (!n.startsWith(prefix));
-                          });
-                      }
-
-                      function openstack() {
-                          filter('m:os');
-                          return JavaString.join(';', res);
-                      }
-
-                      function k8s(prefix) {
-                          filter(prefix);
-                          return res;
-                      }
-
-                      // Process roles that are set to the user
-                      processRoles(realm.getRoles().toArray());
-
-                      // Prepare result
-                      k8s('m:k8s');
 
                 - name: "email verified"
                   protocol: "openid-connect"
@@ -249,7 +205,7 @@ spec:
                 - 'https://horizon.it.just.works/*'
               protocolMappers:
                 - name: "iam_roles"
-                  protocolMapper: "oidc-script-based-protocol-mapper"
+                  protocolMapper: "script-iam-mapper.js"
                   protocol: "openid-connect"
                   config:
                     "userinfo.token.claim": "true"
@@ -257,58 +213,6 @@ spec:
                     "id.token.claim": "true"
                     "access.token.claim": "true"
                     "claim.name": "iam_roles"
-                    "script": |
-                      /**
-                       * Available variables:
-                       * user - the current user
-                       * realm - the current realm
-                       * token - the current token
-                       * userSession - the current userSession
-                       * keycloakSession - the current userSession
-                       */
-
-                      var forEach = Array.prototype.forEach;
-                      var ArrayList = Java.type("java.util.ArrayList");
-                      var JavaString = Java.type("java.lang.String");
-
-                      var res = new ArrayList();
-
-                      function processRole(roleModel) {
-                          var name = roleModel.getName();
-                          if (!res.contains(name)) {
-                              res.add(name);
-                          }
-                      }
-
-                      function processRoles(roles) {
-                          forEach.call(roles, function(roleModel) {
-                              if (user.hasRole(roleModel)) {
-                                  processRole(roleModel);
-                              }
-                          })
-                      }
-
-                      function filter(prefix) {
-                          res.removeIf(function(n){
-                              return (!n.startsWith(prefix));
-                          });
-                      }
-
-                      function openstack() {
-                          filter('m:os');
-                          return JavaString.join(';', res);
-                      }
-
-                      function k8s(prefix) {
-                          filter(prefix);
-                          return res;
-                      }
-
-                      // Process roles that are set to the user
-                      processRoles(realm.getRoles().toArray());
-
-                      // Prepare result
-                      openstack();
 
                 - name: "Client ID"
                   protocolMapper: "oidc-usersessionmodel-note-mapper"
@@ -370,7 +274,7 @@ spec:
                     "jsonType.label": "String"
 
                 - name: "iam_roles"
-                  protocolMapper: "oidc-script-based-protocol-mapper"
+                  protocolMapper: "script-iam-mapper.js"
                   protocol: "openid-connect"
                   config:
                     "userinfo.token.claim": "true"
@@ -378,58 +282,6 @@ spec:
                     "id.token.claim": "true"
                     "access.token.claim": "true"
                     "claim.name": "iam_roles"
-                    "script": |
-                      /**
-                       * Available variables:
-                       * user - the current user
-                       * realm - the current realm
-                       * token - the current token
-                       * userSession - the current userSession
-                       * keycloakSession - the current userSession
-                       */
-
-                      var forEach = Array.prototype.forEach;
-                      var ArrayList = Java.type("java.util.ArrayList");
-                      var JavaString = Java.type("java.lang.String");
-
-                      var res = new ArrayList();
-
-                      function processRole(roleModel) {
-                          var name = roleModel.getName();
-                          if (!res.contains(name)) {
-                              res.add(name);
-                          }
-                      }
-
-                      function processRoles(roles) {
-                          forEach.call(roles, function(roleModel) {
-                              if (user.hasRole(roleModel)) {
-                                  processRole(roleModel);
-                              }
-                          })
-                      }
-
-                      function filter(prefix) {
-                          res.removeIf(function(n){
-                              return (!n.startsWith(prefix));
-                          });
-                      }
-
-                      function openstack() {
-                          filter('m:os');
-                          return JavaString.join(';', res);
-                      }
-
-                      function k8s(prefix) {
-                          filter(prefix);
-                          return res;
-                      }
-
-                      // Process roles that are set to the user
-                      processRoles(realm.getRoles().toArray());
-
-                      // Prepare result
-                      k8s('m:kaas');
 
                 - name: "email verified"
                   protocol: "openid-connect"
@@ -474,7 +326,7 @@ spec:
                     "jsonType.label": "String"
 
                 - name: "iam_roles"
-                  protocolMapper: "oidc-script-based-protocol-mapper"
+                  protocolMapper: "script-iam-mapper.js"
                   protocol: "openid-connect"
                   config:
                     "userinfo.token.claim": "true"
@@ -482,58 +334,6 @@ spec:
                     "id.token.claim": "true"
                     "access.token.claim": "true"
                     "claim.name": "iam_roles"
-                    "script": |
-                      /**
-                       * Available variables:
-                       * user - the current user
-                       * realm - the current realm
-                       * token - the current token
-                       * userSession - the current userSession
-                       * keycloakSession - the current userSession
-                       */
-
-                      var forEach = Array.prototype.forEach;
-                      var ArrayList = Java.type("java.util.ArrayList");
-                      var JavaString = Java.type("java.lang.String");
-
-                      var res = new ArrayList();
-
-                      function processRole(roleModel) {
-                          var name = roleModel.getName();
-                          if (!res.contains(name)) {
-                              res.add(name);
-                          }
-                      }
-
-                      function processRoles(roles) {
-                          forEach.call(roles, function(roleModel) {
-                              if (user.hasRole(roleModel)) {
-                                  processRole(roleModel);
-                              }
-                          })
-                      }
-
-                      function filter(prefix) {
-                          res.removeIf(function(n){
-                              return (!n.startsWith(prefix));
-                          });
-                      }
-
-                      function openstack() {
-                          filter('m:os');
-                          return JavaString.join(';', res);
-                      }
-
-                      function k8s(prefix) {
-                          filter(prefix);
-                          return res;
-                      }
-
-                      // Process roles that are set to the user
-                      processRoles(realm.getRoles().toArray());
-
-                      // Prepare result
-                      k8s('m:iam');
 
                 - name: "email verified"
                   protocol: "openid-connect"
@@ -595,7 +395,7 @@ spec:
                     "jsonType.label": "String"
 
                 - name: "iam_roles"
-                  protocolMapper: "oidc-script-based-protocol-mapper"
+                  protocolMapper: "script-iam-mapper.js"
                   protocol: "openid-connect"
                   config:
                     "userinfo.token.claim": "true"
@@ -603,63 +403,6 @@ spec:
                     "id.token.claim": "true"
                     "access.token.claim": "true"
                     "claim.name": "iam_roles"
-                    "script": |
-                      /**
-                       * Available variables:
-                       * user - the current user
-                       * realm - the current realm
-                       * token - the current token
-                       * userSession - the current userSession
-                       * keycloakSession - the current userSession
-                       */
-
-                      var forEach = Array.prototype.forEach;
-                      var ArrayList = Java.type("java.util.ArrayList");
-                      var JavaString = Java.type("java.lang.String");
-
-                      var res = new ArrayList();
-
-                      function processRole(roleModel) {
-                          var name = roleModel.getName();
-                          if (!res.contains(name)) {
-                              res.add(name);
-                          }
-                      }
-
-                      function processRoles(roles) {
-                          forEach.call(roles, function(roleModel) {
-                              if (user.hasRole(roleModel)) {
-                                  processRole(roleModel);
-                              }
-                          })
-                      }
-
-                      function filter(prefix) {
-                          res.removeIf(function(n){
-                              return (!n.startsWith(prefix));
-                          });
-                      }
-
-                      function openstack() {
-                          filter('m:os');
-                          return JavaString.join(';', res);
-                      }
-
-                      function k8s(prefix) {
-                          filter(prefix);
-                          return res;
-                      }
-
-                      function stacklight(prefix) {
-                          filter(prefix);
-                          return res;
-                      }
-
-                      // Process roles that are set to the user
-                      processRoles(realm.getRoles().toArray());
-
-                      // Prepare result
-                      stacklight('m:sl');
 
                 - name: "email verified"
                   protocol: "openid-connect"
@@ -701,12 +444,12 @@ spec:
           manifests:
             secret_dbadmin_password: true
             secret_sst_password: true
+        service:
+          type: LoadBalancer
         keycloak:
           persistence:
             deployMariadb: true
             dbVendor: mariadb
-          service:
-            type: LoadBalancer
           pvc:
             enabled: false
           ingress:
