@@ -20,3 +20,6 @@ spec:
       rookOperatorPlacement:
         nodeSelector:
           openstack-control-plane: enabled
+      images:
+        cephController:
+          tag: v1.0.0-20221024145202
