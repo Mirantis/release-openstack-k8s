@@ -84,5 +84,5 @@ spec:
         values:
           conf:
             tempest:
-              volume_feature_enabled:
+              volume-feature-enabled:
                 instance_locality_enabled: true
