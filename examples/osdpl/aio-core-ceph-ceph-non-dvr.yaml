@@ -41,6 +41,10 @@ spec:
           pool_end: 10.11.12.200
           gateway: 10.11.12.11
     nova:
+      console:
+        novnc:
+          tls:
+            enabled: true
       live_migration_interface: ens3
       images:
         backend: ceph
