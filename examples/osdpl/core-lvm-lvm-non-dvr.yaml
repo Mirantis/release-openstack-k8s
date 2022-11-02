@@ -96,5 +96,8 @@ spec:
         values:
           conf:
             tempest:
+              volume:
+                backend_names: volumes-hdd,lvm
               volume-feature-enabled:
                 instance_locality_enabled: true
+                multi_backend: true
