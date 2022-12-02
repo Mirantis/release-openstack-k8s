@@ -10,7 +10,7 @@ spec:
   releases:
   - chart: ceph/ceph-operator
     name: ceph-operator
-    version: 1.0.0-mcp-964
+    version: 1.0.0-mcc-2.22-3
     helmV3: true
     namespace: osh-system
     values:
@@ -20,6 +20,3 @@ spec:
       rookOperatorPlacement:
         nodeSelector:
           openstack-control-plane: enabled
-      images:
-        cephController:
-          tag: v1.0.0-20221024145202
