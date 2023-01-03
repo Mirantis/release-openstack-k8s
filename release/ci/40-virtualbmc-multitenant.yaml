@@ -25,7 +25,7 @@ spec:
         neutron:
           DEFAULT:
             support_sync_ovs_info: false
-    version: 0.1.0-mcp-2881
+    version: 0.1.0-mcp-2892
     helmV3: true
   - chart: osh-infra/libvirt
     name: vbmc-libvirt
@@ -51,7 +51,7 @@ spec:
       manifests:
         network_policy: false
       dependencies: {}
-    version: 0.1.0-mcp-2881
+    version: 0.1.0-mcp-2892
     helmV3: true
   - chart: osh-infra/vbmc
     name: vbmc-virtualbmc
@@ -163,7 +163,7 @@ spec:
       network:
         sshd:
           enabled: true
-    version: 0.1.0-mcp-2881
+    version: 0.1.0-mcp-2892
     helmV3: true
   repositories:
   - name: osh-infra
