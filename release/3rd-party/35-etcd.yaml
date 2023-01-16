@@ -10,7 +10,7 @@ spec:
   releases:
   - name: etcd-vault
     chart: osh-infra/etcd
-    version: 0.1.0-mcp-2240
+    version: 0.1.0-mcp-2897
     namespace: openstack-vault
     values:
       images:
