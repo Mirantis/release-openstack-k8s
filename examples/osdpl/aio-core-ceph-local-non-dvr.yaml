@@ -53,6 +53,13 @@ spec:
         password: stacklight
   # enabled services and their specific configuration
   services:
+    # TODO(vsaienko): remove when openstack-controller fixed.
+    memcached:
+      memcached:
+        values:
+          pod:
+            replicas:
+              server: 1
     networking:
       neutron:
         values:
