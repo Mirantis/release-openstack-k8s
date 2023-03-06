@@ -17,7 +17,7 @@ resources:
     type: OS::Neutron::Subnet
     properties:
       network: { get_resource: network }
-      enable_dhcp: true
+      enable_dhcp: false
       cidr: { get_param: control_network_cidr }
       dns_nameservers: { get_param: dns_nameservers }
 
