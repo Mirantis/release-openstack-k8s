@@ -69,9 +69,6 @@ spec:
               pool_start: 10.13.0.100
               pool_end: 10.13.0.254
               gateway: 10.13.0.11
-      agent_images:
-        initramfs: tinyipa-stable-victoria-20210811124750.gz
-        kernel: tinyipa-stable-victoria-20210811124750.vmlinuz
     nova:
       console:
         novnc:
