@@ -1,0 +1,68 @@
+apiVersion: lcm.mirantis.com/v1alpha1
+kind: OpenStackDeployment
+metadata:
+  name: osh-dev
+  namespace: openstack
+  labels: {}
+  annotations: {}
+spec:
+  openstack_version: victoria
+  preset: compute-tf
+  size: tiny
+  internal_domain_name: cluster.local
+  public_domain_name: it.just.works
+  features:
+    database:
+      backup:
+        # deploy cronjob in suspended state
+        enabled: false
+        backend: pv_nfs
+        pv_nfs:
+          server: 1.2.3.4
+          path: /
+    ssl:
+      public_endpoints:
+        api_cert: |-
+          # Update server certificate content
+        api_key: |-
+          # Update server private key content
+        ca_cert: |-
+          # Update CA certificate content
+    neutron:
+      # TODO(vsaienko): remove once PRODX-3463 fixed
+      backend: tungstenfabric
+      tunnel_interface: ens3
+      floating_network:
+        enabled: True
+        subnet:
+          range: 10.11.12.0/24
+          pool_start: 10.11.12.100
+          pool_end: 10.11.12.200
+          gateway: 10.11.12.11
+    nova:
+      console:
+        novnc:
+          tls:
+            enabled: true
+      live_migration_interface: ens3
+      images:
+        backend: local
+    stacklight:
+      user:
+        password: stacklight
+  # enabled services and their specific configuration
+  services:
+    networking:
+      neutron:
+        values:
+          conf:
+            neutron:
+              DEFAULT:
+                global_physnet_mtu: 1480
+    orchestration:
+      heat:
+        values:
+          conf:
+            heat:
+              clients_heat:
+                insecure: true
