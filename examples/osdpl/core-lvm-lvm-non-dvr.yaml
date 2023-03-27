@@ -21,6 +21,14 @@ spec:
                 lvm:
                   volume_group: cinder-vol
   features:
+    # LVM-LVM env will be deployed without Ceph support
+    # Cinder by default use Ceph as backup driver so we
+    # disable cinder backup for ceph less env
+    cinder:
+      volume:
+        enabled: false
+      backup:
+        enabled: false
     glance:
       backends:
         cinder:
@@ -101,7 +109,7 @@ spec:
           conf:
             tempest:
               volume:
-                backend_names: volumes-hdd,lvm
+                backend_names: lvm
               volume-feature-enabled:
                 instance_locality_enabled: true
                 multi_backend: true
