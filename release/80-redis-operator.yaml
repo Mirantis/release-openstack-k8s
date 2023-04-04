@@ -11,7 +11,7 @@ spec:
   - name: os-redis-operator
     chart: hub_stable/redis-operator
     helmV3: true
-    version: 3.1.6-mcp-6
+    version: 3.1.6-mcp-7
     namespace: openstack-redis
     values:
       global:
@@ -19,7 +19,7 @@ spec:
       image:
         name: redis-operator
         repository: openstack/extra
-        tag: v1.1.1-20230327123147
+        tag: v1.1.1-20230404112045
       rbac:
         apiVersion: v1
         install: true
@@ -31,10 +31,3 @@ spec:
               operator: In
               values:
               - enabled
-      resources:
-        requests:
-          cpu: 200m
-          memory: 256Mi
-        limits:
-          cpu: 400m
-          memory: 512Mi
