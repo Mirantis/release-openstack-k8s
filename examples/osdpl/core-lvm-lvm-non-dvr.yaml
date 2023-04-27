@@ -21,6 +21,8 @@ spec:
                 lvm:
                   volume_group: cinder-vol
   features:
+    services:
+      - cloudprober
     # LVM-LVM env will be deployed without Ceph support
     # Cinder by default use Ceph as backup driver so we
     # disable cinder backup for ceph less env

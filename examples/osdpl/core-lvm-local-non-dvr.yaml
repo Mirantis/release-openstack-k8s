@@ -21,6 +21,8 @@ spec:
                 lvm:
                   volume_group: nova-vol
   features:
+    services:
+      - cloudprober
     ssl:
       public_endpoints:
         api_cert: |-

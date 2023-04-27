@@ -18,6 +18,8 @@ spec:
           bgpvpn:
             enabled: true
   features:
+    services:
+      - cloudprober
     ssl:
       public_endpoints:
         api_cert: |-
