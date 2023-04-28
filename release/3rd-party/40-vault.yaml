@@ -6,11 +6,11 @@ metadata:
 spec:
   repositories:
   - name: banzaicloud
-    url: http://kubernetes-charts.banzaicloud.com/branch/master
+    url: http://kubernetes-charts.banzaicloud.com
   releases:
   - name: vault
     chart: banzaicloud/vault
-    version: 1.4.0
+    version: 1.4.1
     namespace: openstack-vault
     values:
       image:
