@@ -29,6 +29,14 @@ spec:
         enabled: false
       backup:
         enabled: false
+    database:
+      backup:
+        # deploy cronjob in suspended state
+        enabled: false
+        backend: pv_nfs
+        pv_nfs:
+          server: 1.2.3.4
+          path: /
     glance:
       backends:
         cinder:
