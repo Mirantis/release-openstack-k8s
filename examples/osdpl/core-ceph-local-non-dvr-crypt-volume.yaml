@@ -44,6 +44,9 @@ spec:
           tls:
             enabled: true
       live_migration_interface: ens3
+      libvirt:
+        tls:
+          enabled: true
       images:
         backend: local
     stacklight:

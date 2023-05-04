@@ -37,6 +37,9 @@ spec:
           tls:
             enabled: true
       live_migration_interface: vhost0
+      libvirt:
+        tls:
+          enabled: true
       images:
         backend: local
     # TODO(vsaienko): drop when enabled by default in TF preset
