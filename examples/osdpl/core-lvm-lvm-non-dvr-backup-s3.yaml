@@ -1,0 +1,135 @@
+apiVersion: lcm.mirantis.com/v1alpha1
+kind: OpenStackDeployment
+metadata:
+  name: osh-dev
+  namespace: openstack
+  labels: {}
+  annotations: {}
+spec:
+  openstack_version: victoria
+  preset: compute
+  size: tiny
+  internal_domain_name: cluster.local
+  public_domain_name: it.just.works
+  nodes:
+    openstack-compute-node::enabled:
+      features:
+        cinder:
+          volume:
+            backends:
+              lvm:
+                lvm:
+                  volume_group: cinder-vol
+  features:
+    # LVM-LVM env will be deployed without Ceph support
+    # Cinder by default use Ceph as backup driver so we
+    # disable cinder backup for ceph less env
+    cinder:
+      volume:
+        enabled: false
+      backup:
+        enabled: false
+    database:
+      backup:
+        # deploy with suspended cronjob
+        enabled: false
+        backend: hostpath
+        # Add configuration for S3
+        sync_remote:
+          enabled: true
+          remotes:
+            openstack_rgw:
+              path: s3backup
+              conf:
+                type: s3
+                provider: Ceph
+                endpoint: https://openstack-store.it.just.works/
+                access_key_id: "change_access_key"
+                secret_access_key: "change_secret_key"
+    glance:
+      backends:
+        cinder:
+          blockstore:
+            default: true
+            backend_name: lvm:lvm
+    ssl:
+      public_endpoints:
+        api_cert: |-
+          # Update server certificate content
+        api_key: |-
+          # Update server private key content
+        ca_cert: |-
+          # Update CA certificate content
+    neutron:
+      tunnel_interface: ens3
+      external_networks:
+        - physnet: physnet1
+          interface: veth-phy
+          bridge: br-ex
+          network_types:
+           - flat
+          vlan_ranges: null
+          mtu: null
+      floating_network:
+        enabled: True
+        physnet: physnet1
+        subnet:
+          range: 10.11.12.0/24
+          pool_start: 10.11.12.100
+          pool_end: 10.11.12.200
+          gateway: 10.11.12.11
+    nova:
+      console:
+        novnc:
+          tls:
+            enabled: true
+      live_migration_interface: ens3
+      libvirt:
+        tls:
+          enabled: true
+      images:
+        backend: lvm
+        lvm:
+          volume_group: "nova-vol"
+        encryption:
+          enabled: true
+          cipher: "aes-xts-plain64"
+          key_size: 256
+    stacklight:
+      user:
+        password: stacklight
+  # enabled services and their specific configuration
+  services:
+    networking:
+      neutron:
+        values:
+          conf:
+            neutron:
+              DEFAULT:
+                global_physnet_mtu: 1480
+    orchestration:
+      heat:
+        values:
+          conf:
+            heat:
+              clients_heat:
+                insecure: true
+    block-storage:
+      cinder:
+        values:
+          conf:
+            cinder:
+              DEFAULT:
+                # NOTE(vsaienko): change default volume type to let tempest
+                # always use lvm
+                default_volume_type: lvm
+    tempest:
+      tempest:
+        values:
+          conf:
+            tempest:
+              volume:
+                backend_names: lvm
+              volume-feature-enabled:
+                instance_locality_enabled: true
+                multi_backend: true
