@@ -10,13 +10,12 @@ spec:
   releases:
   - chart: ceph/ceph-operator
     name: ceph-operator
-    version: 1.0.0-mcc-master-1170
+    version: 1.0.0-mcc-2.24.0-1
     helmV3: true
     namespace: osh-system
     values:
       global:
         dockerBaseUrl: mirantis.azurecr.io
-      waitForOpenstackLock: "true"
       rookOperatorPlacement:
         nodeSelector:
           openstack-control-plane: enabled
