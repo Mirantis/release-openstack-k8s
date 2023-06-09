@@ -53,9 +53,11 @@ spec:
       name: openstack-store
       metadataPool:
         failureDomain: host
+        deviceClass: hdd
         replicated:
           size: 2
       dataPool:
+        deviceClass: hdd
         failureDomain: host
         erasureCoded:
           dataChunks: 2

@@ -57,6 +57,7 @@ spec:
   objectStorage:
     rgw:
       dataPool:
+        deviceClass: hdd
         failureDomain: host
         replicated:
           size: 1
@@ -68,6 +69,7 @@ spec:
       healthCheck:
         bucket: {}
       metadataPool:
+        deviceClass: hdd
         failureDomain: host
         replicated:
           size: 1
