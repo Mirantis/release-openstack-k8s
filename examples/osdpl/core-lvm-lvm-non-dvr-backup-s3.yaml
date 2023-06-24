@@ -30,7 +30,22 @@ spec:
       volume:
         enabled: false
       backup:
-        enabled: false
+        drivers:
+          s3-backup:
+            type: s3
+            enabled: true
+            endpoint_url: https://openstack-store.it.just.works/
+            store_bucket: change-to-actual-s3-bucket-name
+            store_access_key:
+              value_from:
+                secret_key_ref:
+                  key: access_key
+                  name: change_secret_name
+            store_secret_key:
+              value_from:
+                secret_key_ref:
+                  key: secret_key
+                  name: change_secret_name
     database:
       backup:
         # deploy with suspended cronjob
