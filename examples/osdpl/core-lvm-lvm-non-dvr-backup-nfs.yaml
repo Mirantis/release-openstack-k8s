@@ -30,7 +30,11 @@ spec:
       volume:
         enabled: false
       backup:
-        enabled: false
+        drivers:
+          nfs-backup:
+            type: nfs
+            enabled: true
+            backup_share: 1.2.3.4:/cinder_backup
     database:
       backup:
         # deploy cronjob in suspended state
@@ -38,7 +42,7 @@ spec:
         backend: pv_nfs
         pv_nfs:
           server: 1.2.3.4
-          path: /
+          path: /mariadb_backup_restore
     glance:
       backends:
         cinder:

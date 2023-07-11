@@ -18,6 +18,16 @@ spec:
       nodeSelector:
         openstack-compute-node: enabled
       initContainers:
+        - name: init-share-folders
+          image: mirantis.azurecr.io/openstack/extra/nfs-server:2.2.1
+          command:
+            - mkdir
+            - -p
+            - /share/mariadb_backup_restore
+            - /share/cinder_backup
+          volumeMounts:
+            - mountPath: /share
+              name: nfs-vol
         - name: init-share-permissions
           image: mirantis.azurecr.io/openstack/extra/nfs-server:2.2.1
           command:
@@ -33,7 +43,11 @@ spec:
           image: mirantis.azurecr.io/openstack/extra/nfs-server:2.2.1
           env:
             - name: NFS_EXPORT_0
-              value: '/share  *(rw,sync,all_squash,no_subtree_check,anonuid=1234,anongid=1234,fsid=0)'
+              value: '/share  *(rw,sync,no_root_squash,no_subtree_check,anonuid=1234,anongid=1234,fsid=0)'
+            - name: NFS_EXPORT_1
+              value: '/share/mariadb_backup_restore  *(rw,sync,all_squash,no_subtree_check,anonuid=1234,anongid=1234)'
+            - name: NFS_EXPORT_2
+              value: '/share/cinder_backup  *(rw,sync,no_root_squash,no_subtree_check,anonuid=1234,anongid=1234)'
             - name: NFS_LOG_LEVEL
               value: DEBUG
           volumeMounts:
