@@ -33,7 +33,7 @@ spec:
           command:
             - chown
             - -R
-            - "1234:1234"
+            - "42424:42424"
             - /share
           volumeMounts:
             - mountPath: /share
@@ -43,11 +43,11 @@ spec:
           image: mirantis.azurecr.io/openstack/extra/nfs-server:2.2.1
           env:
             - name: NFS_EXPORT_0
-              value: '/share  *(rw,sync,no_root_squash,no_subtree_check,anonuid=1234,anongid=1234,fsid=0)'
+              value: '/share  *(rw,sync,all_squash,no_subtree_check,anonuid=42424,anongid=42424,fsid=0)'
             - name: NFS_EXPORT_1
-              value: '/share/mariadb_backup_restore  *(rw,sync,all_squash,no_subtree_check,anonuid=1234,anongid=1234)'
+              value: '/share/mariadb_backup_restore  *(rw,sync)'
             - name: NFS_EXPORT_2
-              value: '/share/cinder_backup  *(rw,sync,no_root_squash,no_subtree_check,anonuid=1234,anongid=1234)'
+              value: '/share/cinder_backup  *(rw,sync)'
             - name: NFS_LOG_LEVEL
               value: DEBUG
           volumeMounts:
