@@ -13,8 +13,8 @@ spec:
   releases:
   - name: stacklight
     helmV3: true
-    chartURL: https://binary.mirantis.com/stacklight/helm/stacklight-0.9.3.tgz
-    version: 0.9.3
+    chartURL: https://binary.mirantis.com/stacklight/helm/stacklight-0.12.7.tgz
+    version: 0.12.7
     namespace: stacklight
     values:
       clusterSize: small
@@ -22,11 +22,14 @@ spec:
         dockerBaseUrl: mirantis.azurecr.io
         helmBaseUrl: https://binary.mirantis.com
       createHelmBundleCRD: false
+      exposeLoadBalancers: true
       helmController:
         enabled: false
       highAvailabilityEnabled: true
       openstack:
         enabled: true
+        cloudprober:
+          enabled: true
       tungstenFabricMonitoring:
         enabled: false
       ceph:
