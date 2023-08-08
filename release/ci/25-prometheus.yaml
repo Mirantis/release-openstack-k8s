@@ -1,0 +1,100 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: stacklight
+---
+apiVersion: lcm.mirantis.com/v1alpha1
+kind: HelmBundle
+metadata:
+  name: prometheus
+  namespace: stacklight
+spec:
+  releases:
+  - name: prometheus
+    helmV3: true
+    chartURL: https://binary.mirantis.com/stacklight/helm/prometheus-8.11.4-mcp-240.tgz
+    version: 8.11.4-mcp-240
+    namespace: stacklight
+    values:
+      alertmanager:
+        enabled: false
+      configmapReload:
+        image:
+          repository: mirantis.azurecr.io/stacklight/configmap-reload
+          tag: v0.8.0
+      httpProxyDiscovery:
+        checksum: null
+        enabled: false
+        secretName: cc-proxy
+        ssl: false
+      initChownData:
+        image:
+          repository: mirantis.azurecr.io/stacklight/alpine-utils
+          tag: 1-20230714023021
+      kubeStateMetrics:
+        enabled: false
+      nodeExporter:
+        enabled: false
+      pushgateway:
+        enabled: false
+      relay:
+        enabled: false
+      server:
+        extraArgs:
+          enable-feature: auto-gomaxprocs,memory-snapshot-on-shutdown
+          query.max-concurrency: 20
+          rules.alert.resend-delay: 2m
+          storage.tsdb.path: /data
+          storage.tsdb.retention.size: 15GB
+          storage.tsdb.retention.time: 15d
+        global:
+          scrape_interval: 15s
+          scrape_timeout: 10s
+        image:
+          repository: mirantis.azurecr.io/stacklight/prometheus
+          tag: v2.44.0
+        nodeSelector:
+          # deploy prometheus on dedicated tempest node present
+          # on all virtual environments
+          tempest: enabled
+        persistentVolume:
+          enabled: true
+          mountPath: /data
+          size: 16Gi
+          storageClass: lvp-fake-root
+        replicaCount: 1
+        resources:
+          limits:
+            cpu: 1000m
+            memory: 8Gi
+          requests:
+            cpu: 500m
+            memory: 2Gi
+        service:
+          type: LoadBalancer
+      serverFiles:
+        prometheus.yml:
+          scrape_configs:
+            openstack-cloudprober:
+              honor_timestamps: true
+              kubernetes_sd_configs:
+              - namespaces:
+                  names:
+                  - openstack
+                role: endpoints
+              metric_relabel_configs:
+              - action: keep
+                regex: cloudprober_success|cloudprober_total
+                source_labels:
+                - __name__
+              metrics_path: /metrics
+              relabel_configs:
+              - action: keep
+                regex: cloudprober;cloudprober
+                source_labels:
+                - __meta_kubernetes_service_name
+                - __meta_kubernetes_endpoint_port_name
+              scheme: http
+              scrape_interval: 15s
+              scrape_timeout: 10s
