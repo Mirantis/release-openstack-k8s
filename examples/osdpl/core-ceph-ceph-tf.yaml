@@ -44,11 +44,6 @@ spec:
           enabled: true
       images:
         backend: ceph
-    # TODO(vsaienko): drop when enabled by default in TF preset
-    stacklight:
-      enabled: true
-      user:
-        password: stacklight
     messaging:
       notifications:
         external:

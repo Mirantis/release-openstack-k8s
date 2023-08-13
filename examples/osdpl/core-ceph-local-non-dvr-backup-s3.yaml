@@ -67,9 +67,6 @@ spec:
           enabled: true
       images:
         backend: local
-    stacklight:
-      user:
-        password: stacklight
     messaging:
       notifications:
         external:

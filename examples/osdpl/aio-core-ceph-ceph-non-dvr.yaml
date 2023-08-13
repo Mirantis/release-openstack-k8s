@@ -51,9 +51,6 @@ spec:
           enabled: true
       images:
         backend: ceph
-    stacklight:
-      user:
-        password: stacklight
     messaging:
       notifications:
         external:
