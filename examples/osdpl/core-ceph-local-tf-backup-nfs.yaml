@@ -55,6 +55,16 @@ spec:
     stacklight:
       user:
         password: stacklight
+    messaging:
+      notifications:
+        external:
+          enabled: true
+          topics:
+          - external-consumer-A
+          # TODO(vsaienko): enable when 34580 is fixed
+          # - external-consumer-b
+          - ec-a
+          - ec-A
   # enabled services and their specific configuration
   services:
     networking:
