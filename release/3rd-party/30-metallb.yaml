@@ -1,36 +1,48 @@
+---
 apiVersion: lcm.mirantis.com/v1alpha1
 kind: HelmBundle
 metadata:
   name: metallb
   namespace: osh-system
 spec:
-  repositories:
-  - name: kaas
-    url: https://binary.mirantis.com/core/helm
   releases:
-  - name: metallb
-    chart: kaas/metallb
-    version: 1.19.1
+  - chart: kaas/metallb-crds
+    chartURL: https://binary.mirantis.com/core/helm/metallb-crds-1.37.20.tgz
+    helmV3: true
+    name: metallb-crds
     namespace: metallb
-    values:
-      global:
-        dockerBaseUrl: mirantis.azurecr.io
-        helmBaseUrl: https://binary.mirantis.com
-      configInline:
-        address-pools:
-        - name: openstack-default
-          protocol: layer2
-          # A list of IP address ranges over which MetalLB has
-          # authority. You can list multiple ranges in a single pool, they
-          # will all share the same settings. Each range can be either a
-          # CIDR prefix, or an explicit start-end range of IPs.
-          #addresses:
-          #- 198.51.100.0/24
-          #- 192.168.0.150-192.168.0.200
-          addresses:
-          - 10.172.1.100-10.172.1.255
-          avoid-buggy-ips: true
-          # (optional, default true) If false, MetalLB will not automatically
-          # allocate any address in this pool. Addresses can still explicitly
-          # be requested via loadBalancerIP or the address-pool annotation.
-          auto-assign: true
+    values: {}
+    version: 1.37.20
+  - chart: kaas/metallb
+    chartURL: https://binary.mirantis.com/core/helm/metallb-1.37.20.tgz
+    helmV3: true
+    name: metallb
+    namespace: metallb
+    requires:
+    - metallb-crds
+    values: {}
+    version: 1.37.20
+---
+apiVersion: metallb.io/v1beta1
+kind: IPAddressPool
+metadata:
+  creationTimestamp: null
+  name: openstack-default
+  namespace: metallb
+spec:
+  addresses:
+  - 10.172.1.100-10.172.1.255
+  autoAssign: true
+  avoidBuggyIPs: true
+status: {}
+---
+apiVersion: metallb.io/v1beta1
+kind: L2Advertisement
+metadata:
+  creationTimestamp: null
+  name: l2advertisement1
+  namespace: metallb
+spec:
+  ipAddressPools:
+  - openstack-default
+status: {}
