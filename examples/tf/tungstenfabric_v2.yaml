@@ -1,0 +1,8 @@
+apiVersion: operator.tf.mirantis.com/v2
+kind: TFOperator
+metadata:
+  name: openstack-tf
+  namespace: tf
+spec:
+  features:
+    ImagePreCaching: true
