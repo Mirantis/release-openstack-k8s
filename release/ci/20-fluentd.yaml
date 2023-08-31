@@ -10,7 +10,7 @@ spec:
   releases:
   - name: fluentd-infra
     chart: mirahub/fluentd-elasticsearch
-    version: "3.0.0-mcp-86"
+    version: "3.0.0-mcp-124"
     helmV3: true
     namespace: osh-system
     values:
