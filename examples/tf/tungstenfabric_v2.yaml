@@ -1,4 +1,4 @@
-apiVersion: operator.tf.mirantis.com/v2
+apiVersion: tf.mirantis.com/v2
 kind: TFOperator
 metadata:
   name: openstack-tf
