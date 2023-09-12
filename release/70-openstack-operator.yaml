@@ -17,6 +17,8 @@ spec:
       global:
         dockerBaseUrl: mirantis.azurecr.io
         helmBaseUrl: https://binary.mirantis.com
+        podNetworks:
+          - cidr: 192.168.0.0/16
       image:
         tag: 0.14.0
       # The kopf peering object will be created by ceph controller.
