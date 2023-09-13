@@ -31,7 +31,7 @@ spec:
   releases:
   - name: openstack-iam
     chart: mirantis-iam/iam
-    version: 2.5.5
+    version: 2.5.7
     helmV3: true
     namespace: iam
     values:
