@@ -13,8 +13,8 @@ spec:
   releases:
   - name: stacklight
     helmV3: true
-    chartURL: https://binary.mirantis.com/stacklight/helm/stacklight-0.12.7.tgz
-    version: 0.12.7
+    chartURL: https://binary.mirantis.com/stacklight/helm/stacklight-0.13.1.tgz
+    version: 0.13.1
     namespace: stacklight
     values:
       clusterSize: small
@@ -36,6 +36,8 @@ spec:
         enabled: true
       calico:
         enabled: false
+      nodeExporter:
+        port: 19100
       nodeSelector:
         default:
           role: stacklight
