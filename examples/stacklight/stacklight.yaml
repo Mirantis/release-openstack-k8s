@@ -31,7 +31,7 @@ spec:
         cloudprober:
           enabled: true
       tungstenFabricMonitoring:
-        enabled: false
+        enabled: true
       ceph:
         enabled: true
       calico:
