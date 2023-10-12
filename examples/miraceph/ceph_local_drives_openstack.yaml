@@ -63,7 +63,9 @@ spec:
           dataChunks: 2
           codingChunks: 1
       gateway:
-        instances: 2
+        # NOTE(vsaienko): rgw do not have synchronization, use 1 replica
+        # to avoid races in tests.
+        instances: 1
         allNodes: false
         port: 80
         securePort: 8443
