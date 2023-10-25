@@ -160,10 +160,11 @@ spec:
         network_policy: false
         job_activate_nodes: false
         configmap_ssh: true
+        secret_ca_bundle: true
       network:
         sshd:
           enabled: true
-    version: 0.1.0-mcp-2953
+    version: 0.1.0-mcp-2997
     helmV3: true
   repositories:
   - name: osh-infra
