@@ -160,7 +160,7 @@ spec:
         network_policy: false
         job_activate_nodes: false
         secret_ca_bundle: true
-    version: 0.1.0-mcp-2997
+    version: 0.1.0-mcp-3006
     helmV3: true
   repositories:
   - name: osh-infra

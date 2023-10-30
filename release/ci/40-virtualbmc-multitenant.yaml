@@ -164,7 +164,7 @@ spec:
       network:
         sshd:
           enabled: true
-    version: 0.1.0-mcp-2997
+    version: 0.1.0-mcp-3006
     helmV3: true
   repositories:
   - name: osh-infra
