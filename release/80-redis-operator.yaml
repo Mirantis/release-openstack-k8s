@@ -11,7 +11,7 @@ spec:
   - name: os-redis-operator
     chart: hub_stable/redis-operator
     helmV3: true
-    version: 3.2.8-mcp-7
+    version: 3.2.8-mcp-8
     namespace: openstack-redis
     values:
       global:
@@ -19,7 +19,7 @@ spec:
       image:
         name: redis-operator
         repository: openstack/extra
-        tag: v1.2.4-20230630051800
+        tag: v1.2.4-20231107105540
       rbac:
         apiVersion: v1
         install: true
