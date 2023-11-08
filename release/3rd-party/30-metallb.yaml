@@ -11,7 +11,10 @@ spec:
     helmV3: true
     name: metallb-crds
     namespace: metallb
-    values: {}
+    values:
+      global:
+        dockerBaseUrl: mirantis.azurecr.io
+        helmBaseUrl: https://binary.mirantis.com
     version: 1.37.20
   - chart: kaas/metallb
     chartURL: https://binary.mirantis.com/core/helm/metallb-1.37.20.tgz
@@ -20,5 +23,8 @@ spec:
     namespace: metallb
     requires:
     - metallb-crds
-    values: {}
+    values:
+      global:
+        dockerBaseUrl: mirantis.azurecr.io
+        helmBaseUrl: https://binary.mirantis.com
     version: 1.37.20
