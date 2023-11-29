@@ -4,12 +4,9 @@ metadata:
   name: vault
   namespace: osh-system
 spec:
-  repositories:
-  - name: banzaicloud
-    url: http://kubernetes-charts.banzaicloud.com
   releases:
   - name: vault
-    chart: banzaicloud/vault
+    chartURL: https://binary.mirantis.com/openstack/helm/vault/vault-1.4.1.tgz
     version: 1.4.1
     namespace: openstack-vault
     values:
