@@ -13,6 +13,10 @@ spec:
     version: 0.1.0-mcp-2905
     namespace: openstack-vault
     values:
+      conf:
+        etcd:
+          ETCD_ELECTION_TIMEOUT: 5000
+          ETCD_HEARTBEAT_INTERVAL: 500
       images:
         tags:
           etcd: mirantis.azurecr.io/openstack/extra/etcd:3.2.26
