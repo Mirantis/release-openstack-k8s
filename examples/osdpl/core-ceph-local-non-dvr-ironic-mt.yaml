@@ -71,6 +71,8 @@ spec:
               gateway: 10.13.0.11
     nova:
       console:
+        spice:
+          enabled: true
         novnc:
           tls:
             enabled: true
