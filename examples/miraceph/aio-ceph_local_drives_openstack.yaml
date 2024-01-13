@@ -4,6 +4,7 @@ metadata:
   name: cephcluster
   namespace: ceph-lcm-mirantis
 spec:
+  rookNamespace: rook-ceph
   rookConfig:
     osd_pool_default_size: "1"
   hyperconverge:

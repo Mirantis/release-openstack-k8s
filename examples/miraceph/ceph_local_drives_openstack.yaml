@@ -4,6 +4,7 @@ metadata:
   name: cephcluster
   namespace: ceph-lcm-mirantis
 spec:
+  rookNamespace: rook-ceph
   rookConfig:
     # IMPORTANT: for production change to 3 or remove.
     osd_pool_default_size: "2"
