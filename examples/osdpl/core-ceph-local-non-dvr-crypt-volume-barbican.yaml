@@ -108,10 +108,8 @@ spec:
           conf:
             blacklist:
                 # NOTE(ohryhorov): volume transfer is not supported for encrypted volumes
-              - (?:tempest.api.volume.test_volume_transfers.VolumesTransfersTest)
+              - (?:tempest.api.volume.test_volume_transfers)
               - (?:tempest.api.volume.admin.test_volume_quotas.VolumeQuotasAdminTestJSON.test_quota_usage_after_volume_transfer)
-              - (?:tempest.api.volume.test_volume_transfers.VolumesTransfersV355Test.test_create_list_delete_volume_transfer)
-              - (?:tempest.api.volume.test_volume_transfers.VolumesTransfersV355Test.test_create_get_list_accept_volume_transfer)
                 # NOTE(akovpak): multiattach tests are not supported for encrypted volumes
               - (?:tempest.api.compute.volumes.test_attach_volume.AttachVolumeMultiAttachTest)
               - (?:tempest.api.compute.admin.test_volumes_negative.UpdateMultiattachVolumeNegativeTest)
