@@ -98,3 +98,108 @@ spec:
               scheme: http
               scrape_interval: 15s
               scrape_timeout: 10s
+  # Deploy grafana together with prometheus, to make the same setup
+  # as used on bm environments to measure workload downtimes. Grafana
+  # is deployed without dashboards to decrease memory usage (sidecar
+  # containers disabled)
+  - name: grafana
+    chartURL: https://binary.mirantis.com/stacklight/helm/grafana-3.3.10-mcp-278.tgz
+    helmV3: true
+    namespace: stacklight
+    values:
+      adminPassword: admin
+      deploymentStrategy:
+        rollingUpdate:
+          maxUnavailable: 0
+        type: RollingUpdate
+      enableOpensearchDashboardsLinks: true
+      grafana.ini:
+        auth:
+          disable_login_form: true
+        auth.anonymous:
+          enabled: true
+          org_role: Admin
+        dashboards:
+          default_home_dashboard_path: /var/lib/grafana/dashboards/default/kubernetes-cluster.json
+      image:
+        repository: mirantis.azurecr.io/stacklight/grafana
+        tag: 10.3.1
+      initChownData:
+        image:
+          repository: mirantis.azurecr.io/stacklight/alpine-utils
+          tag: 1-20240126023019
+        securityContext:
+          capabilities:
+            drop:
+            - NET_RAW
+            - SYS_ADMIN
+          runAsNonRoot: false
+          runAsUser: 0
+      networkPolicy:
+        egress:
+        - {}
+        ingress:
+        - {}
+      nodeSelector:
+        # deploy grafana on dedicated tempest node present
+        # on all virtual environments
+        tempest: enabled
+      podAnnotations:
+        prometheus.io/port: "3000"
+        prometheus.io/scrape: "true"
+      podSecurityContext:
+        fsGroup: 472
+        runAsGroup: 472
+        runAsNonRoot: true
+        runAsUser: 472
+      rbac:
+        pspUseAppArmor: false
+      renderer:
+        enabled: false
+        image: mirantis.azurecr.io/stacklight/grafana-image-renderer:3-20231124023009
+        resources:
+          limits:
+            cpu: 200m
+            memory: 500Mi
+          requests:
+            cpu: 150m
+            memory: 50Mi
+        securityContext:
+          capabilities:
+            drop:
+            - NET_RAW
+            - SYS_ADMIN
+      replicas: 1
+      resources:
+        limits:
+          memory: 400Mi
+        requests:
+          cpu: 50m
+          memory: 200Mi
+      securityContext:
+        capabilities:
+          drop:
+          - NET_RAW
+          - SYS_ADMIN
+      service:
+        type: LoadBalancer
+      sidecar:
+        dashboards:
+          enabled: false
+          securityContext:
+            capabilities:
+              drop:
+              - NET_RAW
+              - SYS_ADMIN
+        datasources:
+          securityContext:
+            capabilities:
+              drop:
+              - NET_RAW
+              - SYS_ADMIN
+        image: mirantis.azurecr.io/stacklight/k8s-sidecar:1-20240126023019
+      sidecar_datasources:
+        prometheus:
+          isDefault: true
+          type: prometheus
+          url: http://prometheus-server
