@@ -65,13 +65,13 @@ spec:
           - ec-A
   # enabled services and their specific configuration
   services:
-    # TODO(vsaienko): remove when openstack-controller fixed.
-    memcached:
-      memcached:
+    # TODO(okononenko): remove when openstack-controller fixed.
+    coordination:
+      etcd:
         values:
           pod:
             replicas:
-              server: 1
+              etcd: 1
     networking:
       neutron:
         values:
