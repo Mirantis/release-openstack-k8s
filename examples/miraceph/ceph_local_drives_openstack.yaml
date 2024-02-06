@@ -78,14 +78,12 @@ spec:
           config:
             deviceClass: hdd
       roles: [mon, mgr]
-      crushPath:
     - name: Values.CHANGE_ME_node2_name
       devices:
         - name: sdb
           config:
             deviceClass: hdd
       roles: [mon, mgr]
-      crushPath:
     - name: Values.CHANGE_ME_node3_name
       devices:
         - name: sdb
