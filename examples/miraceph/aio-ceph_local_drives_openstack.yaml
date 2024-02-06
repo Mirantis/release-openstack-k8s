@@ -67,8 +67,6 @@ spec:
         instances: 1
         port: 80
         securePort: 8443
-      healthCheck:
-        bucket: {}
       metadataPool:
         deviceClass: hdd
         failureDomain: host
@@ -83,4 +81,3 @@ spec:
           config:
             deviceClass: hdd
       roles: [mon, mgr]
-      crushPath:
