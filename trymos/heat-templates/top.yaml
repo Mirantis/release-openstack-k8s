@@ -23,7 +23,7 @@ parameters:
     default: '10.10.1.0/16'
   docker_ee_url:
     type: string
-    default: 'https://storebits.docker.com/ubuntu'
+    default: 'https://repos.mirantis.com/ubuntu'
   docker_ee_release:
     type: string
     default: 'stable-20.10'
