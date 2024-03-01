@@ -1,0 +1,19 @@
+apiVersion: lcm.mirantis.com/v1alpha1
+kind: HelmBundle
+metadata:
+  name: drb-controller
+  namespace: openstack
+spec:
+  releases:
+  - name: drb-controller
+    chartURL: https://artifactory.mcp.mirantis.net/artifactory/binary-dev-kaas-local/openstack/helm/drb-controller/drb-controller-0.1.1-31.tgz
+    helmV3: true
+    version: 0.1.1-31
+    namespace: openstack
+    values:
+      global:
+        dockerBaseUrl: docker-dev-kaas-local.docker.mirantis.net
+      image:
+        repository: openstack/extra
+        name: drb-controller
+        tag: 0.1.0-20240301085854
