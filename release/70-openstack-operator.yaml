@@ -11,7 +11,7 @@ spec:
   - name: openstack-operator
     chart: openstack-controller/openstack-operator
     helmV3: true
-    version: 0.15.10
+    version: 0.16.0
     namespace: osh-system
     values:
       global:
@@ -20,7 +20,7 @@ spec:
         podNetworks:
           - cidr: 192.168.0.0/16
       image:
-        tag: 0.15.10
+        tag: 0.16.0
       # The kopf peering object will be created by ceph controller.
       kopf:
         enabled: false
