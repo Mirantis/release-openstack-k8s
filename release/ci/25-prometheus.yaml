@@ -98,6 +98,33 @@ spec:
               scheme: http
               scrape_interval: 15s
               scrape_timeout: 10s
+            openstack-neutron-portprober:
+              honor_timestamps: true
+              kubernetes_sd_configs:
+              - namespaces:
+                  names:
+                  - openstack
+                role: endpoints
+              metric_relabel_configs:
+              - action: labeldrop
+                regex: node
+              - action: keep
+                regex: portprober_arping_target_total|portprober_arping_target_success|portprober_arping_target_failure
+                source_labels:
+                - __name__
+              metrics_path: /
+              relabel_configs:
+              - action: keep
+                regex: neutron-portprober-exporter;qpp-exporter
+                source_labels:
+                - __meta_kubernetes_service_name
+                - __meta_kubernetes_endpoint_port_name
+              - source_labels:
+                - __meta_kubernetes_pod_node_name
+                target_label: node
+              scheme: http
+              scrape_interval: 15s
+              scrape_timeout: 10s
   # Deploy grafana together with prometheus, to make the same setup
   # as used on bm environments to measure workload downtimes. Grafana
   # is deployed without dashboards to decrease memory usage (sidecar
