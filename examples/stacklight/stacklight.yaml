@@ -30,6 +30,8 @@ spec:
         enabled: true
         cloudprober:
           enabled: true
+        portprober:
+          enabled: true
       tungstenFabricMonitoring:
         enabled: true
       ceph:
