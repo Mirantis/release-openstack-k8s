@@ -5,7 +5,7 @@ metadata:
   namespace: openstack-vbmc
 spec:
   releases:
-  - chart: osh-infra/openvswitch
+  - chartURL: https://binary.mirantis.com/openstack/helm/openstack-helm-infra/openvswitch-0.1.0-mcp-3094.tgz
     name: vbmc-openvswitch
     namespace: openstack-vbmc
     values:
@@ -15,8 +15,8 @@ spec:
         tags:
           dep_check: mirantis.azurecr.io/openstack/extra/kubernetes-entrypoint:v1.0.0-20200311160233
           image_repo_sync: mirantis.azurecr.io/openstack/extra/docker:17.07.0
-          openvswitch_db_server: mirantis.azurecr.io/general/openvswitch:2.13-focal-20221028120749
-          openvswitch_vswitchd: mirantis.azurecr.io/general/openvswitch:2.13-focal-20221028120749
+          openvswitch_db_server: mirantis.azurecr.io/general/openvswitch:2.17-jammy-20231018050930
+          openvswitch_vswitchd: mirantis.azurecr.io/general/openvswitch:2.17-jammy-20231018050930
       labels:
         ovs:
           node_selector_key: virtualbmc
@@ -25,9 +25,8 @@ spec:
         neutron:
           DEFAULT:
             support_sync_ovs_info: false
-    version: 0.1.0-mcp-2953
     helmV3: true
-  - chart: osh-infra/libvirt
+  - chartURL: https://binary.mirantis.com/openstack/helm/openstack-helm-infra/libvirt-0.1.0-mcp-3094.tgz
     name: vbmc-libvirt
     namespace: openstack-vbmc
     values:
@@ -47,13 +46,12 @@ spec:
         tags:
           dep_check: mirantis.azurecr.io/openstack/extra/kubernetes-entrypoint:v1.0.0-20200311160233
           image_repo_sync: mirantis.azurecr.io/openstack/extra/docker:17.07.0
-          libvirt: mirantis.azurecr.io/general/libvirt:6.0.0-focal-20221028120749
+          libvirt: mirantis.azurecr.io/general/libvirt:8.0.x-jammy-20240316092942
       manifests:
         network_policy: false
       dependencies: {}
-    version: 0.1.0-mcp-2953
     helmV3: true
-  - chart: osh-infra/vbmc
+  - chartURL: https://binary.mirantis.com/openstack/helm/openstack-helm-infra/vbmc-0.1.0-mcp-3095.tgz
     name: vbmc-virtualbmc
     namespace: openstack-vbmc
     values:
@@ -160,8 +158,4 @@ spec:
         network_policy: false
         job_activate_nodes: false
         secret_ca_bundle: true
-    version: 0.1.0-mcp-3006
     helmV3: true
-  repositories:
-  - name: osh-infra
-    url: https://binary.mirantis.com/openstack/helm/openstack-helm-infra
