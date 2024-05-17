@@ -60,9 +60,8 @@ spec:
       dataPool:
         deviceClass: hdd
         failureDomain: host
-        erasureCoded:
-          dataChunks: 2
-          codingChunks: 1
+        replicated:
+          size: 2
       gateway:
         # NOTE(vsaienko): rgw do not have synchronization, use 1 replica
         # to avoid races in tests.
