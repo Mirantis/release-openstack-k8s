@@ -107,3 +107,16 @@ spec:
             heat:
               clients_heat:
                 insecure: true
+    tempest:
+      tempest:
+        values:
+          conf:
+            # NOTE(vsaeinko): SKIP unless upstream issue is fixed https://bugs.launchpad.net/neutron/+bug/1995078
+            tempest:
+              validataion:
+                connect_method: fixed
+                network_for_ssh: ironic-provisioning
+              network-feature-enabled:
+                floating_ips: false
+            blacklist:
+              - (?:tempest.scenario.test_server_basic_ops.TestServerBasicOps)
