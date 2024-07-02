@@ -39,80 +39,80 @@ spec:
         dockerBaseUrl: mirantis.azurecr.io
         helmBaseUrl: https://binary.mirantis.com
       keycloak:
-        userFederation:
-          providers:
-            - displayName: "mirantis-ldap"
-              providerName: "ldap"
-              priority: 1
-              fullSyncPeriod: -1
-              changedSyncPeriod: -1
-              config:
-                pagination: "true"
-                debug: "false"
-                searchScope: "1"
-                connectionPooling: "true"
-                usersDn: "ou=people,o=mirantis,dc=mirantis,dc=net"
-                userObjectClasses: "person, organizationalPerson"
-                usernameLDAPAttribute: "uid"
-                rdnLDAPAttribute: "uid"
-                vendor: "ad"
-                editMode: "READ_ONLY"
-                uuidLDAPAttribute: "entryDN"
-                connectionUrl: "ldap://172.18.176.6:389"
-                syncRegistrations: "false"
-                authType: "none"
-          mappers:
-            - name: "username"
-              federationMapperType: "user-attribute-ldap-mapper"
-              federationProviderDisplayName: "mirantis-ldap"
-              config:
-                ldap.attribute: "uid"
-                user.model.attribute: "username"
-                is.mandatory.in.ldap: "true"
-                read.only: "true"
-                always.read.value.from.ldap: "false"
-            - name: "full name"
-              federationMapperType: "full-name-ldap-mapper"
-              federationProviderDisplayName: "mirantis-ldap"
-              config:
-                ldap.full.name.attribute: "cn"
-                read.only: "true"
-                write.only: "false"
-            - name: "last name"
-              federationMapperType: "user-attribute-ldap-mapper"
-              federationProviderDisplayName: "mirantis-ldap"
-              config:
-                ldap.attribute: "sn"
-                user.model.attribute: "lastName"
-                is.mandatory.in.ldap: "true"
-                read.only: "true"
-                always.read.value.from.ldap: "true"
-            - name: "email"
-              federationMapperType: "user-attribute-ldap-mapper"
-              federationProviderDisplayName: "mirantis-ldap"
-              config:
-                ldap.attribute: "mail"
-                user.model.attribute: "email"
-                is.mandatory.in.ldap: "false"
-                read.only: "true"
-                always.read.value.from.ldap: "true"
-            - name: "ldap-groups-mapper"
-              federationMapperType: "group-ldap-mapper"
-              federationProviderDisplayName: "mirantis-ldap"
-              config:
-                membership.attribute.type: "DN"
-                group.name.ldap.attribute: "cn"
-                preserve.group.inheritance: true
-                membership.user.ldap.attribute: "uid"
-                groups.dn: "ou=groups,o=mirantis,dc=mirantis,dc=net"
-                mode: "READ_ONLY"
-                user.roles.retrieve.strategy: "LOAD_GROUPS_BY_MEMBER_ATTRIBUTE"
-                groups.ldap.filter: "(cn=oscore-eng)"
-                ignore.missing.groups: false
-                membership.ldap.attribute: "member"
-                group.object.classes: "groupOfNames"
-                memberof.ldap.attribute: "memberOf"
-                drop.non.existing.groups.during.sync: "false"
+        #userFederation:
+        #  providers:
+        #    - displayName: "mirantis-ldap"
+        #      providerName: "ldap"
+        #      priority: 1
+        #      fullSyncPeriod: -1
+        #      changedSyncPeriod: -1
+        #      config:
+        #        pagination: "true"
+        #        debug: "false"
+        #        searchScope: "1"
+        #        connectionPooling: "true"
+        #        usersDn: "ou=people,o=mirantis,dc=mirantis,dc=net"
+        #        userObjectClasses: "person, organizationalPerson"
+        #        usernameLDAPAttribute: "uid"
+        #        rdnLDAPAttribute: "uid"
+        #        vendor: "ad"
+        #        editMode: "READ_ONLY"
+        #        uuidLDAPAttribute: "entryDN"
+        #        connectionUrl: "ldap://172.18.176.6:389"
+        #        syncRegistrations: "false"
+        #        authType: "none"
+        #  mappers:
+        #    - name: "username"
+        #      federationMapperType: "user-attribute-ldap-mapper"
+        #      federationProviderDisplayName: "mirantis-ldap"
+        #      config:
+        #        ldap.attribute: "uid"
+        #        user.model.attribute: "username"
+        #        is.mandatory.in.ldap: "true"
+        #        read.only: "true"
+        #        always.read.value.from.ldap: "false"
+        #    - name: "full name"
+        #      federationMapperType: "full-name-ldap-mapper"
+        #      federationProviderDisplayName: "mirantis-ldap"
+        #      config:
+        #        ldap.full.name.attribute: "cn"
+        #        read.only: "true"
+        #        write.only: "false"
+        #    - name: "last name"
+        #      federationMapperType: "user-attribute-ldap-mapper"
+        #      federationProviderDisplayName: "mirantis-ldap"
+        #      config:
+        #        ldap.attribute: "sn"
+        #        user.model.attribute: "lastName"
+        #        is.mandatory.in.ldap: "true"
+        #        read.only: "true"
+        #        always.read.value.from.ldap: "true"
+        #    - name: "email"
+        #      federationMapperType: "user-attribute-ldap-mapper"
+        #      federationProviderDisplayName: "mirantis-ldap"
+        #      config:
+        #        ldap.attribute: "mail"
+        #        user.model.attribute: "email"
+        #        is.mandatory.in.ldap: "false"
+        #        read.only: "true"
+        #        always.read.value.from.ldap: "true"
+        #    - name: "ldap-groups-mapper"
+        #      federationMapperType: "group-ldap-mapper"
+        #      federationProviderDisplayName: "mirantis-ldap"
+        #      config:
+        #        membership.attribute.type: "DN"
+        #        group.name.ldap.attribute: "cn"
+        #        preserve.group.inheritance: true
+        #        membership.user.ldap.attribute: "uid"
+        #        groups.dn: "ou=groups,o=mirantis,dc=mirantis,dc=net"
+        #        mode: "READ_ONLY"
+        #        user.roles.retrieve.strategy: "LOAD_GROUPS_BY_MEMBER_ATTRIBUTE"
+        #        groups.ldap.filter: "(cn=oscore-eng)"
+        #        ignore.missing.groups: false
+        #        membership.ldap.attribute: "member"
+        #        group.object.classes: "groupOfNames"
+        #        memberof.ldap.attribute: "memberOf"
+        #        drop.non.existing.groups.during.sync: "false"
         realm:
           name: "iam"
           realmRoles:
