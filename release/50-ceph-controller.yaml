@@ -4,13 +4,10 @@ metadata:
   name: ceph-operator
   namespace: osh-system
 spec:
-  repositories:
-  - name: ceph
-    url: https://binary.mirantis.com/ceph/helm/
   releases:
   - chart: ceph/ceph-operator
+    chartURL: https://binary.mirantis.com/ceph/helm/ceph-operator-1.0.0-mcc-2.26.4-1.tgz
     name: ceph-operator
-    version: 1.0.0-mcc-2.26.4-1
     helmV3: true
     namespace: osh-system
     values:
