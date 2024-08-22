@@ -1,0 +1,403 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: iam-extra
+---
+apiVersion: v1
+data:
+# Keycloak password is ChangeMe123 and have to be changed in production deployment
+  keycloak_password: Q2hhbmdlTWUxMjM=
+  keycloakCA.pem: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUN5RENDQWJDZ0F3SUJBZ0lCQURBTkJna3Foa2lHOXcwQkFRc0ZBREFWTVJNd0VRWURWUVFERXdwcmRXSmwKY201bGRHVnpNQjRYRFRFNU1EY3hOVEV5TVRjek1Gb1hEVEk1TURjeE1qRXlNVGN6TUZvd0ZURVRNQkVHQTFVRQpBeE1LYTNWaVpYSnVaWFJsY3pDQ0FTSXdEUVlKS29aSWh2Y05BUUVCQlFBRGdnRVBBRENDQVFvQ2dnRUJBTUtzCjNjeFVOcjd1SXZJcG5ZQXU5aE0wM3pJZ3ljZHphcjFkZVNJVTJFWmtFdjIwUU9hNit3L3lVeFJoUUsxcEZob2sKY2VxVnVPbkduU1VXM1VmK212QWQwSWdDa0NVSVduRE9rWkU4M01oS1RhN0ZYWnBFWVNCcGpOd3ppTHlBZmZRQgpJWGRYczBaZjRSSG9TbW0ybXNKeTJpTDZ0S3pQV3JVSThpSklOS1k2ODdSdWJYN1dUeHZGVWQvQnk2Vk1nMUgvCkYzVUVpL1dHQkNyWWJXZVpoamsyMjJOLzVUMVBOa2haakxNNGw3dWtlZFVhSzJiOWJLc1JVN04vcDJmOWhoREoKK3gyYXJLbUdxR2tLa1JRblMvMTlObHdvbTJjU1U4ejM2bk9naEpIdjZoV0lNYlkvZFVUOHNHTGxML25TYTJkMAozOHJoRmhPcEIvdHUzV3U1ME5FQ0F3RUFBYU1qTUNFd0RnWURWUjBQQVFIL0JBUURBZ0trTUE4R0ExVWRFd0VCCi93UUZNQU1CQWY4d0RRWUpLb1pJaHZjTkFRRUxCUUFEZ2dFQkFDcFRGM0NURGFSVU9VbklLbzJwN3gvSHpKR00KRHdyUXF6S09KMUk0V3pldUdWTEo0T1VuOXdVN2pjZTJvTVlabU93KzJvcEc3Q3ZxTTJ4eDZBUWEyT3hxSnQ4RQpLb3F2aWlkcFRnWHFXaEFhUmJSR3NGMUl4RXdFZ2JpSTlzSDBmMHBRUlpCVlBLditMbk5sUW9pcDlaTWdvSEo4CmYyNVlTUEtCSGhNTEV2Q2RzV3k2WlJxU3g3bGswTksrTmlGZUwzWkRsa2lWdmVObWVqTTJPU3pzb3Yyd2tVdTMKSHZvL3VndzV0Tmh0WDdRMWlFeUUyYUZ2c21xRTFQVE9FM3pseTd4UkFMQVg4V1lENWxOYzBxR0Z2b2gzeCs3OQp1S1ZpNU1VUDQ4Vm9jNzJySjBuN2lhSzhkci9ieUw2UzVRejJQdUc5c2xiRFFyRG9hY0JleWpPNmhpUT0KLS0tLS1FTkQgQ0VSVElGSUNBVEUtLS0tLQo=
+# registration_api_token have to be chnaged in production chase deployment
+  registration_api_token: ZjlmMDM4MDI4ZjgyNTZhMjk4NjEyYjBkNTk3ZmQxNWFjNGVjZjMwZGU3ODEwZGFiMmMxZDQ0YjcxMDdmNzVjNA==
+  server.crt: IA==
+  server.pem: IA==
+kind: Secret
+metadata:
+  name: iam-api-secrets
+  namespace: iam-extra
+type: Opaque
+---
+apiVersion: lcm.mirantis.com/v1alpha1
+kind: HelmBundle
+metadata:
+  name: openstack-iam-extra
+  namespace: osh-system
+spec:
+  repositories:
+  - name: mirantis-iam
+    url:  "https://artifactory.mcp.mirantis.net/artifactory/binary-dev-kaas-virtual/iam/helm"
+  releases:
+  - name: openstack-iam
+    chart: mirantis-iam/iam
+    version: 2.5.7
+    helmV3: true
+    namespace: iam-extra
+    values:
+      global:
+        dockerBaseUrl: docker-dev-kaas-virtual.docker.mirantis.net
+        helmBaseUrl: https://artifactory.mcp.mirantis.net/artifactory/binary-dev-kaas-virtual
+      keycloak:
+        realm:
+          name: "iam-extra"
+          realmRoles:
+            k8s_managed_cluster_admin:
+              name: "m:k8s:managed@cluster-admin"
+              description: "K8S test role"
+          realmGroups:
+            oscore-eng:
+              name: "oscore-eng"
+              path: "/oscore-eng"
+              attributes: {}
+              realmRoles:
+                - "m:os2@admin"
+              clientRoles: {}
+              subGroups: []
+          clients:
+            - clientId: "k8s"
+              name: "m:k8s"
+              publicClient: "true"
+              directAccessGrantsEnabled: "true"
+              redirectUris:
+                - "http://localhost:8000/"
+                - "http://localhost:8000"
+              protocolMappers:
+                - name: "k8s"
+                  protocolMapper: "oidc-audience-mapper"
+                  protocol: "openid-connect"
+                  config:
+                    "id.token.claim": "false"
+                    "access.token.claim": "true"
+                    "included.client.audience": "k8s"
+
+                - name: "username"
+                  protocolMapper: "oidc-usermodel-property-mapper"
+                  protocol: "openid-connect"
+                  config:
+                    "userinfo.token.claim": "true"
+                    "user.attribute": "username"
+                    "id.token.claim": "true"
+                    "access.token.claim": "true"
+                    "claim.name": "preferred_username"
+                    "jsonType.label": "String"
+
+                - name: "iam_roles"
+                  protocolMapper: "script-iam-mapper.js"
+                  protocol: "openid-connect"
+                  config:
+                    "userinfo.token.claim": "true"
+                    "multivalued": "true"
+                    "id.token.claim": "true"
+                    "access.token.claim": "true"
+                    "claim.name": "iam_roles"
+
+                - name: "email verified"
+                  protocol: "openid-connect"
+                  protocolMapper: "oidc-usermodel-property-mapper"
+                  config:
+                    "userinfo.token.claim": "true"
+                    "user.attribute": "emailVerified"
+                    "id.token.claim": "true"
+                    "access.token.claim": "true"
+                    "claim.name": "email_verified"
+                    "jsonType.label": "boolean"
+
+                - name: "email"
+                  protocol: "openid-connect"
+                  protocolMapper: "oidc-usermodel-property-mapper"
+                  config:
+                    "userinfo.token.claim": "true"
+                    "user.attribute": "email"
+                    "id.token.claim": "true"
+                    "access.token.claim": "true"
+                    "claim.name": "email"
+                    "jsonType.label": "String"
+
+            - clientId: "os2"
+              name: "m:os2"
+              publicClient: "true"
+              implicitFlowEnabled: "true"
+              directAccessGrantsEnabled: "true"
+              adminUrl: 'https://keycloak-extra.it.just.works'
+              baseUrl: 'https://keycloak-extra.it.just.works'
+              webOrigins:
+                - 'https://horizon.it.just.works'
+                - 'https://keystone.it.just.works'
+              redirectUris:
+                - 'https://keystone.it.just.works/v3/auth/OS-FEDERATION/identity_providers/keycloak/protocols/mapped/websso/'
+                - 'https://horizon.it.just.works/*'
+              protocolMappers:
+                - name: "iam_roles"
+                  protocolMapper: "script-iam-mapper.js"
+                  protocol: "openid-connect"
+                  config:
+                    "userinfo.token.claim": "true"
+                    "multivalued": "true"
+                    "id.token.claim": "true"
+                    "access.token.claim": "true"
+                    "claim.name": "iam_roles"
+
+                - name: "Client ID"
+                  protocolMapper: "oidc-usersessionmodel-note-mapper"
+                  protocol: "openid-connect"
+                  config:
+                    "user.session.note": "clientId"
+                    "id.token.claim": "true"
+                    "access.token.claim": "true"
+                    "claim.name": "clientId"
+                    "jsonType.label": "String"
+
+                - name: "Client IP Address"
+                  protocolMapper: "oidc-usersessionmodel-note-mapper"
+                  protocol: "openid-connect"
+                  config:
+                    "user.session.note": "clientAddress"
+                    "id.token.claim": "true"
+                    "access.token.claim": "true"
+                    "claim.name": "clientAddress"
+                    "jsonType.label": "String"
+
+                - name: "iam_email"
+                  protocolMapper: "oidc-usermodel-property-mapper"
+                  protocol: "openid-connect"
+                  config:
+                    "user.attribute": "email"
+                    "id.token.claim": "true"
+                    "access.token.claim": "true"
+                    "claim.name": "iam_email"
+                    "userinfo.token.claim": "true"
+
+                - name: "iam_username"
+                  protocolMapper: "oidc-usermodel-property-mapper"
+                  protocol: "openid-connect"
+                  config:
+                    "user.attribute": "username"
+                    "id.token.claim": "true"
+                    "access.token.claim": "true"
+                    "claim.name": "iam_username"
+                    "userinfo.token.claim": "true"
+
+            - clientId: "kaas"
+              name: "m:kaas"
+              publicClient: "true"
+              directAccessGrantsEnabled: "true"
+              redirectUris:
+                - "http://localhost:8000/"
+                - "http://localhost:8000"
+              protocolMappers:
+                - name: "username"
+                  protocolMapper: "oidc-usermodel-property-mapper"
+                  protocol: "openid-connect"
+                  config:
+                    "userinfo.token.claim": "true"
+                    "user.attribute": "username"
+                    "id.token.claim": "true"
+                    "access.token.claim": "true"
+                    "claim.name": "preferred_username"
+                    "jsonType.label": "String"
+
+                - name: "iam_roles"
+                  protocolMapper: "script-iam-mapper.js"
+                  protocol: "openid-connect"
+                  config:
+                    "userinfo.token.claim": "true"
+                    "multivalued": "true"
+                    "id.token.claim": "true"
+                    "access.token.claim": "true"
+                    "claim.name": "iam_roles"
+
+                - name: "email verified"
+                  protocol: "openid-connect"
+                  protocolMapper: "oidc-usermodel-property-mapper"
+                  config:
+                    "userinfo.token.claim": "true"
+                    "user.attribute": "emailVerified"
+                    "id.token.claim": "true"
+                    "access.token.claim": "true"
+                    "claim.name": "email_verified"
+                    "jsonType.label": "boolean"
+
+                - name: "email"
+                  protocol: "openid-connect"
+                  protocolMapper: "oidc-usermodel-property-mapper"
+                  config:
+                    "userinfo.token.claim": "true"
+                    "user.attribute": "email"
+                    "id.token.claim": "true"
+                    "access.token.claim": "true"
+                    "claim.name": "email"
+                    "jsonType.label": "String"
+
+            - clientId: "iam"
+              name: "m:iam"
+              publicClient: "true"
+              directAccessGrantsEnabled: "true"
+              implicitFlowEnabled: "true"
+              redirectUris:
+                - "http://localhost:8000/"
+                - "http://localhost:8000"
+              protocolMappers:
+                - name: "username"
+                  protocolMapper: "oidc-usermodel-property-mapper"
+                  protocol: "openid-connect"
+                  config:
+                    "userinfo.token.claim": "true"
+                    "user.attribute": "username"
+                    "id.token.claim": "true"
+                    "access.token.claim": "true"
+                    "claim.name": "preferred_username"
+                    "jsonType.label": "String"
+
+                - name: "iam_roles"
+                  protocolMapper: "script-iam-mapper.js"
+                  protocol: "openid-connect"
+                  config:
+                    "userinfo.token.claim": "true"
+                    "multivalued": "true"
+                    "id.token.claim": "true"
+                    "access.token.claim": "true"
+                    "claim.name": "iam_roles"
+
+                - name: "email verified"
+                  protocol: "openid-connect"
+                  protocolMapper: "oidc-usermodel-property-mapper"
+                  config:
+                    "userinfo.token.claim": "true"
+                    "user.attribute": "emailVerified"
+                    "id.token.claim": "true"
+                    "access.token.claim": "true"
+                    "claim.name": "email_verified"
+                    "jsonType.label": "boolean"
+
+                - name: "email"
+                  protocol: "openid-connect"
+                  protocolMapper: "oidc-usermodel-property-mapper"
+                  config:
+                    "userinfo.token.claim": "true"
+                    "user.attribute": "email"
+                    "id.token.claim": "true"
+                    "access.token.claim": "true"
+                    "claim.name": "email"
+                    "jsonType.label": "String"
+
+            - clientId: "sl"
+              name: "m:sl"
+              publicClient: "true"
+              directAccessGrantsEnabled: "true"
+              implicitFlowEnabled: "true"
+              redirectUris:
+                - "http://localhost:5001/"
+                - "http://localhost:5001"
+                - "http://localhost:5002/"
+                - "http://localhost:5002"
+                - "http://localhost:5003/"
+                - "http://localhost:5003"
+                - "http://localhost:5004/"
+                - "http://localhost:5004"
+                - "http://localhost:5005/"
+                - "http://localhost:5005"
+
+              protocolMappers:
+                - name: "stacklight"
+                  protocolMapper: "oidc-audience-mapper"
+                  protocol: "openid-connect"
+                  config:
+                    "included.client.audience": "sl"
+                    "id.token.claim": "false"
+                    "access.token.claim": "true"
+
+                - name: "username"
+                  protocolMapper: "oidc-usermodel-property-mapper"
+                  protocol: "openid-connect"
+                  config:
+                    "userinfo.token.claim": "true"
+                    "user.attribute": "username"
+                    "id.token.claim": "true"
+                    "access.token.claim": "true"
+                    "claim.name": "preferred_username"
+                    "jsonType.label": "String"
+
+                - name: "iam_roles"
+                  protocolMapper: "script-iam-mapper.js"
+                  protocol: "openid-connect"
+                  config:
+                    "userinfo.token.claim": "true"
+                    "multivalued": "true"
+                    "id.token.claim": "true"
+                    "access.token.claim": "true"
+                    "claim.name": "iam_roles"
+
+                - name: "email verified"
+                  protocol: "openid-connect"
+                  protocolMapper: "oidc-usermodel-property-mapper"
+                  config:
+                    "userinfo.token.claim": "true"
+                    "user.attribute": "emailVerified"
+                    "id.token.claim": "true"
+                    "access.token.claim": "true"
+                    "claim.name": "email_verified"
+                    "jsonType.label": "boolean"
+
+                - name: "email"
+                  protocol: "openid-connect"
+                  protocolMapper: "oidc-usermodel-property-mapper"
+                  config:
+                    "userinfo.token.claim": "true"
+                    "user.attribute": "email"
+                    "id.token.claim": "true"
+                    "access.token.claim": "true"
+                    "claim.name": "email"
+                    "jsonType.label": "String"
+
+        initUsers:
+          # these ones are for testing, remove them in production
+          writer2:
+            # writer password is password
+            username: writer2
+            passwordSalt: "eRV7Mqct4IGGorsunKwjZA=="
+            passwordHash: "5jXw+YMUHOgDeJsINHQ1btwaz1ZiGixfLAaTfxFo3piu6A82+Jh/KuafShO56D87xvn4F2cqFRTRNlqpf33Vsw=="
+            email: "writer2@kaas.local"
+            realmRoles:
+              - "m:kaas@writer"
+              - "m:os2@admin"
+        mariadb:
+          volume:
+            enabled: true
+            class_name: lvp-fake-root
+          manifests:
+            secret_dbadmin_password: true
+            secret_sst_password: true
+        service:
+          type: LoadBalancer
+        keycloak:
+          persistence:
+            deployMariadb: true
+            dbVendor: mariadb
+          pvc:
+            enabled: false
+          ingress:
+            enabled: false
+            annotations:
+#              kubernetes.io/tls-acme: "true"
+#              nginx.ingress.kubernetes.io/backend-protocol: HTTP
+#              nginx.ingress.kubernetes.io/ssl-redirect: "true"
+              ingress.kubernetes.io/ssl-redirect: "true"
+              kubernetes.io/ingress.class: iam-ingress
+            hosts:
+              - "keycloak-extra.it.just.works"
+            tls:
+              - hosts:
+                  - "keycloak-extra.it.just.works"
+                secretName: tls-keycloak
+          extraVolumeMounts: |
+            - name: secrets
+              mountPath: /etc/x509/https/tls.crt
+              readOnly: true
+              subPath: server.crt
+            - name: secrets
+              mountPath: /etc/x509/https/tls.key
+              readOnly: true
+              subPath: server.pem
+      api:
+        enabled: false
