@@ -10,7 +10,7 @@ spec:
   releases:
   - chart: tf/tungstenfabric-operator
     name: tungstenfabric-operator
-    version: 0.15.5
+    version: 0.15.6
     namespace: tf
     helmV3: true
     values:
