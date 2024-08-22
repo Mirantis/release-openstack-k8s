@@ -1,0 +1,124 @@
+apiVersion: lcm.mirantis.com/v1alpha1
+kind: OpenStackDeployment
+metadata:
+  name: osh-dev
+  namespace: openstack
+  labels: {}
+  annotations: {}
+spec:
+  openstack_version: victoria
+  preset: compute
+  size: tiny
+  internal_domain_name: cluster.local
+  public_domain_name: it.just.works
+  features:
+    services:
+      - cloudprober
+    ssl:
+      public_endpoints:
+        api_cert: |-
+          # Update server certificate content
+        api_key: |-
+          # Update server private key content
+        ca_cert: |-
+          # Update CA certificate content
+    neutron:
+      tunnel_interface: ens3
+      external_networks:
+        - physnet: physnet1
+          interface: veth-phy
+          bridge: br-ex
+          network_types:
+           - flat
+          vlan_ranges: null
+          mtu: null
+      floating_network:
+        enabled: True
+        physnet: physnet1
+        subnet:
+          range: 10.11.12.0/24
+          pool_start: 10.11.12.100
+          pool_end: 10.11.12.200
+          gateway: 10.11.12.11
+    nova:
+      console:
+        spice:
+          enabled: true
+        novnc:
+          tls:
+            enabled: true
+      live_migration_interface: ens3
+      libvirt:
+        tls:
+          enabled: true
+      images:
+        backend: local
+    messaging:
+      notifications:
+        external:
+          enabled: true
+          topics:
+          - external-consumer-A
+          # TODO(vsaienko): enable when 34580 is fixed
+          # - external-consumer-b
+          - ec-a
+          - ec-A
+    keystone:
+      keycloak:
+        enabled: false
+      federation:
+        openid:
+          enabled: true
+          oidc:
+            OIDCOAuthSSLValidateServer: "On"
+            OIDCSSLValidateServer: "On"
+            OIDCScope: "openid email profile"
+          oidc_auth_type: oauth2
+          providers:
+            k1:
+              enabled: true
+              description: First Keycloak provider
+              issuer: https://keycloak.it.just.works/auth/realms/iam
+              token_endpoint: https://keycloak.it.just.works/auth/realms/iam/protocol/openid-connect/token
+              metadata:
+                client:
+                  client_id: os
+                conf: {}
+                provider:
+                  value_from:
+                    from_url:
+                      url: https://keycloak.it.just.works/auth/realms/iam/.well-known/openid-configuration
+              oauth2:
+                OAuth2TokenVerify: jwks_uri https://keycloak.it.just.works/auth/realms/iam/protocol/openid-connect/certs jwks_uri.ssl_verify=false
+              token_endpoint: https://keycloak.it.just.works/auth/realms/iam/protocol/openid-connect/token
+            k2:
+              enabled: true
+              description: Second Keycloak provider
+              issuer: https://keycloak-extra.it.just.works/auth/realms/iam-extra
+              metadata:
+                client:
+                  client_id: os2
+                conf: {}
+                provider:
+                  value_from:
+                    from_url:
+                      url: https://keycloak-extra.it.just.works/auth/realms/iam-extra/.well-known/openid-configuration
+              oauth2:
+                OAuth2TokenVerify: jwks_uri https://keycloak-extra.it.just.works/auth/realms/iam-extra/protocol/openid-connect/certs jwks_uri.ssl_verify=false
+              token_endpoint: https://keycloak-extra.it.just.works/auth/realms/iam-extra/protocol/openid-connect/token
+  # enabled services and their specific configuration
+  services:
+    networking:
+      neutron:
+        values:
+          conf:
+            neutron:
+              DEFAULT:
+                global_physnet_mtu: 1480
+    orchestration:
+      heat:
+        values:
+          conf:
+            heat:
+              clients_heat:
+                insecure: true
