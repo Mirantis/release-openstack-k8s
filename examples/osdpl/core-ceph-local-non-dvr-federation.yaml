@@ -79,7 +79,6 @@ spec:
               enabled: true
               description: First Keycloak provider
               issuer: https://keycloak.it.just.works/auth/realms/iam
-              token_endpoint: https://keycloak.it.just.works/auth/realms/iam/protocol/openid-connect/token
               metadata:
                 client:
                   client_id: os
@@ -90,7 +89,6 @@ spec:
                       url: https://keycloak.it.just.works/auth/realms/iam/.well-known/openid-configuration
               oauth2:
                 OAuth2TokenVerify: jwks_uri https://keycloak.it.just.works/auth/realms/iam/protocol/openid-connect/certs jwks_uri.ssl_verify=false
-              token_endpoint: https://keycloak.it.just.works/auth/realms/iam/protocol/openid-connect/token
             k2:
               enabled: true
               description: Second Keycloak provider
@@ -105,7 +103,6 @@ spec:
                       url: https://keycloak-extra.it.just.works/auth/realms/iam-extra/.well-known/openid-configuration
               oauth2:
                 OAuth2TokenVerify: jwks_uri https://keycloak-extra.it.just.works/auth/realms/iam-extra/protocol/openid-connect/certs jwks_uri.ssl_verify=false
-              token_endpoint: https://keycloak-extra.it.just.works/auth/realms/iam-extra/protocol/openid-connect/token
   # enabled services and their specific configuration
   services:
     networking:
