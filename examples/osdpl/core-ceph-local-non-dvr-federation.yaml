@@ -103,6 +103,29 @@ spec:
                       url: https://keycloak-extra.it.just.works/auth/realms/iam-extra/.well-known/openid-configuration
               oauth2:
                 OAuth2TokenVerify: jwks_uri https://keycloak-extra.it.just.works/auth/realms/iam-extra/protocol/openid-connect/certs jwks_uri.ssl_verify=false
+            o1:
+              enabled: true
+              description: OKTA provider
+              issuer: https://example.okta.com/oauth2/default
+              mapping:
+              - local:
+                - user:
+                    email: '{0}'
+                    name: '{0}'
+                - domain:
+                    name: Default
+                  groups: m:okta@admin
+                remote:
+                - type: OIDC-email
+              metadata:
+                conf: {}
+                client: {}
+                provider:
+                  value_from:
+                    from_url:
+                      url: https://example.okta.com/oauth2/default/.well-known/openid-configuration
+              oauth2:
+                OAuth2TokenVerify: jwks_uri https://example.okta.com/oauth2/default/v1/keys jwks_uri.ssl_verify=false
   # enabled services and their specific configuration
   services:
     networking:
