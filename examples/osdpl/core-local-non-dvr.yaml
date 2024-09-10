@@ -53,7 +53,7 @@ spec:
           pvcstore:
             default: true
             pvc:
-              size: 100Gi
+              size: 10Gi
               storage_class_name: lvp-fake-root
   # enabled services and their specific configuration
   services:
