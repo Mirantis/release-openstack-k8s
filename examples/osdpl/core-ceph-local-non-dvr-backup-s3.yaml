@@ -28,8 +28,10 @@ spec:
                 type: s3
                 provider: Ceph
                 endpoint: https://openstack-store.it.just.works/
+                server_side_encryption: aws:kms
                 access_key_id: "change_access_key"
                 secret_access_key: "change_secret_key"
+                sse_kms_key_id: "change_kms_key"
     ssl:
       public_endpoints:
         api_cert: |-
