@@ -4,14 +4,10 @@ metadata:
   name: openstack-operator
   namespace: osh-system
 spec:
-  repositories:
-  - name: openstack-controller
-    url: https://binary.mirantis.com/openstack/helm/openstack-controller
   releases:
   - name: openstack-operator
-    chart: openstack-controller/openstack-operator
+    chartURL: https://binary.mirantis.com/openstack/helm/openstack-controller/openstack-operator-0.16.12.tgz
     helmV3: true
-    version: 0.16.12
     namespace: osh-system
     values:
       global:
