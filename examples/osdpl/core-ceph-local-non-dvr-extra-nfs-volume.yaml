@@ -101,6 +101,8 @@ spec:
                 # NOTE: change default volume type to let tempest
                 # always use extra backend
                 default_volume_type: volumes-extra-nfs
+                # PRODX-46174
+                backup_restore_discard_zero_bytes: false
             enable_iscsi: true
           pod:
             security_context:
