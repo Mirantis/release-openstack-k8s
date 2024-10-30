@@ -10,7 +10,7 @@ spec:
   releases:
   - chart: ceph/ceph-operator
     name: ceph-operator
-    version: 1.0.0-mcc-2.27.3-10
+    version: 1.0.0-mcc-2.28.2-1
     helmV3: true
     namespace: osh-system
     values:
