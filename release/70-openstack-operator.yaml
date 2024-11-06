@@ -6,7 +6,7 @@ metadata:
 spec:
   releases:
   - name: openstack-operator
-    chartURL: https://binary.mirantis.com/openstack/helm/openstack-controller/openstack-operator-0.16.17.tgz
+    chartURL: https://binary.mirantis.com/openstack/helm/openstack-controller/openstack-operator-0.16.19.tgz
     helmV3: true
     namespace: osh-system
     values:
@@ -16,7 +16,7 @@ spec:
         podNetworks:
           - cidr: 192.168.0.0/16
       image:
-        tag: 0.16.17
+        tag: 0.16.19
       # The kopf peering object will be created by ceph controller.
       kopf:
         enabled: false
