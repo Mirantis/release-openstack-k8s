@@ -16,6 +16,8 @@ spec:
       - cloudprober
     database:
       backup:
+        encryption:
+          enabled: true
         # deploy cronjob in suspended state
         enabled: false
         backend: pv_nfs

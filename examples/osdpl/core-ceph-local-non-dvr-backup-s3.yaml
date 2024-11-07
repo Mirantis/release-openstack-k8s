@@ -16,6 +16,8 @@ spec:
       - cloudprober
     database:
       backup:
+        encryption:
+          enabled: true
         # deploy with suspended cronjob
         enabled: false
         # Add configuration for S3
