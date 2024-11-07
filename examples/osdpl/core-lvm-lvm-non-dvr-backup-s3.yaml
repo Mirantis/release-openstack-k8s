@@ -48,6 +48,8 @@ spec:
                   name: change_secret_name
     database:
       backup:
+        encryption:
+          enabled: true
         # deploy with suspended cronjob
         enabled: false
         backend: hostpath

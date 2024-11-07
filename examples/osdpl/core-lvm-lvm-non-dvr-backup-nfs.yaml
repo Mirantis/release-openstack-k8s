@@ -37,6 +37,8 @@ spec:
             backup_share: 1.2.3.4:/cinder_backup
     database:
       backup:
+        encryption:
+          enabled: true
         # deploy cronjob in suspended state
         enabled: false
         backend: pv_nfs
