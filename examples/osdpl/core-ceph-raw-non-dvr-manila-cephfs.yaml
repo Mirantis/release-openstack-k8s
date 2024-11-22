@@ -93,6 +93,15 @@ spec:
             heat:
               clients_heat:
                 insecure: true
+    shared-file-system:
+      manila:
+        values:
+          conf:
+            manila:
+              DEFAULT:
+                # NOTE: change default share type to let tempest
+                # always use cephfs backend
+                default_share_type: cephfsnative
     tempest:
       tempest:
         values:
