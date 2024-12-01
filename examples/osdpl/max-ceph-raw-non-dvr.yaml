@@ -1,0 +1,204 @@
+apiVersion: lcm.mirantis.com/v1alpha1
+kind: OpenStackDeployment
+metadata:
+  name: osh-dev
+  namespace: openstack
+  labels: {}
+  annotations: {}
+spec:
+  openstack_version: antelope
+  preset: compute
+  size: tiny
+  internal_domain_name: cluster.local
+  public_domain_name: it.just.works
+  features:
+    horizon:
+      motd:
+        info_after:
+          afterLogin: true
+          beforeLogin: false
+          level: info
+          message: info_message_after
+        warn_before:
+          afterLogin: false
+          beforeLogin: true
+          level: warning
+          message: warning_message_before
+    keystone:
+      keycloak:
+        enabled: false
+      federation:
+        openid:
+          enabled: true
+          oidc:
+            OIDCOAuthSSLValidateServer: "On"
+            OIDCSSLValidateServer: "On"
+            OIDCScope: "openid email profile"
+          oidc_auth_type: oauth2
+          providers:
+            k1:
+              enabled: true
+              description: First Keycloak provider
+              issuer: https://keycloak.it.just.works/auth/realms/iam
+              metadata:
+                client:
+                  client_id: os
+                conf: {}
+                provider:
+                  value_from:
+                    from_url:
+                      url: https://keycloak.it.just.works/auth/realms/iam/.well-known/openid-configuration
+              oauth2:
+                OAuth2TokenVerify: jwks_uri https://keycloak.it.just.works/auth/realms/iam/protocol/openid-connect/certs jwks_uri.ssl_verify=false
+            k2:
+              enabled: true
+              description: Second Keycloak provider
+              issuer: https://keycloak-extra.it.just.works/auth/realms/iam-extra
+              metadata:
+                client:
+                  client_id: os2
+                conf: {}
+                provider:
+                  value_from:
+                    from_url:
+                      url: https://keycloak-extra.it.just.works/auth/realms/iam-extra/.well-known/openid-configuration
+              oauth2:
+                OAuth2TokenVerify: jwks_uri https://keycloak-extra.it.just.works/auth/realms/iam-extra/protocol/openid-connect/certs jwks_uri.ssl_verify=false
+            o1:
+              enabled: true
+              description: OKTA provider
+              issuer: https://example.okta.com/oauth2/default
+              mapping:
+              - local:
+                - user:
+                    email: '{0}'
+                    name: '{0}'
+                - domain:
+                    name: Default
+                  groups: m:okta@admin
+                remote:
+                - type: OIDC-email
+              metadata:
+                conf: {}
+                client: {}
+                provider:
+                  value_from:
+                    from_url:
+                      url: https://example.okta.com/oauth2/default/.well-known/openid-configuration
+              oauth2:
+                OAuth2TokenVerify: jwks_uri https://example.okta.com/oauth2/default/v1/keys jwks_uri.ssl_verify=false
+    manila:
+      share:
+        backends:
+          cephfs:
+            type: statefulset
+            values:
+              conf:
+                manila:
+                  DEFAULT:
+                    enabled_share_backends: cephfsnative
+                  cephfsnative:
+                    share_backend_name: cephfsnative
+                    share_driver: manila.share.drivers.cephfs.driver.CephFSDriver
+    messaging:
+      notifications:
+        external:
+          enabled: true
+          topics:
+          - external-consumer-A
+          # TODO(vsaienko): enable when 34580 is fixed
+          # - external-consumer-b
+          - ec-a
+          - ec-A
+    neutron:
+      extensions:
+        dynamic_routing:
+          enabled: true
+        vpnaas:
+          enabled: true
+      external_networks:
+        - physnet: physnet1
+          interface: veth-phy
+          bridge: br-ex
+          network_types:
+           - flat
+          vlan_ranges: null
+          mtu: null
+      floating_network:
+        enabled: True
+        physnet: physnet1
+        subnet:
+          range: 10.11.12.0/24
+          pool_start: 10.11.12.100
+          pool_end: 10.11.12.200
+          gateway: 10.11.12.11
+      tunnel_interface: ens3
+    nova:
+      console:
+        spice:
+          enabled: true
+        novnc:
+          tls:
+            enabled: true
+      live_migration_interface: ens3
+      libvirt:
+        tls:
+          enabled: true
+      images:
+        backend: raw
+    services:
+    - alarming
+    - cloudprober
+    - instance-ha
+    - metering
+    - metric
+    - object-storage
+    - shared-file-system
+    ssl:
+      public_endpoints:
+        api_cert: |-
+          # Update server certificate content
+        api_key: |-
+          # Update server private key content
+        ca_cert: |-
+          # Update CA certificate content
+    telemetry:
+      mode: autoscaling
+  # enabled services and their specific configuration
+  services:
+    networking:
+      neutron:
+        values:
+          conf:
+            neutron:
+              DEFAULT:
+                global_physnet_mtu: 1480
+    orchestration:
+      heat:
+        values:
+          conf:
+            heat:
+              clients_heat:
+                insecure: true
+    shared-file-system:
+      manila:
+        values:
+          conf:
+            manila:
+              DEFAULT:
+                # NOTE: change default share type to let tempest
+                # always use cephfs backend
+                default_share_type: cephfsnative
+    tempest:
+      tempest:
+        values:
+          conf:
+            tempest:
+              share:
+                # cephfs is dhss false driver, multitenancy not supported
+                multitenancy_enabled: false
+                # NOTE(mkarpin): Do not run all share group tests till find a way to not run
+                #                only group tests which require snapshots
+                run_share_group_tests: false
+                # some tests require share type creation with proper protocol set
+                capability_storage_protocol: CEPHFS
