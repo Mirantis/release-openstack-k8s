@@ -110,8 +110,5 @@ spec:
               share:
                 # cephfs is dhss false driver, multitenancy not supported
                 multitenancy_enabled: false
-                # NOTE(mkarpin): Do not run all share group tests till find a way to not run
-                #                only group tests which require snapshots
-                run_share_group_tests: false
                 # some tests require share type creation with proper protocol set
                 capability_storage_protocol: CEPHFS
