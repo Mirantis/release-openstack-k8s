@@ -84,6 +84,7 @@ resources:
       flavor: { get_param: flavor }
       key_name: { get_param: key_name }
       availability_zone: nova
+      config_drive: true
       networks:
         - port: { get_resource: accessible_server_port }
       user_data_format: SOFTWARE_CONFIG
