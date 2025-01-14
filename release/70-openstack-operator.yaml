@@ -6,7 +6,7 @@ metadata:
 spec:
   releases:
   - name: openstack-operator
-    chartURL: https://binary.mirantis.com/openstack/helm/rockoon/rockoon-1.0.1.tgz
+    chartURL: https://binary.mirantis.com/openstack/helm/rockoon/rockoon-1.0.3.tgz
     helmV3: true
     namespace: osh-system
     values:
@@ -16,4 +16,4 @@ spec:
         podNetworks:
           - cidr: 192.168.0.0/16
       image:
-        tag: 1.0.1
+        tag: 1.0.3
