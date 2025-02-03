@@ -120,10 +120,17 @@ spec:
                 ipmi_username: admin
                 ipmi_password: password
                 ipmi_port: 6200
-              network_interface: 'flat'
+              network_interface: 'neutron'
               physnet: 'ironic'
               ports:
-                - pxe_enabled: true
+              - pxe_enabled: true
+                portgroup_uuid: pg0
+              - pxe_enabled: true
+                portgroup_uuid: pg0
+              portgroups:
+              - name: pg0
+                standalone_ports_supported: true
+                mode: balance-rr
             - driver: ipmi
               properties:
                 local_gb: 10
@@ -135,10 +142,17 @@ spec:
                 ipmi_username: admin
                 ipmi_password: password
                 ipmi_port: 6201
-              network_interface: 'flat'
+              network_interface: 'neutron'
               physnet: 'ironic'
               ports:
-                - pxe_enabled: true
+              - pxe_enabled: true
+                portgroup_uuid: pg0
+              - pxe_enabled: true
+                portgroup_uuid: pg0
+              portgroups:
+              - name: pg0
+                standalone_ports_supported: true
+                mode: balance-rr
             - driver: ipmi
               properties:
                 local_gb: 10
@@ -150,12 +164,23 @@ spec:
                 ipmi_username: admin
                 ipmi_password: password
                 ipmi_port: 6202
-              network_interface: 'flat'
+              network_interface: 'neutron'
               physnet: 'ironic'
               ports:
-                - pxe_enabled: true
+              - pxe_enabled: true
+                portgroup_uuid: pg0
+              - pxe_enabled: true
+                portgroup_uuid: pg0
+              portgroups:
+              - name: pg0
+                standalone_ports_supported: true
+                mode: balance-rr
       manifests:
         network_policy: false
         job_activate_nodes: false
+        configmap_ssh: true
         secret_ca_bundle: true
+      network:
+        sshd:
+          enabled: true
     helmV3: true
