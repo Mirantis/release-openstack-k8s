@@ -1,0 +1,107 @@
+apiVersion: lcm.mirantis.com/v1alpha1
+kind: OpenStackDeployment
+metadata:
+  name: osh-dev
+  namespace: openstack
+  labels: {}
+  annotations: {}
+spec:
+  openstack_version: victoria
+  preset: compute-tf
+  size: tiny
+  internal_domain_name: cluster.local
+  public_domain_name: it.just.works
+  features:
+    services:
+      - cloudprober
+      - shared-file-system
+    manila:
+      share:
+        backends:
+          cephfs:
+            type: statefulset
+            values:
+              conf:
+                manila:
+                  DEFAULT:
+                    enabled_share_backends: cephfsnative
+                  cephfsnative:
+                    share_backend_name: cephfsnative
+                    share_driver: manila.share.drivers.cephfs.driver.CephFSDriver
+    ssl:
+      public_endpoints:
+        api_cert: |-
+          # Update server certificate content
+        api_key: |-
+          # Update server private key content
+        ca_cert: |-
+          # Update CA certificate content
+    neutron:
+      # TODO(vsaienko): remove once PRODX-3463 fixed
+      backend: tungstenfabric
+      tunnel_interface: ens3
+      floating_network:
+        enabled: True
+        subnet:
+          range: 10.11.12.0/24
+          pool_start: 10.11.12.100
+          pool_end: 10.11.12.200
+          gateway: 10.11.12.11
+    nova:
+      console:
+        spice:
+          enabled: true
+        novnc:
+          tls:
+            enabled: true
+      live_migration_interface: vhost0
+      libvirt:
+        tls:
+          enabled: true
+      images:
+        backend: local
+    messaging:
+      notifications:
+        external:
+          enabled: true
+          topics:
+          - external-consumer-A
+          # TODO(vsaienko): enable when 34580 is fixed
+          # - external-consumer-b
+          - ec-a
+          - ec-A
+  # enabled services and their specific configuration
+  services:
+    networking:
+      neutron:
+        values:
+          conf:
+            neutron:
+              DEFAULT:
+                global_physnet_mtu: 1480
+    orchestration:
+      heat:
+        values:
+          conf:
+            heat:
+              clients_heat:
+                insecure: true
+    shared-file-system:
+      manila:
+        values:
+          conf:
+            manila:
+              DEFAULT:
+                # NOTE: change default share type to let tempest
+                # always use cephfs backend
+                default_share_type: cephfsnative
+    tempest:
+      tempest:
+        values:
+          conf:
+            tempest:
+              share:
+                # cephfs is dhss false driver, multitenancy not supported
+                multitenancy_enabled: false
+                # some tests require share type creation with proper protocol set
+                capability_storage_protocol: CEPHFS
