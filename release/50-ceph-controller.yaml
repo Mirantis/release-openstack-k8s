@@ -6,7 +6,7 @@ metadata:
 spec:
   releases:
   - chart: ceph/ceph-operator
-    chartURL: https://binary.mirantis.com/ceph/helm/ceph-operator-1.0.0-mcc-2.28.2-1.tgz
+    chartURL: https://binary.mirantis.com/ceph/helm/ceph-operator-1.0.0-mcc-2.29.0-7.tgz
     name: ceph-operator
     helmV3: true
     namespace: osh-system
