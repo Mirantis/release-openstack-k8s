@@ -82,10 +82,3 @@ spec:
             heat:
               clients_heat:
                 insecure: true
-    tempest:
-      tempest:
-        values:
-          conf:
-            blacklist:
-              # Unless upstream https://bugs.launchpad.net/neutron/+bug/2095807 known limitation of OVN + VLAN tenant networks and DVR.
-              - (?:octavia_tempest_plugin.tests.scenario.v2.test_traffic_ops.TrafficOperationsScenarioTest.test_source_ip_port_tcp_traffic)
