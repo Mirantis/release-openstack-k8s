@@ -1,0 +1,100 @@
+apiVersion: lcm.mirantis.com/v1alpha1
+kind: OpenStackDeployment
+metadata:
+  name: osh-dev
+  namespace: openstack
+  labels: {}
+  annotations: {}
+spec:
+  openstack_version: caracal
+  preset: compute
+  size: tiny
+  internal_domain_name: cluster.local
+  public_domain_name: it.just.works
+  features:
+    services:
+      - baremetal
+      - cloudprober
+    ssl:
+      public_endpoints:
+        api_cert: |-
+          # Update server certificate content
+        api_key: |-
+          # Update server private key content
+        ca_cert: |-
+          # Update CA certificate content
+    neutron:
+      backend: ml2/ovn
+      tunnel_interface: ens3
+      tenant_network_types:
+        - geneve
+        - vxlan
+      external_networks:
+        - physnet: physnet1
+          interface: veth-phy
+          bridge: br-ex
+          network_types:
+            - flat
+          vlan_ranges: null
+          mtu: null
+      floating_network:
+        enabled: True
+        physnet: physnet1
+        subnet:
+          range: 10.11.12.0/24
+          pool_start: 10.11.12.100
+          pool_end: 10.11.12.200
+          gateway: 10.11.12.11
+    ironic:
+      provisioning_interface: o-irc0
+      baremetal_network_name: ironic-provisioning
+      networks:
+        baremetal:
+          bind_deployment_services: true
+          name: ironic-provisioning
+          network_type: geneve
+          external: false
+          shared: false
+          subnets:
+            - name: baremetal-subnet
+              range: 10.13.0.0/24
+              pool_start: 10.13.0.100
+              pool_end: 10.13.0.254
+              gateway: 10.13.0.11
+    nova:
+      console:
+        spice:
+          enabled: true
+        novnc:
+          tls:
+            enabled: true
+      live_migration_interface: ens3
+      libvirt:
+        tls:
+          enabled: true
+      images:
+        backend: local
+  # enabled services and their specific configuration
+  services:
+    networking:
+      neutron:
+        values:
+          conf:
+            neutron:
+              DEFAULT:
+                global_physnet_mtu: 1480
+    orchestration:
+      heat:
+        values:
+          conf:
+            heat:
+              clients_heat:
+                insecure: true
+    tempest:
+      tempest:
+        values:
+          conf:
+            tempest:
+              baremetal_feature_enabled:
+                hybrid_topology_netA_network_types: geneve,vxlan
+                hybrid_topology_netB_network_types: geneve,vxlan
