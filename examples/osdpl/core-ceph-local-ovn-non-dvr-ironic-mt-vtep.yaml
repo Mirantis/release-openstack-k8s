@@ -57,10 +57,10 @@ spec:
           shared: false
           subnets:
             - name: baremetal-subnet
-              range: 10.13.0.0/24
-              pool_start: 10.13.0.100
-              pool_end: 10.13.0.254
-              gateway: 10.13.0.11
+              range: 192.168.100.0/24
+              pool_start: 192.168.100.100
+              pool_end: 192.168.100.254
+              gateway: 192.168.100.1
     nova:
       console:
         spice:
