@@ -30,7 +30,7 @@ spec:
         network_policy: false
       dependencies: {}
     helmV3: true
-  - chartURL: https://binary.mirantis.com/openstack/helm/openstack-helm-infra/vbmc-0.1.2+3138.tgz
+  - chartURL: https://binary.mirantis.com/openstack/helm/openstack-helm-infra/vbmc-0.1.2+3139.tgz
     name: vbmc-virtualbmc
     namespace: openstack-vbmc
     values:
