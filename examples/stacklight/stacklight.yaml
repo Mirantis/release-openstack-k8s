@@ -30,6 +30,10 @@ spec:
         enabled: true
         cloudprober:
           enabled: true
+        externalFQDNs:
+          enabled: true
+        insecure:
+          external: true
       tungstenFabricMonitoring:
         enabled: true
         analyticsEnabled: false
