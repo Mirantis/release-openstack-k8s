@@ -2,7 +2,7 @@
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: tiller
+  name: helm-controller
   namespace: osh-system
 roleRef:
   apiGroup: rbac.authorization.k8s.io
@@ -10,7 +10,7 @@ roleRef:
   name: cluster-admin
 subjects:
 - kind: ServiceAccount
-  name: tiller
+  name: helm-controller
   namespace: osh-system
 ---
 apiVersion: v1
@@ -30,7 +30,7 @@ spec:
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: tiller
+  name: helm-controller
   namespace: osh-system
 ---
 apiVersion: apps/v1
@@ -55,36 +55,10 @@ spec:
       labels:
         app: helm-controller
     spec:
-      serviceAccountName: tiller
+      serviceAccountName: helm-controller
       containers:
-      - name: tiller
-        args:
-        - --listen=localhost:44134
-        command:
-        - /tiller
-        env:
-        - name: TILLER_NAMESPACE
-          value: osh-system
-        - name: TILLER_HISTORY_MAX
-          value: "0"
-        image: mirantis.azurecr.io/lcm/helm/tiller:v2.16.11-40
-        imagePullPolicy: IfNotPresent
-        livenessProbe:
-          httpGet:
-            path: /liveness
-            port: 44135
-          initialDelaySeconds: 1
-          timeoutSeconds: 1
-        ports: []
-        readinessProbe:
-          httpGet:
-            path: /readiness
-            port: 44135
-          initialDelaySeconds: 1
-          timeoutSeconds: 1
-        resources: {}
       - name: controller
-        command: ["/helm-controller", "-host", "localhost:44134", "-home", "/helm"]
+        command: ["/bin/controller"]
         env:
         - name: TMPDIR
           value: /helm
@@ -97,7 +71,7 @@ spec:
             fieldRef:
               apiVersion: v1
               fieldPath: status.hostIP
-        image: mirantis.azurecr.io/lcm/lcm-controller:v0.3.0-285-g8498abe0
+        image: mirantis.azurecr.io/core/helm-controller:1.41.2
         securityContext:
           readOnlyRootFilesystem: true
         volumeMounts:
