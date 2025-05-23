@@ -41,6 +41,8 @@ spec:
           vbmc: mirantis.azurecr.io/openstack/extra/vbmc:v0.1-20210401063512
           vbmc_create_nodes: mirantis.azurecr.io/openstack/extra/vbmc:v0.1-20210401063512
           vbmc_enroll_nodes: mirantis.azurecr.io/openstack/heat:train-bionic-20200601180013
+          openvswitch_db_server: mirantis.azurecr.io/general/openvswitch:3.3-noble-src-20250523053641
+          openvswitch_vswitchd: mirantis.azurecr.io/general/openvswitch:3.3-noble-src-20250523053641
       endpoints:
         identity:
           namespace: openstack
