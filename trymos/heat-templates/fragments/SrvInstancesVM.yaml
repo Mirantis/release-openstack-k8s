@@ -11,6 +11,9 @@ parameters:
   image:
     type: string
     description: Name of image to use for servers
+  ansible_overrides:
+    type: string
+    default: "---"
   flavor:
     type: string
     description: Flavor to use for servers
@@ -26,20 +29,6 @@ parameters:
     default: 7200
   public_net_id:
     type: string
-  docker_ee_release:
-    type: string
-  docker_ee_url:
-    type: string
-  docker_ucp_image:
-    type: string
-  docker_ucp_swarm_data_port:
-    type: string
-    default: 4789
-  docker_default_address_pool:
-    type: string
-  kubectl_version:
-    type: string
-    default: 1.21.12
   user_data_config:
     description: This is part of clout-config which denies to mount drive with label ephemeral0 to /mnt
     type: string
@@ -61,20 +50,23 @@ resources:
           template: { get_file: ../scripts/instance_boot.sh }
           params:
             $wait_condition_notify: { get_attr: [ wait_handle, curl_cli ] }
-            $docker_ee_url: { get_param: docker_ee_url }
-            $docker_ee_release: { get_param: docker_ee_release }
-            $node_metadata: { get_param: metadata }
-            $control_network_cidr: { get_param: control_network_cidr }
-            $docker_ucp_image: { get_param: docker_ucp_image }
-            $docker_ucp_swarm_data_port: { get_param: docker_ucp_swarm_data_port }
-            $docker_default_address_pool: { get_param: docker_default_address_pool }
-            $kubectl_version: { get_param: kubectl_version }
+
+  inject_files:
+    type: "OS::Heat::CloudConfig"
+    properties:
+      cloud_config:
+        write_files:
+          - path: /srv/trymosk/rockoon/virtual_lab/ansible/inventory/ansible_overrides.yaml
+            owner: "root:root"
+            permissions: "0644"
+            content: {get_param: ansible_overrides}
 
   install_config_agent:
     type: "OS::Heat::MultipartMime"
     properties:
       parts:
       - config: {get_resource: software_config}
+      - config: {get_resource: inject_files}
       - config: {get_param: user_data_config}
 
   server:

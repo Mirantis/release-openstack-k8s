@@ -1,13 +1,7 @@
 #!/bin/bash
 set -x
 
-export PUBLIC_INTERFACE=$private_floating_interface
-export NODE_METADATA=$node_metadata
-export DOCKER_EE_URL=$docker_ee_url
-export DOCKER_EE_RELEASE=$docker_ee_release
-export DOCKER_UCP_IMAGE=$docker_ucp_image
-export UCP_DOCKER_SWARM_DATA_PORT=$docker_ucp_swarm_data_port
-export DOCKER_DEFAULT_ADDRESS_POOL=$docker_default_address_pool
+INVENTORY_PATH="/srv/trymosk/rockoon/virtual_lab/ansible/inventory"
 
 function wait_condition_send {
     local status=${1:-SUCCESS}
@@ -32,10 +26,19 @@ function wait_condition_send {
     fi
 }
 
-bash /usr/share/trymos/launch.sh
+if [[ -f "${INVENTORY_PATH}/ansible_overrides.yaml" ]]; then
+    curl --retry 6 --retry-delay 5 -L https://binary-dev-kaas-virtual.mcp.mirantis.com/openstack/bin/utils/yq/yq-v3.3.2 -o /usr/bin/yq
+    chmod +x /usr/bin/yq
+
+    cd ${INVENTORY_PATH}
+    yq merge ansible_overrides.yaml trymosk_single_node.yaml > trymosk_single_node.merged
+    mv trymosk_single_node.merged trymosk_single_node.yaml
+fi
+
+bash /srv/trymosk/launch.sh
 
 if [[ "$?" == "0" ]]; then
-    wait_condition_send "SUCCESS" "Deploying TryMOS successfuly ."
+    wait_condition_send "SUCCESS" "Deploying TryMOSK successfuly ."
 else
-    wait_condition_send "FAILURE" "Deploying TryMOS failed."
+    wait_condition_send "FAILURE" "Deploying TryMOSK failed."
 fi
