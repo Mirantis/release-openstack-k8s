@@ -2,8 +2,6 @@
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  annotations:
-    rbac.authorization.kubernetes.io/autoupdate: "true"
   name: cluster-admin-mosk
 rules:
 - apiGroups:
@@ -20,7 +18,7 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: helm-controller
+  name: helm-controller-mosk
   namespace: osh-system
 roleRef:
   apiGroup: rbac.authorization.k8s.io
@@ -28,7 +26,7 @@ roleRef:
   name: cluster-admin-mosk
 subjects:
 - kind: ServiceAccount
-  name: helm-controller
+  name: helm-controller-mosk
   namespace: osh-system
 ---
 apiVersion: v1
@@ -48,7 +46,7 @@ spec:
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: helm-controller
+  name: helm-controller-mosk
   namespace: osh-system
 ---
 apiVersion: apps/v1
@@ -73,7 +71,7 @@ spec:
       labels:
         app: helm-controller
     spec:
-      serviceAccountName: helm-controller
+      serviceAccountName: helm-controller-mosk
       containers:
       - name: controller
         command: ["/bin/controller"]
