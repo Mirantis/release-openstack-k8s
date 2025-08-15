@@ -43,7 +43,7 @@ spec:
           name: "iam-extra"
           realmRoles:
             k8s_managed_cluster_admin:
-              name: "m:k8s:managed@cluster-admin"
+              name: "m:k8s:managed@cluster-admin-mosk"
               description: "K8S test role"
           realmGroups:
             oscore-eng:
