@@ -1,0 +1,73 @@
+apiVersion: lcm.mirantis.com/v1alpha1
+kind: CephDeployment
+metadata:
+  name: cephcluster
+  namespace: ceph-lcm-mirantis
+spec:
+  rookConfig:
+    osd_pool_default_size: "1"
+  hyperconverge:
+    tolerations:
+      osd:
+        rules:
+        - key: "com.docker.ucp.manager"
+          operator: "Exists"
+          effect: "NoSchedule"
+  network:
+    clusterNet: 10.11.0.0/24
+    publicNet: 10.12.0.0/24
+  dashboard: false
+  pools:
+    - deviceClass: hdd
+      role: kubernetes
+      name: mirablock-k8s-block
+      storageClassOpts:
+        default: true
+      replicated:
+        size: 1
+    - deviceClass: hdd
+      role: volumes
+      name: volumes
+      replicated:
+        size: 1
+    - deviceClass: hdd
+      role: vms
+      name: vms
+      replicated:
+        size: 1
+    - deviceClass: hdd
+      role: backup
+      name: backup
+      replicated:
+        size: 1
+    - deviceClass: hdd
+      role: images
+      name: images
+      replicated:
+        size: 1
+  objectStorage:
+    rgw:
+      dataPool:
+        deviceClass: hdd
+        failureDomain: host
+        replicated:
+          size: 1
+      gateway:
+        allNodes: false
+        instances: 1
+        port: 80
+        securePort: 8443
+      metadataPool:
+        deviceClass: hdd
+        failureDomain: host
+        replicated:
+          size: 1
+      name: openstack-store
+      preservePoolsOnDelete: false
+  nodes:
+    - name: Values.CHANGE_ME_node1_name
+      devices:
+        - name: sdb
+          config:
+            deviceClass: hdd
+      roles: [mon, mgr]

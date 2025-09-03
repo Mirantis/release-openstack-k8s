@@ -1,0 +1,20 @@
+apiVersion: lcm.mirantis.com/v1alpha1
+kind: HelmBundle
+metadata:
+  name: pelagia-ceph
+  namespace: osh-system
+spec:
+  releases:
+  - chart: pelagia/pelagia-ceph
+    chartURL: https://binary.mirantis.com/pelagia-ceph/helm/pelagia-ceph-1.0.8.tgz
+    name: pelagia-ceph
+    helmV3: true
+    namespace: osh-system
+    values:
+      global:
+        dockerBaseUrl: registry.mirantis.com
+        namespace: ceph-lcm-mirantis
+      rookConfig:
+        rookOperatorPlacement:
+          nodeSelector:
+            openstack-control-plane: enabled
