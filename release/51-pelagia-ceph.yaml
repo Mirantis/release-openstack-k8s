@@ -1,13 +1,14 @@
 apiVersion: lcm.mirantis.com/v1alpha1
 kind: HelmBundle
 metadata:
-  name: pelagia-ceph
+  name: ceph-pelagia
   namespace: osh-system
 spec:
   releases:
   - chart: pelagia/pelagia-ceph
     chartURL: https://binary.mirantis.com/pelagia-ceph/helm/pelagia-ceph-1.0.8.tgz
-    name: pelagia-ceph
+    # inversed name due to core helmcontroller "feature" - alphabitical order installation
+    name: ceph-pelagia
     helmV3: true
     namespace: osh-system
     values:
