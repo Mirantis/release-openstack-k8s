@@ -30,7 +30,7 @@ spec:
         network_policy: false
       dependencies: {}
     helmV3: true
-  - chartURL: https://binary.mirantis.com/openstack/helm/openstack-helm-infra/vbmc-0.1.2+3140.tgz
+  - chartURL: https://binary.mirantis.com/openstack/helm/openstack-helm-infra/vbmc-0.1.2+3141.tgz
     name: vbmc-virtualbmc
     namespace: openstack-vbmc
     values:
@@ -38,8 +38,9 @@ spec:
         tags:
           activate_nodes: mirantis.azurecr.io/openstack/heat:train-bionic-20200601180013
           bootstrap: mirantis.azurecr.io/openstack/heat:train-bionic-20200601180013
-          vbmc: mirantis.azurecr.io/openstack/extra/vbmc:v0.1-20210401063512
-          vbmc_create_nodes: mirantis.azurecr.io/openstack/extra/vbmc:v0.1-20210401063512
+          sushy-tools: mirantis.azurecr.io/openstack/extra/vbmc:v0.2-20250923091859
+          vbmc: mirantis.azurecr.io/openstack/extra/vbmc:v0.2-20250923091859
+          vbmc_create_nodes: mirantis.azurecr.io/openstack/extra/vbmc:v0.2-20250923091859
           vbmc_enroll_nodes: mirantis.azurecr.io/openstack/heat:train-bionic-20200601180013
           openvswitch_db_server: mirantis.azurecr.io/general/openvswitch:3.3-noble-src-20250523053641
           openvswitch_vswitchd: mirantis.azurecr.io/general/openvswitch:3.3-noble-src-20250523053641
@@ -90,17 +91,17 @@ spec:
           deploy_kernel_image: ironic-agent.kernel
           deploy_ramdisk_image: ironic-agent.initramfs
           items:
-            - driver: ipmi
+            - driver: redfish
               properties:
                 local_gb: 10
                 cpus: 2
                 memory_mb: 1024
                 cpu_arch: x86_64
+                capabilities: 'boot_mode:bios'
               resource_class: ram1024-cpus2-disk10
               driver_info:
-                ipmi_username: admin
-                ipmi_password: password
-                ipmi_port: 6200
+                redfish_username: admin
+                redfish_password: password
               network_interface: 'neutron'
               physnet: 'ironic'
               ports:
@@ -112,17 +113,18 @@ spec:
               - name: pg0
                 standalone_ports_supported: true
                 mode: balance-rr
-            - driver: ipmi
+              boot_interface: redfish-virtual-media
+            - driver: redfish
               properties:
                 local_gb: 10
                 cpus: 2
                 memory_mb: 1024
                 cpu_arch: x86_64
+                capabilities: 'boot_mode:uefi'
               resource_class: ram1024-cpus2-disk10
               driver_info:
-                ipmi_username: admin
-                ipmi_password: password
-                ipmi_port: 6201
+                redfish_username: admin
+                redfish_password: password
               network_interface: 'neutron'
               physnet: 'ironic'
               ports:
@@ -134,17 +136,18 @@ spec:
               - name: pg0
                 standalone_ports_supported: true
                 mode: balance-rr
-            - driver: ipmi
+              boot_interface: redfish-virtual-media
+            - driver: redfish
               properties:
                 local_gb: 10
                 cpus: 2
                 memory_mb: 1024
                 cpu_arch: x86_64
+                capabilities: 'boot_mode:uefi'
               resource_class: ram1024-cpus2-disk10
               driver_info:
-                ipmi_username: admin
-                ipmi_password: password
-                ipmi_port: 6202
+                redfish_username: admin
+                redfish_password: password
               network_interface: 'neutron'
               physnet: 'ironic'
               ports:
@@ -156,11 +159,13 @@ spec:
               - name: pg0
                 standalone_ports_supported: true
                 mode: balance-rr
+              boot_interface: redfish-https
       manifests:
         network_policy: false
         job_activate_nodes: false
         configmap_ssh: true
         secret_ca_bundle: true
+        redfish_enabled: true
       network:
         sshd:
           enabled: true
