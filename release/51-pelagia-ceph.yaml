@@ -15,6 +15,8 @@ spec:
       global:
         dockerBaseUrl: registry.mirantis.com
         namespace: ceph-lcm-mirantis
+      lcmConfig:
+        cephDaemonsetLabelExclude: "node-role.kubernetes.io/master"
       rookConfig:
         rookOperatorPlacement:
           nodeSelector:

@@ -13,6 +13,9 @@ spec:
     values:
       global:
         dockerBaseUrl: mirantis.azurecr.io
+      pelagia-ceph:
+        lcmConfig:
+          cephDaemonsetLabelExclude: "node-role.kubernetes.io/master"
       rookOperatorPlacement:
         nodeSelector:
           openstack-control-plane: enabled
