@@ -18,6 +18,21 @@ spec:
       nodeSelector:
         openstack-compute-node: enabled
       initContainers:
+        - command:
+          - bash
+          - -c
+          - "set -ex; chroot /mnt/host-rootfs modprobe nfs; chroot /mnt/host-rootfs modprobe nfsd"
+          image: mirantis.azurecr.io/openstack/extra/nfs-server:2.2.1
+          imagePullPolicy: IfNotPresent
+          name: init-kernel-modules
+          resources: {}
+          securityContext:
+            privileged: true
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /mnt/host-rootfs
+            name: host-rootfs
         - name: init-share-folders
           image: mirantis.azurecr.io/openstack/extra/nfs-server:2.2.1
           command:
@@ -61,6 +76,10 @@ spec:
           securityContext:
             privileged: true
       volumes:
+        - name: host-rootfs
+          hostPath:
+            path: /
+            type: ""
         - name: nfs-vol
           hostPath:
             path: /var/lib/nfs-share
