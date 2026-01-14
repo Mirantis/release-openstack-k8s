@@ -102,5 +102,8 @@ spec:
       tempest:
         values:
           conf:
+            tempest:
+              auth:
+                tempest_admin_roles: global-secret-decoder
             blacklist:
               - (?:tempest.api.volume.admin.test_volume_quotas.VolumeQuotasAdminTestJSON.test_quota_usage_after_volume_transfer)
