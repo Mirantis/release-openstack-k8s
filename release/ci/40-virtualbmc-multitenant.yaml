@@ -5,7 +5,7 @@ metadata:
   namespace: openstack-vbmc
 spec:
   releases:
-  - chartURL: https://binary.mirantis.com/openstack/helm/openstack-helm-infra/libvirt-0.1.0-mcp-3094.tgz
+  - chartURL: https://binary.mirantis.com/openstack/helm/openstack-helm-infra/libvirt-0.1.2+3142.tgz
     name: vbmc-libvirt
     namespace: openstack-vbmc
     values:
