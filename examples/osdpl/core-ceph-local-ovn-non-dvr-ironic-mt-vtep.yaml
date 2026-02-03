@@ -83,6 +83,8 @@ spec:
             neutron:
               DEFAULT:
                 global_physnet_mtu: 1480
+              ovn:
+                ovn_router_indirect_snat: true
     orchestration:
       heat:
         values:
