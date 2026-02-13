@@ -38,9 +38,9 @@ spec:
         tags:
           activate_nodes: mirantis.azurecr.io/openstack/heat:train-bionic-20200601180013
           bootstrap: mirantis.azurecr.io/openstack/heat:train-bionic-20200601180013
-          sushy-tools: mirantis.azurecr.io/openstack/extra/vbmc:v0.2-20250923091859
-          vbmc: mirantis.azurecr.io/openstack/extra/vbmc:v0.2-20250923091859
-          vbmc_create_nodes: mirantis.azurecr.io/openstack/extra/vbmc:v0.2-20250923091859
+          sushy-tools: mirantis.azurecr.io/openstack/extra/vbmc:v0.2-20260211170038
+          vbmc: mirantis.azurecr.io/openstack/extra/vbmc:v0.2-20260211170038
+          vbmc_create_nodes: mirantis.azurecr.io/openstack/extra/vbmc:v0.2-20260211170038
           vbmc_enroll_nodes: mirantis.azurecr.io/openstack/heat:train-bionic-20200601180013
           openvswitch_db_server: mirantis.azurecr.io/general/openvswitch:3.3-noble-src-20250523053641
           openvswitch_vswitchd: mirantis.azurecr.io/general/openvswitch:3.3-noble-src-20250523053641
