@@ -7,7 +7,7 @@ metadata:
 spec:
   releases:
   - chart: kaas/metallb-crds
-    chartURL: https://binary.mirantis.com/core/helm/metallb-crds-1.37.20.tgz
+    chartURL: https://binary.mirantis.com/core/helm/metallb-crds-1.44.7.tgz
     helmV3: true
     name: metallb-crds
     namespace: metallb
@@ -15,9 +15,9 @@ spec:
       global:
         dockerBaseUrl: mirantis.azurecr.io
         helmBaseUrl: https://binary.mirantis.com
-    version: 1.37.20
+    version: 1.44.7
   - chart: kaas/metallb
-    chartURL: https://binary.mirantis.com/core/helm/metallb-1.37.20.tgz
+    chartURL: https://binary.mirantis.com/core/helm/metallb-1.44.7.tgz
     helmV3: true
     name: metallb
     namespace: metallb
@@ -27,4 +27,4 @@ spec:
       global:
         dockerBaseUrl: mirantis.azurecr.io
         helmBaseUrl: https://binary.mirantis.com
-    version: 1.37.20
+    version: 1.44.7
