@@ -1,0 +1,28 @@
+---
+apiVersion: lcm.mirantis.com/v1alpha1
+kind: HelmBundle
+metadata:
+  name: envoy-gateway
+  namespace: osh-system
+spec:
+  releases:
+  - chart: openstack/helm/gateway-helm
+    chartURL: https://binary.mirantis.com/openstack/helm/envoy-gateway/gateway-helm-1.7.1-1.tgz
+    version: 1.7.1-1
+    helmV3: true
+    name: envoy-gateway
+    namespace: eg-system
+    values:
+      global:
+        dockerBaseUrl: mirantis.azurecr.io
+      deployment:
+        pod:
+          nodeSelector:
+            openstack-control-plane: enabled
+      config:
+        envoyGateway:
+          provider:
+            type: Kubernetes
+            kubernetes:
+              deploy:
+                type: GatewayNamespace
