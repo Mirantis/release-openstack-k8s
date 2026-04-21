@@ -4,66 +4,53 @@ metadata:
   name: cephcluster
   namespace: ceph-lcm-mirantis
 spec:
-  rookConfig:
-    osd_pool_default_size: "1"
-  hyperconverge:
-    tolerations:
-      osd:
-        rules:
-        - key: "com.docker.ucp.manager"
-          operator: "Exists"
-          effect: "NoSchedule"
-  network:
-    clusterNet: 10.11.0.0/24
-    publicNet: 10.12.0.0/24
-  dashboard: false
-  pools:
-    - deviceClass: hdd
+  blockStorage:
+    pools:
+    - name: mirablock-k8s-block
       role: kubernetes
-      name: mirablock-k8s-block
       storageClassOpts:
         default: true
-      replicated:
-        size: 1
-    - deviceClass: hdd
+      spec:
+        deviceClass: hdd
+        replicated:
+          size: 1
+    - name: volumes
       role: volumes
-      name: volumes
-      replicated:
-        size: 1
-    - deviceClass: hdd
+      spec:
+        deviceClass: hdd
+        replicated:
+          size: 1
+    - name: vms
       role: vms
-      name: vms
-      replicated:
-        size: 1
-    - deviceClass: hdd
+      spec:
+        deviceClass: hdd
+        replicated:
+          size: 1
+    - name: backup
       role: backup
-      name: backup
-      replicated:
-        size: 1
-    - deviceClass: hdd
+      spec:
+        deviceClass: hdd
+        replicated:
+          size: 1
+    - name: images
       role: images
-      name: images
-      replicated:
-        size: 1
-  objectStorage:
-    rgw:
-      dataPool:
+      spec:
         deviceClass: hdd
-        failureDomain: host
         replicated:
           size: 1
-      gateway:
-        allNodes: false
-        instances: 1
-        port: 80
-        securePort: 8443
-      metadataPool:
-        deviceClass: hdd
-        failureDomain: host
-        replicated:
-          size: 1
-      name: openstack-store
-      preservePoolsOnDelete: false
+  cluster:
+    dashboard:
+      enabled: false
+    network:
+      addressRanges:
+        cluster: ["10.11.0.0/24"]
+        public: ["10.12.0.0/24"]
+    placement:
+      osd:
+        tolerations:
+          - key: "com.docker.ucp.manager"
+            operator: "Exists"
+            effect: "NoSchedule"
   nodes:
     - name: Values.CHANGE_ME_node1_name
       devices:
@@ -71,3 +58,26 @@ spec:
           config:
             deviceClass: hdd
       roles: [mon, mgr]
+  objectStorage:
+    objectStores:
+      - name: openstack-store
+        # w/a until moved to envoy
+        usedByRockoon: true
+        spec:
+          dataPool:
+            deviceClass: hdd
+            failureDomain: host
+            replicated:
+              size: 1
+          gateway:
+            instances: 1
+            port: 80
+            securePort: 8443
+          metadataPool:
+            deviceClass: hdd
+            failureDomain: host
+            replicated:
+              size: 1
+          preservePoolsOnDelete: false
+  rookConfig:
+    osd_pool_default_size: "1"

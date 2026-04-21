@@ -4,62 +4,47 @@ metadata:
   name: cephcluster
   namespace: ceph-lcm-mirantis
 spec:
-  rookConfig:
-    # IMPORTANT: for production change to 3 or remove.
-    osd_pool_default_size: "2"
-  network:
-    clusterNet: 10.11.0.0/24
-    publicNet: 10.12.0.0/24
-  dashboard: false
-  pools:
-    - deviceClass: hdd
+  blockStorage:
+    pools:
+    - name: mirablock-k8s-block
       role: kubernetes
-      name: mirablock-k8s-block
       storageClassOpts:
         default: true
-      replicated:
-        size: 2
-    - deviceClass: hdd
+      spec:
+        deviceClass: hdd
+        replicated:
+          size: 2
+    - name: volumes
       role: volumes
-      name: volumes
-      replicated:
-        size: 2
-    - deviceClass: hdd
+      spec:
+        deviceClass: hdd
+        replicated:
+          size: 2
+    - name: vms
       role: vms
-      name: vms
-      replicated:
-        size: 2
-    - deviceClass: hdd
+      spec:
+        deviceClass: hdd
+        replicated:
+          size: 2
+    - name: backup
       role: backup
-      name: backup
-      replicated:
-        size: 2
-    - deviceClass: hdd
+      spec:
+        deviceClass: hdd
+        replicated:
+          size: 2
+    - name: images
       role: images
-      name: images
-      replicated:
-        size: 2
-  objectStorage:
-    rgw:
-      name: openstack-store
-      metadataPool:
-        failureDomain: host
+      spec:
         deviceClass: hdd
         replicated:
           size: 2
-      dataPool:
-        deviceClass: hdd
-        failureDomain: host
-        replicated:
-          size: 2
-      gateway:
-        # NOTE(vsaienko): rgw do not have synchronization, use 1 replica
-        # to avoid races in tests.
-        instances: 1
-        allNodes: false
-        port: 80
-        securePort: 8443
-      preservePoolsOnDelete: false
+  cluster:
+    dashboard:
+      enabled: false
+    network:
+      addressRanges:
+        cluster: ["10.11.0.0/24"]
+        public: ["10.12.0.0/24"]
   nodes:
     - name: Values.CHANGE_ME_node1_name
       devices:
@@ -79,3 +64,29 @@ spec:
           config:
             deviceClass: hdd
       roles: [mon, mgr]
+  objectStorage:
+    objectStores:
+      - name: openstack-store
+        # w/a until moved to envoy
+        usedByRockoon: true
+        spec:
+          metadataPool:
+            failureDomain: host
+            deviceClass: hdd
+            replicated:
+              size: 2
+          dataPool:
+            deviceClass: hdd
+            failureDomain: host
+            replicated:
+              size: 2
+          gateway:
+            # NOTE(vsaienko): rgw do not have synchronization, use 1 replica
+            # to avoid races in tests.
+            instances: 1
+            port: 80
+            securePort: 8443
+          preservePoolsOnDelete: false
+  rookConfig:
+    # IMPORTANT: for production change to 3 or remove.
+    osd_pool_default_size: "2"
