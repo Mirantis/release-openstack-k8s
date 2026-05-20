@@ -67,8 +67,7 @@ spec:
   objectStorage:
     objectStores:
       - name: openstack-store
-        # w/a until moved to envoy
-        usedByRockoon: true
+        usedForOpenstack: true
         spec:
           metadataPool:
             failureDomain: host
