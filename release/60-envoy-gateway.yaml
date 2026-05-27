@@ -7,8 +7,8 @@ metadata:
 spec:
   releases:
   - chart: openstack/helm/gateway-helm
-    chartURL: https://binary.mirantis.com/openstack/helm/envoy-gateway/gateway-helm-1.7.1-3.tgz
-    version: 1.7.1-3
+    chartURL: https://binary.mirantis.com/openstack/helm/envoy-gateway/gateway-helm-1.7.1-4.tgz
+    version: 1.7.1-4
     helmV3: true
     name: envoy-gateway
     namespace: eg-system
