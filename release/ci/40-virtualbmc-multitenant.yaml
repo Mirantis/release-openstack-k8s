@@ -95,9 +95,9 @@ spec:
               properties:
                 local_gb: 10
                 cpus: 2
-                memory_mb: 1024
+                memory_mb: 4096
                 cpu_arch: x86_64
-              resource_class: ram1024-cpus2-disk10
+              resource_class: ram4096-cpus2-disk10
               driver_info:
                 ipmi_username: admin
                 ipmi_password: password
@@ -110,9 +110,9 @@ spec:
               properties:
                 local_gb: 10
                 cpus: 2
-                memory_mb: 1024
+                memory_mb: 4096
                 cpu_arch: x86_64
-              resource_class: ram1024-cpus2-disk10
+              resource_class: ram4096-cpus2-disk10
               driver_info:
                 ipmi_username: admin
                 ipmi_password: password
@@ -125,9 +125,9 @@ spec:
               properties:
                 local_gb: 10
                 cpus: 2
-                memory_mb: 1024
+                memory_mb: 4096
                 cpu_arch: x86_64
-              resource_class: ram1024-cpus2-disk10
+              resource_class: ram4096-cpus2-disk10
               driver_info:
                 ipmi_username: admin
                 ipmi_password: password

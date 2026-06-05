@@ -95,10 +95,10 @@ spec:
               properties:
                 local_gb: 10
                 cpus: 2
-                memory_mb: 1024
+                memory_mb: 4096
                 cpu_arch: x86_64
                 capabilities: 'boot_mode:bios'
-              resource_class: ram1024-cpus2-disk10
+              resource_class: ram4096-cpus2-disk10
               driver_info:
                 redfish_username: admin
                 redfish_password: password
@@ -118,10 +118,10 @@ spec:
               properties:
                 local_gb: 10
                 cpus: 2
-                memory_mb: 1024
+                memory_mb: 4096
                 cpu_arch: x86_64
                 capabilities: 'boot_mode:uefi'
-              resource_class: ram1024-cpus2-disk10
+              resource_class: ram4096-cpus2-disk10
               driver_info:
                 redfish_username: admin
                 redfish_password: password
@@ -141,10 +141,10 @@ spec:
               properties:
                 local_gb: 10
                 cpus: 2
-                memory_mb: 1024
+                memory_mb: 4096
                 cpu_arch: x86_64
                 capabilities: 'boot_mode:uefi'
-              resource_class: ram1024-cpus2-disk10
+              resource_class: ram4096-cpus2-disk10
               driver_info:
                 redfish_username: admin
                 redfish_password: password
