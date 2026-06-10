@@ -7,6 +7,7 @@ spec:
   releases:
   - chart: ceph/ceph-operator
     chartURL: https://binary.mirantis.com/ceph/helm/ceph-operator-1.0.0-master-1920.tgz
+    version: 1.0.0-master-1920
     name: ceph-operator
     helmV3: true
     namespace: osh-system
