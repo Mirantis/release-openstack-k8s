@@ -11,6 +11,7 @@ spec:
     helmV3: true
     namespace: coredns
     values:
+      replicaCount: 2
       image:
         repository: mirantis.azurecr.io/openstack/extra/coredns
         tag: "1.6.9"
