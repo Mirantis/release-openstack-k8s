@@ -6,8 +6,8 @@ metadata:
 spec:
   releases:
   - chart: ceph/ceph-operator
-    chartURL: https://binary.mirantis.com/ceph/helm/ceph-operator-1.0.0-master-1920.tgz
-    version: 1.0.0-master-1920
+    chartURL: https://binary.mirantis.com/ceph/helm/ceph-operator-1.0.0-master-1928.tgz
+    version: 1.0.0-master-1928
     name: ceph-operator
     helmV3: true
     namespace: osh-system
@@ -17,7 +17,8 @@ spec:
       pelagia-ceph:
         lcmConfig:
           cephDaemonsetLabelExclude: "node-role.kubernetes.io/master"
-        rookConfig:
-          rookOperatorPlacement:
-            nodeSelector:
-              openstack-control-plane: enabled
+        rook:
+          rookConfig:
+            rookOperatorPlacement:
+              nodeSelector:
+                openstack-control-plane: enabled
