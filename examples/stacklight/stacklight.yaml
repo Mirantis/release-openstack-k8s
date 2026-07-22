@@ -13,15 +13,14 @@ spec:
   releases:
   - name: stacklight
     helmV3: true
-    chartURL: https://binary.mirantis.com/stacklight/helm/stacklight-0.17.2.tgz
-    version: 0.17.2
+    chartURL: https://binary.mirantis.com/stacklight/helm/stacklight-0.20.2.tgz
+    version: 0.20.2
     namespace: stacklight
     values:
       clusterSize: small
       global:
         dockerBaseUrl: mirantis.azurecr.io
         helmBaseUrl: https://binary.mirantis.com
-      createHelmBundleCRD: false
       exposeLoadBalancers: true
       helmController:
         enabled: false
@@ -45,7 +44,6 @@ spec:
         default:
           role: stacklight
           stacklight: enabled
-      platform: ucp
       storage:
         componentStorageClasses:
           elasticsearch: "lvp-fake-root"
