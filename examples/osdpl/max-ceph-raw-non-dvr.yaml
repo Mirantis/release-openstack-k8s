@@ -151,6 +151,7 @@ spec:
     - cloudprober
     - instance-ha
     - metering
+    # NOTE(mkarpin): For gazpacho replace metric with metric-storage
     - metric
     - object-storage
     - shared-file-system
