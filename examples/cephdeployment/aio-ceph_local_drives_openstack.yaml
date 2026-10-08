@@ -51,6 +51,29 @@ spec:
           - key: "com.docker.ucp.manager"
             operator: "Exists"
             effect: "NoSchedule"
+    # healthCheck required only for pelagia v3.x versions
+    healthCheck:
+      muteHealthWarning:
+        AUTH_EMERGENCY_CIPHERS_SET:
+          policy: mute
+        AUTH_INSECURE_CLIENT_KEY_TYPE:
+          policy: mute
+        AUTH_INSECURE_KEYS_ALLOWED:
+          policy: mute
+        AUTH_INSECURE_KEYS_CREATABLE:
+          policy: mute
+        AUTH_INSECURE_ROTATING_SERVICE_KEY_TYPE:
+          policy: mute
+    # security required only for pelagia v3.x versions
+    security:
+      cephx:
+        allowedCiphers:
+        - aes
+        - aes256k
+        csi:
+          keyType: aes
+        daemon:
+          keyType: aes256k
   nodes:
     - name: Values.CHANGE_ME_node1_name
       devices:
