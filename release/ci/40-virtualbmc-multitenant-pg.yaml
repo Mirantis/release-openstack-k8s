@@ -5,7 +5,7 @@ metadata:
   namespace: openstack-vbmc
 spec:
   releases:
-  - chartURL: https://binary.mirantis.com/openstack/helm/openstack-helm-infra/libvirt-0.1.2+3143.tgz
+  - chartURL: https://binary.mirantis.com/openstack/helm/openstack-helm-infra/libvirt-0.1.2+3144.tgz
     name: vbmc-libvirt
     namespace: openstack-vbmc
     values:
@@ -30,7 +30,7 @@ spec:
         network_policy: false
       dependencies: {}
     helmV3: true
-  - chartURL: https://binary.mirantis.com/openstack/helm/openstack-helm-infra/vbmc-0.1.2+3143.tgz
+  - chartURL: https://binary.mirantis.com/openstack/helm/openstack-helm-infra/vbmc-0.1.2+3144.tgz
     name: vbmc-virtualbmc
     namespace: openstack-vbmc
     values:
