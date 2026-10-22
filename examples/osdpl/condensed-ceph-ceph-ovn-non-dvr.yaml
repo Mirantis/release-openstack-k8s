@@ -75,3 +75,10 @@ spec:
             neutron:
               DEFAULT:
                 global_physnet_mtu: 1480
+    orchestration:
+      heat:
+        values:
+          conf:
+            heat:
+              clients_heat:
+                insecure: true
