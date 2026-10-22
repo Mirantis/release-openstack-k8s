@@ -13,6 +13,7 @@ spec:
   public_domain_name: it.just.works
   features:
     services:
+      - orchestration
       - object-storage
       - cloudprober
     ssl:
