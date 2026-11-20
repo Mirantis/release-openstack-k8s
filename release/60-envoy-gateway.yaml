@@ -27,4 +27,4 @@ spec:
                 type: GatewayNamespace
       images:
         envoyGateway:
-          tag: 1.9.1-noble-20261016043108
+          tag: 1.10.0-noble-20261119170136
